@@ -8,11 +8,11 @@
 <body class="container">
 
 <header>
-    <%- include('../partials/header') %>
+    <%- include('../partials/header', {'endpoints': {'profil': '/profil', 'utbildningar': '/utbildningar'}}) %></header>
 </header>
 
 <main>
-    <h1>Välkommen bror</h1>
+    <h1>Välkommen <%= namn %></h1>
 </main>
 
 </body>

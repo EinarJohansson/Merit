@@ -6,9 +6,13 @@
   
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/login">Login <span class="sr-only">(current)</span></a>
-        </li>
+
+        <!-- Loopa igenom alla entries och lägg till varje nyckel i headern -->
+        <% for (let endpoint in endpoints) { %>
+          <li class="nav-item active">
+            <a class="nav-link" href= <%= endpoints[endpoint]%> > <%=endpoint%> <span class="sr-only">(current)</span></a>
+          </li>
+        <% } %>
 
       </ul>
       <form class="form-inline my-2 my-lg-0">
