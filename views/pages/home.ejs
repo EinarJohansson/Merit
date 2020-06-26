@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../partials/head') %>
+</head>
+
+<body class="container">
+
+<header>
+    <%- include('../partials/header') %>
+</header>
+
+<main style="margin-top: 5rem">
+    <div class="d-flex justify-content-between" style="position:sticky">
+        <%- include('../partials/card', {img: 'https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=200&w=200'}) %>
+        <%- include('../partials/card', {img: 'https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=200&w=200'}) %>
+        <%- include('../partials/card', {img: 'https://images.pexels.com/photos/1370295/pexels-photo-1370295.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=200&w=200'}) %>
+    </div>
+</main>
+
+</body>
+<%- include('../partials/bootstrap') %>
+
+</html>
