@@ -8,10 +8,10 @@
 <body class="container">
 
 <header>
-    <%- include('../partials/header', {'endpoints': {'profil': '/profil', 'utbildningar': '/utbildningar'}}) %></header>
+    <%- include('../partials/header', {'endpoints': {'profil': '/profil', 'utbildningar': '/utbildningar'}, 'inloggad': true}) %></header>
 </header>
 
-<main>
+<main style="margin-top: 3rem;">
     <h1>Välkommen <%= namn %></h1>
 </main>
 

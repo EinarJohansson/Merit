@@ -13,11 +13,11 @@ const port = 3000
 app.set('view engine', 'ejs')
 
 // Passport config
-app.use(cookieParser());
-app.use(bodyParser());
-app.use(session({ secret: process.env.COOKIE }));
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(cookieParser())
+app.use(bodyParser())
+app.use(session({ secret: process.env.COOKIE}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 // Routes
 const home = require('./routes/home')
@@ -28,6 +28,8 @@ const login = require('./routes/login')
 app.use('/login', login)
 const profil = require('./routes/profil')
 app.use('/profil', profil)
+const logout = require('./routes/logout')
+app.use('/logout', logout)
 
 // Listen for connections
 app.listen(port, () => console.log('Listening on port: ' + port))

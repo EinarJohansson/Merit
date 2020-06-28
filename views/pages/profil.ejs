@@ -6,13 +6,14 @@
 </head>
 
 <body class="container">
-    <%- include('../partials/header', {'endpoints': {'profil': '/profil', 'utbildningar': '/utbildningar'}}) %>
+    <%- include('../partials/header', {'endpoints': {'profil': '/profil', 'utbildningar': '/utbildningar'}, 'inloggad': true}) %>
 
     <div class="row" style="margin-top: 3rem">
         <div class="col d-flex">
             <%- include('../partials/mugshot', {'bild': bild, 'namn': namn, 'program': 'Teknik'}) %>
         </div>
     </div>
+
     <%- include('../partials/bootstrap') %>
 </body>
 
