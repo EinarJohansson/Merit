@@ -6,6 +6,7 @@ const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const findOrCreate = require('../database/findOrCreate')
 const MongoClient = require('mongodb').MongoClient
+
 // Lagra användaren i en kaka
 passport.serializeUser((user, done) => {
     done(null, user.id)
@@ -21,9 +22,9 @@ passport.deserializeUser((id, done) => {
         }
         const users = client.db('merit').collection('users')
 
-        users.find({ 'sub': id }).toArray((err, response) => {
+        users.find({'sub': id }).toArray((err, response) => {
             client.close()
-            if (err) done(null, false, {'message': err})
+            if (err || response.length <= 0) done(null, false, {'message': err})
             
             done(null, response[0])
         })

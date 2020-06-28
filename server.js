@@ -4,9 +4,6 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('./passport/passport')
-const home = require('./routes/home')
-const auth = require('./routes/auth')
-const login = require('./routes/login')
 
 // The app
 const app = express()
@@ -23,9 +20,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
+const home = require('./routes/home')
 app.use('/', home)
+const auth = require('./routes/auth')
 app.use('/auth', auth)
+const login = require('./routes/login')
 app.use('/login', login)
+const profil = require('./routes/profil')
+app.use('/profil', profil)
 
 // Listen for connections
 app.listen(port, () => console.log('Listening on port: ' + port))
