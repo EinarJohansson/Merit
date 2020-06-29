@@ -12,7 +12,15 @@
         <div class="col d-flex">
             <%- include('../partials/mugshot', {'bild': bild, 'namn': namn, 'program': 'Teknik'}) %>
         </div>
+
+        <!-- Visa användarens information-->
+        <div class="col rounded" >
+            <%- include('../partials/utbildning') %>
+        </div>
+
     </div>
+
+
 
     <%- include('../partials/bootstrap') %>
 </body>
