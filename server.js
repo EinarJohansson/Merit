@@ -26,8 +26,6 @@ const auth = require('./routes/auth')
 app.use('/auth', auth)
 const login = require('./routes/login')
 app.use('/login', login)
-const profil = require('./routes/profil')
-app.use('/profil', profil)
 const logout = require('./routes/logout')
 app.use('/logout', logout)
 

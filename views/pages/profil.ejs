@@ -3,26 +3,25 @@
 
 <head>
     <%- include('../partials/head') %>
+    <%- include('../partials/bootstrap') %>
 </head>
 
 <body class="container">
-    <%- include('../partials/header', {'endpoints': {'profil': '/profil', 'utbildningar': '/utbildningar'}, 'inloggad': true}) %>
+    <%- include('../partials/header', {'endpoints': {'utbildningar': '/utbildningar'}, 'inloggad': true}) %>
 
     <div class="row" style="margin-top: 3rem">
         <div class="col d-flex">
-            <%- include('../partials/mugshot', {'bild': bild, 'namn': namn, 'program': 'Teknik'}) %>
+            <%- include('../partials/mugshot', {'bild': bild, 'namn': namn}) %>
         </div>
 
         <!-- Visa användarens information-->
-        <div class="col rounded" >
-            <%- include('../partials/utbildning') %>
+        <div class="col">
+            <%- include('../partials/personalization') %>
         </div>
 
     </div>
 
 
-
-    <%- include('../partials/bootstrap') %>
 </body>
 
 </html>
