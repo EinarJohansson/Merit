@@ -11,7 +11,6 @@
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
         <form>
-
           <!-- Program -->
           <div class="form-group">
             <label for="exampleFormControlSelect1">Program</label>
@@ -25,26 +24,42 @@
 
           <script>
             $("#exampleFormControlSelect1").on("change", (data) => {
-              $('#inriktningar').collapse('toggle')
-
-              $('#inriktningar').on('hidden.bs.collapse', () => {
-                const program = $(data.target)[0].value
-                console.log(program);
-                // ändra options
-                $('#inriktningar').collapse('show')
-              })
+              const val = {
+                'Teknik': [
+                  'Teknikvetenskap',
+                  'IT-media',
+                  'Produktionskunskap',
+                  'Design'
+                ],
+                'Samhällsvetenskap': [
+                  'Samhällsvetenskap',
+                  'Beteendevetenskap'
+                ],
+                'Naturvetenskap': [
+                  'Naturvetenskap',
+                  'Naturvetenskap och samhälle'
+                ],
+                'Ekonomi': [
+                  'Ekonomi'
+                ]
+              }
+              
+              const program = $(data.target)[0].value
+              // Ändra options
+              $('#inriktning').empty()
+              val[program].forEach(inriktning => {
+                $('#inriktning').append('<option>' + inriktning + '</option')
+              });
+              // Visa inriktningarna igen
+              $('#inriktningar').collapse('show')
             })
-
           </script>
 
           <!-- Detta ska uppdateras dynamiskt i framtiden -->
           <div class="form-group collapse" id="inriktningar">
             <label for="inriktning">Inriktining</label>
             <select class="form-control" id="inriktning">
-              <option>Teknikvetenskap</option>
-              <option>IT-media</option>
-              <option>Produktionsteknik</option>
-              <option>Design</option>
+              <!-- <option>Inriktning</option> -->
             </select>
           </div>
 
