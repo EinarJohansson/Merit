@@ -14,7 +14,8 @@ app.set('view engine', 'ejs')
 
 // Passport config
 app.use(cookieParser())
-app.use(bodyParser())
+app.use( bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({ secret: process.env.COOKIE}))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -28,6 +29,8 @@ const login = require('./routes/login')
 app.use('/login', login)
 const logout = require('./routes/logout')
 app.use('/logout', logout)
+const update = require('./routes/update')
+app.use('/update', update)
 
 // Listen for connections
 app.listen(port, () => console.log('Listening on port: ' + port))

@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const MongoClient = require('mongodb').MongoClient
 
-const findOrCreate = (user) => {
+const create = (user) => {
   return new Promise((resolve, reject) => {
     const client = new MongoClient(process.env.DB_URL)
 
@@ -28,4 +28,4 @@ const findOrCreate = (user) => {
   })
 }
 
-module.exports = findOrCreate
+module.exports = create

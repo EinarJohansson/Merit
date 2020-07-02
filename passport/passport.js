@@ -4,7 +4,7 @@ require('dotenv').config()
 // Dependencies
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
-const findOrCreate = require('../database/findOrCreate')
+const create = require('../database/create_user')
 const MongoClient = require('mongodb').MongoClient
 
 // Lagra användaren i en kaka
@@ -37,8 +37,7 @@ passport.use(new GoogleStrategy({
     clientSecret: process.env.CLIENT_SECRET,
     callbackURL: "http://dev.merit.com:3000/auth/callback"
 }, (accessToken, refreshToken, profile, done) => {
-    findOrCreate(profile._json)
-        .then(res => console.log(res))
+    create(profile._json)
         .catch(err => console.error(err))
 
     done(null, profile)

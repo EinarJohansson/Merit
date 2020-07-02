@@ -11,12 +11,123 @@
 
     <div class="row" style="margin-top: 3rem">
         <div class="col d-flex">
-            <%- include('../partials/mugshot', {'bild': bild, 'namn': namn}) %>
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src=<%= bild %> alt="profile-image">
+                <div class="card-body">
+                    <h5 class="card-title"><%= namn %></h5>
+                    <!-- Skicka med programmet om det finns innan profil renderas -->
+                    <% if (typeof program !== 'undefined') { %>
+                    <h6 class="card-subtitle mb-2 text-muted"><%= program %></h6>
+                    <% } else %>
+                    <h6 class="card-subtitle mb-2 text-muted">Program</h6>
+                </div>
+            </div>
         </div>
 
         <!-- Visa användarens information-->
         <div class="col">
-            <%- include('../partials/personalization') %>
+            <div id="accordion">
+
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link text-left" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">Din utbildning</button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="card-body">
+                            <form action="/update" method="POST">
+                                <!-- Program -->
+                                <div class="form-group">
+                                    <label for="program">Program</label>
+                                    <select name="program" class="form-control" id="program">
+                                        <option>Teknik</option>
+                                        <option>Samhällsvetenskap</option>
+                                        <option>Naturvetenskap</option>
+                                        <option>Ekonomi</option>
+                                    </select>
+                                </div>
+
+                                <script>
+                                    $("#program").on("change", (data) => {
+                                        const val = {
+                                            'Teknik': [
+                                                'Teknikvetenskap',
+                                                'IT-media',
+                                                'Produktionskunskap',
+                                                'Design'
+                                            ],
+                                            'Samhällsvetenskap': [
+                                                'Samhällsvetenskap',
+                                                'Beteendevetenskap'
+                                            ],
+                                            'Naturvetenskap': [
+                                                'Naturvetenskap',
+                                                'Naturvetenskap och samhälle'
+                                            ],
+                                            'Ekonomi': [
+                                                'Ekonomi'                                            ]
+                                        }
+
+                                        const program = $(data.target)[0].value
+                                        // Ändra options
+                                        $('#inriktning').empty()
+                                        val[program].forEach(inriktning => {
+                                            $('#inriktning').append('<option>' + inriktning + '</option')
+                                        });
+                                        // Visa inriktningarna igen
+                                        $('#inriktningar').collapse('show')
+                                    })
+                                </script>
+
+                                <!-- Detta ska uppdateras dynamiskt i framtiden -->
+                                <div class="form-group collapse" id="inriktningar">
+                                    <label for="inriktning">Inriktining</label>
+                                    <select name="inriktning" class="form-control" id="inriktning"></select>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Spara</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed text-left" data-toggle="collapse"
+                                data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Sparade utbildningar
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                        <div class="card-body">
+                            ...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed text-left" data-toggle="collapse"
+                                data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Inställningar
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                        <div class="card-body">
+                            ...
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
