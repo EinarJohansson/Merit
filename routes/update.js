@@ -42,7 +42,7 @@ router.post('/', authCheck, (req, res) => {
 
         insert(req.user, { 'program': program, 'inriktning': inriktning })
             .then(data => {
-                console.log(data);
+                console.log(data)
             })
             .catch(err => console.error(err))
     }

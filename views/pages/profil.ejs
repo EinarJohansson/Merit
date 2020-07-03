@@ -16,10 +16,12 @@
                 <div class="card-body">
                     <h5 class="card-title"><%= namn %></h5>
                     <!-- Skicka med programmet om det finns innan profil renderas -->
-                    <% if (typeof program !== 'undefined') { %>
+                    <% if (typeof program !== 'undefined' && typeof inriktning !== 'undefined') { %>
                     <h6 class="card-subtitle mb-2 text-muted"><%= program %></h6>
-                    <% } else %>
+                    <p class="card-subtitle mb-2 text-muted"><%= inriktning %></p>
+                    <% } else { %>
                     <h6 class="card-subtitle mb-2 text-muted">Program</h6>
+                    <% }%>
                 </div>
             </div>
         </div>
@@ -36,7 +38,7 @@
                         </h5>
                     </div>
 
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body">
                             <form action="/update" method="POST">
                                 <!-- Program -->
@@ -68,7 +70,8 @@
                                                 'Naturvetenskap och samhälle'
                                             ],
                                             'Ekonomi': [
-                                                'Ekonomi'                                            ]
+                                                'Ekonomi'
+                                            ]
                                         }
 
                                         const program = $(data.target)[0].value
@@ -76,7 +79,7 @@
                                         $('#inriktning').empty()
                                         val[program].forEach(inriktning => {
                                             $('#inriktning').append('<option>' + inriktning + '</option')
-                                        });
+                                        })
                                         // Visa inriktningarna igen
                                         $('#inriktningar').collapse('show')
                                     })
