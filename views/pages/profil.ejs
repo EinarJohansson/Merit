@@ -104,9 +104,18 @@
     </div>
 
     <div class="row" style="margin-top: 3rem;">
-        <div class="col" id="pung">
+        <div class="col" id="pågående"></div>
     </div>
+
+    <div class="row" style="margin-top: 3rem;">
+        <div class="col" id="kommande"></div>
     </div>
+
+    <div class="row" style="margin-top: 3rem;">
+        <div class="col" id="avslutade">
+        </div>
+    </div>
+
 
     <script>
         $('#program').on('change', data => {
@@ -143,8 +152,59 @@
 
     <!-- Include react -->
     <%- include('../partials/react') %>
+
     <!-- My components -->
-    <%- include('../components/table') %>
+    <script type="text/babel">
+        class Kurs extends React.Component {
+            render() {
+                return (
+                    <tr>
+                        <td>{this.props.kurs.kurs}</td>
+                        <td>{this.props.kurs.poäng}</td>
+                        <td>{this.props.kurs.typ}</td>
+                        <td>{this.props.kurs.betyg}</td>
+                    </tr>
+                )
+            }
+        }
+
+        class Kurser extends React.Component {
+            render() {
+                return (
+                    <div className="table-responsive">
+                        <h3>{this.props.status}</h3>
+                        <table className="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Kurs</th>
+                                    <th>Poäng</th>
+                                    <th>Typ</th>
+                                    <th>Betyg</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    this.props.kurser.map(kurs => {
+                                        return <Kurs kurs={kurs} />
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                )
+            }
+        }
+
+        const data = <%- JSON.stringify(kurser) %>
+            Object.keys(data).forEach(status => {
+                if (data[status].length !== 0) {
+                    ReactDOM.render(
+                        <Kurser kurser={data[status]} status={status}/>,
+                        document.getElementById(status)
+                    )
+                }
+            })
+    </script>
 </body>
 
 </html>
