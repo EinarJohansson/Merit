@@ -41,10 +41,12 @@
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body">
                             <form action="/update" method="POST">
+
                                 <!-- Program -->
                                 <div class="form-group">
                                     <label for="program">Program</label>
-                                    <select name="program" class="form-control" id="program">
+                                    <select name="program" class="form-control" id="program" autocomplete="off">
+                                        <option selected disabled hidden>Välj ditt program!</option>
                                         <option>Teknik</option>
                                         <option>Samhällsvetenskap</option>
                                         <option>Naturvetenskap</option>
@@ -52,43 +54,10 @@
                                     </select>
                                 </div>
 
-                                <script>
-                                    $("#program").on("change", (data) => {
-                                        const val = {
-                                            'Teknik': [
-                                                'Teknikvetenskap',
-                                                'IT-media',
-                                                'Produktionskunskap',
-                                                'Design'
-                                            ],
-                                            'Samhällsvetenskap': [
-                                                'Samhällsvetenskap',
-                                                'Beteendevetenskap'
-                                            ],
-                                            'Naturvetenskap': [
-                                                'Naturvetenskap',
-                                                'Naturvetenskap och samhälle'
-                                            ],
-                                            'Ekonomi': [
-                                                'Ekonomi'
-                                            ]
-                                        }
-
-                                        const program = $(data.target)[0].value
-                                        // Ändra options
-                                        $('#inriktning').empty()
-                                        val[program].forEach(inriktning => {
-                                            $('#inriktning').append('<option>' + inriktning + '</option')
-                                        })
-                                        // Visa inriktningarna igen
-                                        $('#inriktningar').collapse('show')
-                                    })
-                                </script>
-
-                                <!-- Detta ska uppdateras dynamiskt i framtiden -->
-                                <div class="form-group collapse" id="inriktningar">
+                                <!-- Inriktningar -->
+                                <div class="form-group collapse" id="inriktning">
                                     <label for="inriktning">Inriktining</label>
-                                    <select name="inriktning" class="form-control" id="inriktning"></select>
+                                    <select name="inriktning" class="form-control" id="inriktningar"></select>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">Spara</button>
@@ -132,9 +101,40 @@
                 </div>
             </div>
         </div>
-
     </div>
 
+    <script>
+        $('#program').on('change', data => {
+            const program = $(data.target)[0].value
+            const val = {
+                'Teknik': [
+                    'Teknikvetenskap',
+                    'IT-media',
+                    'Produktionskunskap',
+                    'Design'
+                ],
+                'Samhällsvetenskap': [
+                    'Samhällsvetenskap',
+                    'Beteendevetenskap'
+                ],
+                'Naturvetenskap': [
+                    'Naturvetenskap',
+                    'Naturvetenskap och samhälle'
+                ],
+                'Ekonomi': [
+                    'Ekonomi'
+                ]
+            }
+
+            const inriktningar = val[program]
+
+            $('#inriktningar').empty()
+            inriktningar.forEach(inriktning => {
+                $('#inriktningar').append('<option>' + inriktning + '</option>')
+            })
+            $('#inriktning').collapse('show')
+        })
+    </script>
 
 </body>
 
