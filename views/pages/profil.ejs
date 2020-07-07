@@ -103,6 +103,11 @@
         </div>
     </div>
 
+    <div class="row" style="margin-top: 3rem;">
+        <div class="col" id="pung">
+    </div>
+    </div>
+
     <script>
         $('#program').on('change', data => {
             const program = $(data.target)[0].value
@@ -136,6 +141,10 @@
         })
     </script>
 
+    <!-- Include react -->
+    <%- include('../partials/react') %>
+    <!-- My components -->
+    <%- include('../components/table') %>
 </body>
 
 </html>

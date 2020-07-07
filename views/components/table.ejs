@@ -1,0 +1,59 @@
+<script type="text/babel">
+    class Kurs extends React.Component {
+        render() {
+            return (
+                <tr>
+                    <td>{this.props.kurs.namn}</td>
+                    <td>{this.props.kurs.poäng}</td>
+                    <td>{this.props.kurs.typ}</td>
+                    <td>{this.props.kurs.betyg}</td>
+                </tr>
+            )
+        }
+    }
+
+    class Kurser extends React.Component {
+        render() {
+            return (
+                <div className="table-responsive ">
+                    <table className="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Kurs</th>
+                                <th>Poäng</th>
+                                <th>Typ</th>
+                                <th>Betyg</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.props.kurser.map(kurs => {
+                                    return <Kurs kurs={kurs} />
+                                })
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            )
+        }
+    }
+
+    // Test
+    const data = [{
+        namn: 'Svenska 1',
+        poäng: '100',
+        typ: 'Programgemensamna',
+        betyg: 'A'
+    },
+    {
+        namn: 'Svenska 2',
+        poäng: '100',
+        typ: 'Programgemensamna',
+        betyg: 'B'
+    }]
+
+    ReactDOM.render(
+        <Kurser kurser={data} />,
+        document.getElementById('pung')
+    )
+</script>
