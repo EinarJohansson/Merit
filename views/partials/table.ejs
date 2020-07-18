@@ -1,0 +1,22 @@
+<div style="margin-top: 3rem;">
+    <h4><%= status %></h4>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Kurs</th>
+                <th scope="col">Område</th>
+                <th scope="col">Poäng</th>
+                <th scope="col">Betyg</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% test[status.toLowerCase()].forEach(kurs => { %>
+            <tr>
+                <td> <%= kurs.kurs %> </td>
+                <td> <%= kurs.typ %></td>
+                <td> <%= kurs.poäng %></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
