@@ -104,9 +104,9 @@
     </div>
 
     <!-- table partial, passa kurser och status - pågående, avslutad, kommande -->
-    <%- include('../partials/table', {status: 'Pågående', test: kurser}) %>
-    <%- include('../partials/table', {status: 'Kommande', test: kurser}) %>
-    <%- include('../partials/table', {status: 'Avslutade', test: kurser}) %>
+    <%- include('../partials/table', {status: 'Pågående', kurser: kurser.pågående}) %>
+    <%- include('../partials/table', {status: 'Kommande', kurser: kurser.kommande}) %>
+    <%- include('../partials/table', {status: 'Avslutade', kurser: kurser.avslutade}) %>
 
     <!-- JQuery kollar efter ändringar i program valet. -->
     <script>
@@ -140,6 +140,20 @@
             })
             $('#inriktning').collapse('show')
         })
+    </script>
+
+    <script>
+        $('tbody').sortable({
+            distance: 5,
+            delay: 100,
+            opacity: 0.6,
+            helper: 'clone',
+            tolerance: 'pointer',
+            cursor: 'move',
+            items: 'tr:not(.placeholder)',
+            connectWith: 'tbody',
+            axis: 'y'
+        }).disableSelection();
     </script>
 </body>
 

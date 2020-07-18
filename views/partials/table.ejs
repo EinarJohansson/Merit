@@ -9,14 +9,28 @@
                 <th scope="col">Betyg</th>
             </tr>
         </thead>
+
         <tbody>
-            <% test[status.toLowerCase()].forEach(kurs => { %>
-            <tr>
-                <td> <%= kurs.kurs %> </td>
-                <td> <%= kurs.typ %></td>
-                <td> <%= kurs.poäng %></td>
-            </tr>
-            <% }) %>
+            <!-- löser problem med att inte kunna droppa till tomma tablebodys. -->
+            <tr class="placeholder"><td style="visibility: hidden;"></td></tr>
+
+            <% if(kurser.length !== 0) { %>
+                <% kurser.forEach(kurs => { %>
+                    <tr>
+                        <td> <%= kurs.kurs %> </td>
+                        <td> <%= kurs.typ %></td>
+                        <td> <%= kurs.poäng %></td>
+                        <td>A</td>
+                        <!-- Lägg till betyg -->
+                    </tr>
+                <% }) %>
+            <% } %>
+
         </tbody>
+        <tfoot>
+            <tr class="empty">
+                <td class="text-center" colspan="4"><i class="fas fa-plus-circle"></i></td>
+            </tr>
+        </tfoot>
     </table>
 </div>
