@@ -40,8 +40,7 @@
 
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body">
-                            <form action="/update" method="POST">
-
+                            <form action="/update/utbildning" method="POST">
                                 <!-- Program -->
                                 <div class="form-group">
                                     <label for="program">Program</label>
@@ -103,6 +102,8 @@
         </div>
     </div>
 
+    <br style="margin-top: 3rem;">
+
     <!-- table partial, passa kurser och status - pågående, avslutad, kommande -->
     <%- include('../partials/table', {status: 'Pågående', kurser: kurser.pågående}) %>
     <%- include('../partials/table', {status: 'Kommande', kurser: kurser.kommande}) %>
@@ -152,8 +153,22 @@
             cursor: 'move',
             items: 'tr:not(.placeholder)',
             connectWith: 'tbody',
-            axis: 'y'
-        }).disableSelection();
+            axis: 'y',
+            receive: (event, ui) => {
+                // Skicka post
+                const ogstatus = $(ui.sender).attr("class").split(' ')[0]
+                const nystatus = $(ui.item).parent().attr("class").split(' ')[0]
+                const kurs = $(ui.item).children(':first').text().trim()
+                
+                const data = {
+                    og: ogstatus,
+                    ny: nystatus,
+                    kurs: kurs
+                }
+
+                $.post('/update/kurs', data)
+            }
+        })
     </script>
 </body>
 
