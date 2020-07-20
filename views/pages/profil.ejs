@@ -232,6 +232,9 @@
                 const nystatus = $(ui.item).parent().attr("class").split(' ')[0]
                 const kurs = $(ui.item).children(':first').text().trim()
 
+                // Uppdatera kursens data-status till den nya statusen
+                $(ui.item).attr('data-status', nystatus.charAt(0).toUpperCase() + nystatus.slice(1))
+
                 const data = {
                     og: ogstatus,
                     ny: nystatus,
