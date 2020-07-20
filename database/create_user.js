@@ -18,7 +18,7 @@ const create = (user) => {
 
         if (response.length > 0) {
           client.close()
-          return resolve(response)
+          return resolve('Användaren fanns redan!')
         }
         // Lägg till Gymnasiegemensammama kurser
         user.kurser = {
@@ -93,7 +93,7 @@ const create = (user) => {
 
         users.insertOne(user, (e, res) => {
           if (e) return reject(e)
-          resolve(res.ops)
+          resolve('Inserta en ny användare!')
         })
         client.close()
       })

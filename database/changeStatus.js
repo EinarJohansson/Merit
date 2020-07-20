@@ -1,11 +1,9 @@
-const { ObjectID } = require('mongodb')
-
 // Load environment variables
 require('dotenv').config()
 
 const MongoClient = require('mongodb').MongoClient
 
-const change = (user, gammlaKurser, nyaKurser, og, ny) => {
+const changeStatus = (user, gammlaKurser, nyaKurser, og, ny) => {
     return new Promise((resolve, reject) => {
         const client = new MongoClient(process.env.DB_URL)
         client.connect(error => {
@@ -16,7 +14,7 @@ const change = (user, gammlaKurser, nyaKurser, og, ny) => {
             const users = client.db('merit').collection('users')
 
             const fields = [`kurser.${ny}`, `kurser.${og}`]
-            const agg = {
+            const data = {
                 $set: {
                     [fields[0]]: nyaKurser,
                     [fields[1]]: gammlaKurser
@@ -25,12 +23,12 @@ const change = (user, gammlaKurser, nyaKurser, og, ny) => {
 
             users.updateOne(
                 {'_id': user._id},
-                agg,
+                data,
                 { upsert: true },
                 (err, res) => {
                     client.close()
                     if (err) return reject(err)
-                    return resolve(res)
+                    return resolve('Ändrade status!')
                 }
             )
         })
@@ -38,4 +36,4 @@ const change = (user, gammlaKurser, nyaKurser, og, ny) => {
 }
 
 
-module.exports = change
+module.exports = changeStatus

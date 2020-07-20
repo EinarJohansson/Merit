@@ -120,21 +120,21 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="updateKurs">
                         <!-- Kurs -->
                         <div class="form-group">
                             <label for="kurs" class="col-form-label">Kurs</label>
-                            <input type="text" class="form-control" id="kurs" required>
+                            <input name="kurs" type="text" class="form-control" id="kurs" required>
                         </div>
                         <!-- Kod -->
                         <div class="form-group">
                             <label for="kod" class="col-form-label">Kod</label>
-                            <input type="text" class="form-control" id="kod" required>
+                            <input name="kod" type="text" class="form-control" id="kod" required>
                         </div>
                         <!-- Poäng -->
                         <div class="form-group">
                             <label for="poäng">Poäng</label>
-                            <select class="form-control" id="poäng" required>
+                            <select name="poäng" class="form-control" id="poäng" required>
                                 <option>50</option>
                                 <option>100</option>
                                 <option>150</option>
@@ -143,7 +143,7 @@
                         <!-- Betyg -->
                         <div class="form-group">
                             <label for="betyg">Betyg</label>
-                            <select class="form-control" id="betyg" required>
+                            <select name="betyg" class="form-control" id="betyg" required>
                                 <option>A</option>
                                 <option>B</option>
                                 <option>C</option>
@@ -156,7 +156,7 @@
                         <!-- Merit -->
                         <div class="form-group">
                             <label for="merit">Merit</label>
-                            <select class="form-control" id="merit" required>
+                            <select name="merit" class="form-control" id="merit" required>
                                 <option>0</option>
                                 <option>0.5</option>
                                 <option>1</option>
@@ -164,7 +164,7 @@
                         </div>
                         <div class="form-group">
                             <label for="status">Status</label>
-                            <select class="form-control" id="status" required>
+                            <select name="status" class="form-control" id="status" required>
                                 <option>Pågående</option>
                                 <option>Kommande</option>
                                 <option>Avslutade</option>
@@ -174,7 +174,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Avbryt</button>
-                    <button type="button" class="btn btn-primary">Spara ändringar</button>
+                    <button type="submit" form="updateKurs" class="btn btn-primary">Spara ändringar</button>
                 </div>
             </div>
         </div>
@@ -248,6 +248,9 @@
 
     <!-- Visar kursens information i modalen  -->
     <script>
+        var ogkurs = {}
+        var ogstatus = ''
+
         $('#exampleModal').on('show.bs.modal', event => {
             const trigger = $(event.relatedTarget)
 
@@ -259,6 +262,13 @@
             const merit = trigger[0].dataset.merit
             const status = trigger[0].dataset.status 
 
+            ogkurs.kurs = kurs
+            ogkurs.kod = kod
+            ogkurs.poäng = poäng
+            ogkurs.betyg = betyg
+            ogkurs.merit = merit
+            ogstatus = status
+
             const modal = $(event.target)
 
             modal.find('.modal-title').text('Ändra kursen: ' + kurs)
@@ -269,6 +279,32 @@
             modal.find('.modal-body #betyg').val(betyg)
             modal.find('.modal-body #merit').val(merit)
             modal.find('.modal-body #status').val(status)
+        })
+
+        // Lyssna efter form sumbit i modalen
+
+        $('#updateKurs').submit(event => {
+            event.preventDefault()
+            const values = $(event.target).serializeArray()
+            
+            var nykurs = {}
+            var nystatus = ''
+
+            $.map(values, (n, i) => {
+                if (n['name'] !== 'status')
+                    nykurs[n['name']] = n['value']
+                else nystatus = n['value']
+            })
+
+            const data = {
+                nykurs: nykurs,
+                ogkurs: ogkurs,
+                nystatus: nystatus,
+                ogstatus: ogstatus
+            }
+
+            $.post('/update/kurs', data)
+
         })
     </script>
 
