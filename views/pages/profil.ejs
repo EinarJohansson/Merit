@@ -252,12 +252,12 @@
             const trigger = $(event.relatedTarget)
 
             // Extract info from data-* attributes
-            const kurs = trigger.data('kurs')
-            const kod = trigger.data('kod')
-            const poäng = trigger.data('poäng')
-            const betyg = trigger.data('betyg') || 'Obestämt'
-            const merit = trigger.data('merit')
-            const status = trigger.data('status')
+            const kurs = trigger[0].dataset.kurs
+            const kod = trigger[0].dataset.kod
+            const poäng = trigger[0].dataset.poäng
+            const betyg = trigger[0].dataset.betyg || 'Obestämt'
+            const merit = trigger[0].dataset.merit
+            const status = trigger[0].dataset.status 
 
             const modal = $(event.target)
 
