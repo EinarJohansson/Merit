@@ -109,6 +109,77 @@
     <%- include('../partials/table', {status: 'Kommande', kurser: kurser.kommande}) %>
     <%- include('../partials/table', {status: 'Avslutade', kurser: kurser.avslutade}) %>
 
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <!-- Kurs -->
+                        <div class="form-group">
+                            <label for="kurs" class="col-form-label">Kurs</label>
+                            <input type="text" class="form-control" id="kurs" required>
+                        </div>
+                        <!-- Kod -->
+                        <div class="form-group">
+                            <label for="kod" class="col-form-label">Kod</label>
+                            <input type="text" class="form-control" id="kod" required>
+                        </div>
+                        <!-- Poäng -->
+                        <div class="form-group">
+                            <label for="poäng">Poäng</label>
+                            <select class="form-control" id="poäng" required>
+                                <option>50</option>
+                                <option>100</option>
+                                <option>150</option>
+                            </select>
+                        </div>
+                        <!-- Betyg -->
+                        <div class="form-group">
+                            <label for="betyg">Betyg</label>
+                            <select class="form-control" id="betyg" required>
+                                <option>A</option>
+                                <option>B</option>
+                                <option>C</option>
+                                <option>D</option>
+                                <option>E</option>
+                                <option>F</option>
+                                <option>Obestämt</option>
+                            </select>
+                        </div>
+                        <!-- Merit -->
+                        <div class="form-group">
+                            <label for="merit">Merit</label>
+                            <select class="form-control" id="merit" required>
+                                <option>0</option>
+                                <option>0.5</option>
+                                <option>1</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select class="form-control" id="status" required>
+                                <option>Pågående</option>
+                                <option>Kommande</option>
+                                <option>Avslutade</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Avbryt</button>
+                    <button type="button" class="btn btn-primary">Spara ändringar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JQuery kollar efter ändringar i program valet. -->
     <script>
         $('#program').on('change', data => {
@@ -143,6 +214,7 @@
         })
     </script>
 
+    <!-- Skickar att kursens status har ändrats -->
     <script>
         $('tbody').sortable({
             distance: 5,
@@ -159,17 +231,44 @@
                 const ogstatus = $(ui.sender).attr("class").split(' ')[0]
                 const nystatus = $(ui.item).parent().attr("class").split(' ')[0]
                 const kurs = $(ui.item).children(':first').text().trim()
-                
+
                 const data = {
                     og: ogstatus,
                     ny: nystatus,
                     kurs: kurs
                 }
 
-                $.post('/update/kurs', data)
+                $.post('/update/status', data)
             }
         })
     </script>
+
+    <!-- Visar kursens information i modalen  -->
+    <script>
+        $('#exampleModal').on('show.bs.modal', event => {
+            const trigger = $(event.relatedTarget)
+
+            // Extract info from data-* attributes
+            const kurs = trigger.data('kurs')
+            const kod = trigger.data('kod')
+            const poäng = trigger.data('poäng')
+            const betyg = trigger.data('betyg') || 'Obestämt'
+            const merit = trigger.data('merit')
+            const status = trigger.data('status')
+
+            const modal = $(event.target)
+
+            modal.find('.modal-title').text('Ändra kursen: ' + kurs)
+
+            modal.find('.modal-body #kurs').val(kurs)
+            modal.find('.modal-body #kod').val(kod)
+            modal.find('.modal-body #poäng').val(poäng)
+            modal.find('.modal-body #betyg').val(betyg)
+            modal.find('.modal-body #merit').val(merit)
+            modal.find('.modal-body #status').val(status)
+        })
+    </script>
+
 </body>
 
 </html>

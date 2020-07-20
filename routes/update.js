@@ -57,7 +57,7 @@ router.post('/utbildning', authCheck, (req, res) => {
     res.redirect('/')
 })
 
-router.post('/kurs', authCheck, (req, res) => {
+router.post('/status', authCheck, (req, res) => {
     if (typeof req.body.og !== 'undefined' &&
         typeof req.body.ny !== 'undefined' &&
         typeof req.body.kurs !== 'undefined' &&

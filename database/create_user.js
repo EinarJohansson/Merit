@@ -1,3 +1,5 @@
+const { Double } = require('mongodb')
+
 // Load environment variables
 require('dotenv').config()
 
@@ -18,62 +20,71 @@ const create = (user) => {
           client.close()
           return resolve(response)
         }
-        // Lägg till gymnasiegemensamma kurser
+        // Lägg till Gymnasiegemensammama kurser
         user.kurser = {
           pågående: [
             {
               kurs: 'Svenska 1',
               poäng: 100,
-              typ: 'gymnasiegemensam',
-              betyg: ''
+              typ: 'Gymnasiegemensamma',
+              betyg: '',
+              merit: Double(0.0)
             },
             {
               kurs: 'Svenska 2',
               poäng: 100,
-              typ: 'gymnasiegemensam',
-              betyg: ''
+              typ: 'Gymnasiegemensamma',
+              betyg: '',
+              merit: Double(0.0)
             },
             {
               kurs: 'Svenska 3',
               poäng: 100,
-              typ: 'gymnasiegemensam',
-              betyg: ''
+              typ: 'Gymnasiegemensamma',
+              betyg: '',
+              merit: Double(0.0)
             },
             {
               kurs: 'Engelska 5',
               poäng: 100,
-              typ: 'gymnasiegemensam',
-              betyg: ''
+              typ: 'Gymnasiegemensamma',
+              betyg: '',
+              merit: Double(0.0)
             },
             {
               kurs: 'Engelska 6',
               poäng: 100,
-              typ: 'gymnasiegemensam',
-              betyg: ''
+              typ: 'Gymnasiegemensamma',
+              betyg: '',
+              merit: Double(0.0)
             },
             {
               kurs: 'Matematik 1',
               poäng: 100,
-              typ: 'gymnasiegemensam',
-              betyg: ''
+              typ: 'Gymnasiegemensamma',
+              betyg: '',
+              merit: Double(0.0)
             },
             {
               kurs: 'Historia 1',
               poäng: 50,
-              typ: 'gymnasiegemensam',
-              betyg: ''
+              typ: 'Gymnasiegemensamma',
+              betyg: '',
+              merit: Double(0.0)
             },
             {
               kurs: 'Samhällskunskap 1',
               poäng: 100,
-              typ: 'gymnasiegemensam',
-              betyg: ''
+              typ: 'Gymnasiegemensamma',
+              betyg: '',
+              merit: Double(0.0)
             },
             {
               kurs: 'Religionskunskap',
               poäng: 50,
-              typ: 'gymnasiegemensam',
-              betyg: ''
+              typ: 'Gymnasiegemensamma',
+              betyg: '',
+              merit: Double(0.0)
             }
           ],
           kommande: [],
