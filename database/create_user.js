@@ -15,81 +15,86 @@ const create = (user) => {
 
       users.find(user).toArray((err, response) => {
         if (err) return reject(err)
-
+        
         if (response.length > 0) {
           client.close()
           return resolve('Användaren fanns redan!')
         }
         // Lägg till Gymnasiegemensammama kurser
-        user.kurser = {
-          pågående: [
-            {
-              kurs: 'Svenska 1',
-              poäng: 100,
-              typ: 'Gymnasiegemensamma',
-              betyg: '',
-              merit: Double(0.0)
-            },
-            {
-              kurs: 'Svenska 2',
-              poäng: 100,
-              typ: 'Gymnasiegemensamma',
-              betyg: '',
-              merit: Double(0.0)
-            },
-            {
-              kurs: 'Svenska 3',
-              poäng: 100,
-              typ: 'Gymnasiegemensamma',
-              betyg: '',
-              merit: Double(0.0)
-            },
-            {
-              kurs: 'Engelska 5',
-              poäng: 100,
-              typ: 'Gymnasiegemensamma',
-              betyg: '',
-              merit: Double(0.0)
-            },
-            {
-              kurs: 'Engelska 6',
-              poäng: 100,
-              typ: 'Gymnasiegemensamma',
-              betyg: '',
-              merit: Double(0.0)
-            },
-            {
-              kurs: 'Matematik 1',
-              poäng: 100,
-              typ: 'Gymnasiegemensamma',
-              betyg: '',
-              merit: Double(0.0)
-            },
-            {
-              kurs: 'Historia 1',
-              poäng: 50,
-              typ: 'Gymnasiegemensamma',
-              betyg: '',
-              merit: Double(0.0)
-            },
-            {
-              kurs: 'Samhällskunskap 1',
-              poäng: 100,
-              typ: 'Gymnasiegemensamma',
-              betyg: '',
-              merit: Double(0.0)
-            },
-            {
-              kurs: 'Religionskunskap',
-              poäng: 50,
-              typ: 'Gymnasiegemensamma',
-              betyg: '',
-              merit: Double(0.0)
-            }
-          ],
-          kommande: [],
-          avslutade: []
-        }
+        user.kurser = [
+          {
+            kurs: 'Svenska 1',
+            poäng: 100,
+            typ: 'Gymnasiegemensamma',
+            betyg: '',
+            merit: Double(0.0),
+            status: 'pågående'
+          },
+          {
+            kurs: 'Svenska 2',
+            poäng: 100,
+            typ: 'Gymnasiegemensamma',
+            betyg: '',
+            merit: Double(0.0),
+            status: 'pågående'
+          },
+          {
+            kurs: 'Svenska 3',
+            poäng: 100,
+            typ: 'Gymnasiegemensamma',
+            betyg: '',
+            merit: Double(0.0),
+            status: 'pågående'
+          },
+          {
+            kurs: 'Engelska 5',
+            poäng: 100,
+            typ: 'Gymnasiegemensamma',
+            betyg: '',
+            merit: Double(0.0),
+            status: 'pågående'
+          },
+          {
+            kurs: 'Engelska 6',
+            poäng: 100,
+            typ: 'Gymnasiegemensamma',
+            betyg: '',
+            merit: Double(0.0),
+            status: 'pågående'
+          },
+          {
+            kurs: 'Matematik 1',
+            poäng: 100,
+            typ: 'Gymnasiegemensamma',
+            betyg: '',
+            merit: Double(0.0),
+            status: 'pågående'
+          },
+          {
+            kurs: 'Historia 1',
+            poäng: 50,
+            typ: 'Gymnasiegemensamma',
+            betyg: '',
+            merit: Double(0.0),
+            status: 'pågående'
+          },
+          {
+            kurs: 'Samhällskunskap 1',
+            poäng: 100,
+            typ: 'Gymnasiegemensamma',
+            betyg: '',
+            merit: Double(0.0),
+            status: 'pågående'
+          },
+          {
+            kurs: 'Religionskunskap',
+            poäng: 50,
+            typ: 'Gymnasiegemensamma',
+            betyg: '',
+            merit: Double(0.0),
+            status: 'pågående'
+          }
+        ]
 
         users.insertOne(user, (e, res) => {
           if (e) return reject(e)

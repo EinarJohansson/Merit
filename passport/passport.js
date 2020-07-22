@@ -38,6 +38,7 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://dev.merit.com:3000/auth/callback"
 }, (accessToken, refreshToken, profile, done) => {
     create(profile._json)
+        .then(data => console.log(data))
         .catch(err => console.error(err))
 
     done(null, profile)
