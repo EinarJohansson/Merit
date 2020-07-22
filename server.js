@@ -31,6 +31,8 @@ const logout = require('./routes/logout')
 app.use('/logout', logout)
 const update = require('./routes/update')
 app.use('/update', update)
+const data = require('./routes/data')
+app.use('/data', data)
 
 // Listen for connections
 app.listen(port, () => console.log('Listening on port: ' + port))

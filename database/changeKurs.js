@@ -1,5 +1,3 @@
-const { Double, Int32 } = require('mongodb')
-
 // Load environment variables
 require('dotenv').config()
 

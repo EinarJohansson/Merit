@@ -8,6 +8,7 @@ const authCheck = (req, res, next) => {
     if (req.user) next()
     else res.redirect('/login')
 }
+
 const legitUtbildning = (req) => {
     const programVal = ['Teknik', 'Samhällsvetenskap', 'Naturvetenskap', 'Ekonomi']
 
