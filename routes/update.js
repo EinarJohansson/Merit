@@ -91,18 +91,20 @@ router.post('/status', authCheck, (req, res) => {
 })
 
 const legitKurs = (req) => {
+    const statusar = ['pågående', 'kommande', 'avslutade']
     const poäng = ['50', '100', '150']
     const merit = ['0', '0.5', '1']
-    const betyg = ['A', 'B', 'C', 'D', 'E', 'F', 'Obestämt']
+    const betyg = ['A', 'B', 'C', 'D', 'E', 'F', '']
 
     return typeof req.kurs !== undefined &&
         typeof req.kod !== undefined &&
         typeof req.poäng !== undefined && 
         typeof req.betyg !== undefined && 
         typeof req.merit !== undefined && 
-        poäng.includes(req.poäng) &&
-        merit.includes(req.merit) &&
-        betyg.includes(req.betyg)
+        poäng.includes(req.poäng.toString()) &&
+        merit.includes(req.merit.toString()) &&
+        betyg.includes(req.betyg.toString()) && 
+        statusar.includes(req.status.toString())
 }
 
 router.post('/kurs', authCheck, (req, res) => {
@@ -110,9 +112,7 @@ router.post('/kurs', authCheck, (req, res) => {
 
         changeKurs(req.user._id,
             req.body.ogkurs,
-            req.body.nykurs,
-            req.body.ogstatus,
-            req.body.nystatus
+            req.body.nykurs
         ).then(data => {
             console.log(data)
             res.sendStatus(200)

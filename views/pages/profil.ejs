@@ -108,8 +108,8 @@
     <% const kommande = kurser.filter(kurs => { return kurs.status === 'kommande' }) %>
     <% const avslutade = kurser.filter(kurs => { return kurs.status === 'avslutade' }) %>
     <%- include('../partials/table', {status: 'Pågående', kurser: pågående }) %>
-    <%- include('../partials/table', {status: 'Pågående', kurser: kommande }) %>
-    <%- include('../partials/table', {status: 'Pågående', kurser: avslutade }) %>
+    <%- include('../partials/table', {status: 'Kommande', kurser: kommande }) %>
+    <%- include('../partials/table', {status: 'Avslutade', kurser: avslutade }) %>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -130,8 +130,8 @@
                         </div>
                         <!-- Kod -->
                         <div class="form-group">
-                            <label for="kod" class="col-form-label">Kod</label>
-                            <input name="kod" type="text" class="form-control" id="kod" required>
+                            <label for="typ" class="col-form-label">Kod</label>
+                            <input name="typ" type="text" class="form-control" id="kod" required>
                         </div>
                         <!-- Poäng -->
                         <div class="form-group">
@@ -251,7 +251,6 @@
     <!-- Visar kursens information i modalen  -->
     <script>
         var ogkurs = {}
-        var ogstatus = ''
 
         $('#exampleModal').on('show.bs.modal', event => {
             const trigger = $(event.relatedTarget)
@@ -265,11 +264,11 @@
             const status = trigger[0].dataset.status
 
             ogkurs.kurs = kurs
-            ogkurs.kod = kod
+            ogkurs.typ = kod
             ogkurs.poäng = poäng
-            ogkurs.betyg = betyg
+            ogkurs.betyg = betyg === 'Obestämt' ? '' : betyg
             ogkurs.merit = merit
-            ogstatus = status
+            ogkurs.status = status.toLowerCase()
 
             const modal = $(event.target)
 
@@ -290,19 +289,19 @@
             const values = $(event.target).serializeArray()
 
             var nykurs = {}
-            var nystatus = ''
 
             $.map(values, (n, i) => {
-                if (n['name'] !== 'status')
+                if (n['name'] == 'betyg' && n['value'] == 'Obestämt')
+                    nykurs[n['name']] = ''
+                else if (n['name'] == 'status')
+                    nykurs[n['name']] = n['value'].toLowerCase()
+                else
                     nykurs[n['name']] = n['value']
-                else nystatus = n['value']
             })
 
             const data = {
                 nykurs: nykurs,
-                ogkurs: ogkurs,
-                nystatus: nystatus,
-                ogstatus: ogstatus
+                ogkurs: ogkurs
             }
 
             $.post('/update/kurs', data)
