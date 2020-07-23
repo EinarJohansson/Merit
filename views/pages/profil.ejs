@@ -123,8 +123,24 @@
                 </tbody>
                 <tfoot>
                     <tr class="empty">
-                        <td class="text-center" colspan="4"><button class="btn btn-outline-primary"><i
-                                    class="fas fa-plus-circle"></i></button></td>
+                        <!-- data-toggle="modal" 
+                        data-target="#redigeraKurs" data-kurs="Svenska 1"
+                        data-kod="Gymnasiegemensamma" data-poäng="100" data-betyg="B" 
+                        data-merit="0" data-status="avslutade" -->
+                        <td class="text-center" colspan="4">
+                            <button 
+                            class="btn btn-outline-primary"
+                            data-toggle="modal" 
+                            data-target="#redigeraKurs" 
+                            data-kurs=""
+                            data-kod="" 
+                            data-poäng=""
+                            data-betyg="" 
+                            data-merit="" 
+                            data-status="pågående">
+                            <i class="fas fa-plus-circle"></i>
+                            </button>
+                        </td>
                     </tr>
                 </tfoot>
             </table>
@@ -149,8 +165,20 @@
                 </tbody>
                 <tfoot>
                     <tr class="empty">
-                        <td class="text-center" colspan="4"><button class="btn btn-outline-primary"><i
-                                    class="fas fa-plus-circle"></i></button></td>
+                        <td class="text-center" colspan="4">
+                            <button 
+                            class="btn btn-outline-primary"
+                            data-toggle="modal" 
+                            data-target="#redigeraKurs" 
+                            data-kurs=""
+                            data-kod="" 
+                            data-poäng=""
+                            data-betyg="" 
+                            data-merit="" 
+                            data-status="kommande">
+                            <i class="fas fa-plus-circle"></i>
+                            </button>
+                        </td>
                     </tr>
                 </tfoot>
             </table>
@@ -175,53 +203,27 @@
                 </tbody>
                 <tfoot>
                     <tr class="empty">
-                        <td class="text-center" colspan="4"><button class="btn btn-outline-primary"><i
-                                    class="fas fa-plus-circle"></i></button></td>
+                        <td class="text-center" colspan="4">
+                            <button 
+                            class="btn btn-outline-primary"
+                            data-toggle="modal" 
+                            data-target="#redigeraKurs" 
+                            data-kurs=""
+                            data-kod="" 
+                            data-poäng=""
+                            data-betyg="" 
+                            data-merit="" 
+                            data-status="avslutade">
+                            <i class="fas fa-plus-circle"></i>
+                            </button>
+                        </td>
                     </tr>
                 </tfoot>
             </table>
         </div>
     </div>
 
-    <script>
-        function updateKurser() {
-            $.get('/data/kurser')
-                .then(res => {
-                    $('.pågående tr').not('.placeholder').remove()
-                    $('.kommande tr').not('.placeholder').remove()
-                    $('.avslutade tr').not('.placeholder').remove()
-                    
-                    const kurser = res[0].kurser
-                    Object.keys(kurser).forEach(kurs => {
-                        $('.' + kurser[kurs].status).append($('<tr>')
-                            .attr({
-                                'data-toggle': "modal",
-                                'data-target': "#exampleModal",
-                                'data-kurs': kurs,
-                                'data-kod': kurser[kurs].typ,
-                                'data-poäng': kurser[kurs].poäng,
-                                'data-betyg': kurser[kurs].betyg,
-                                'data-merit': kurser[kurs].merit,
-                                'data-status': kurser[kurs].status
-                            })
-                            .append($('<td>').text(kurs))
-                            .append($('<td>').text(kurser[kurs].typ))
-                            .append($('<td>').text(kurser[kurs].poäng))
-                            .append($('<td>').text(kurser[kurs].betyg))
-                        )
-                    })
-                })
-        }
-
-
-        $(document).ready(() => {
-            updateKurser()
-        })
-
-    </script>
-
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="redigeraKurs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -292,6 +294,44 @@
         </div>
     </div>
 
+    <!-- Hämtar alla kurser och visar de i respektive table -->
+    <script>
+        function updateKurser() {
+            $.get('/data/kurser')
+                .then(res => {
+                    $('.pågående tr').not('.placeholder').remove()
+                    $('.kommande tr').not('.placeholder').remove()
+                    $('.avslutade tr').not('.placeholder').remove()
+                    
+                    const kurser = res[0].kurser
+                    Object.keys(kurser).forEach(kurs => {
+                        $('.' + kurser[kurs].status).append($('<tr>')
+                            .attr({
+                                'data-toggle': "modal",
+                                'data-target': "#redigeraKurs",
+                                'data-kurs': kurs,
+                                'data-kod': kurser[kurs].typ,
+                                'data-poäng': kurser[kurs].poäng,
+                                'data-betyg': kurser[kurs].betyg,
+                                'data-merit': kurser[kurs].merit,
+                                'data-status': kurser[kurs].status
+                            })
+                            .append($('<td>').text(kurs))
+                            .append($('<td>').text(kurser[kurs].typ))
+                            .append($('<td>').text(kurser[kurs].poäng))
+                            .append($('<td>').text(kurser[kurs].betyg))
+                        )
+                    })
+                })
+        }
+
+
+        $(document).ready(() => {
+            updateKurser()
+        })
+
+    </script>
+
     <!-- JQuery kollar efter ändringar i program valet. -->
     <script>
         $('#program').on('change', data => {
@@ -360,7 +400,7 @@
     <script>
         var ogkurs = {}
 
-        $('#exampleModal').on('show.bs.modal', event => {
+        $('#redigeraKurs').on('show.bs.modal', event => {
             const trigger = $(event.relatedTarget)
 
             // Extract info from data-* attributes
@@ -380,7 +420,8 @@
 
             const modal = $(event.target)
 
-            modal.find('.modal-title').text('Ändra kursen: ' + kurs)
+            if (kurs) modal.find('.modal-title').text('Ändra kursen: ' + kurs)
+            else modal.find('.modal-title').text('Lägg till en ny kurs!')
 
             modal.find('.modal-body #kurs').val(kurs)
             modal.find('.modal-body #kod').val(kod)
@@ -414,7 +455,7 @@
 
             $.post('/update/kurs', data).then(() => {
                 // Göm modalen
-                $('#exampleModal').modal('toggle')
+                $('#redigeraKurs').modal('toggle')
                 updateKurser()
             })
 

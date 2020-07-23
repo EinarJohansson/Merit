@@ -16,11 +16,15 @@ const changeKurs = (user, ogkurs, nykurs) => {
             const ogfield = `kurser.${ogkurs.kurs}`
             const nyfield = `kurser.${nykurs.kurs}`
 
+            console.log(ogkurs.kurs)
+            console.log(nykurs.kurs)
             delete nykurs.kurs
 
-            let update = ogfield !== nyfield ?
-                { $unset: { [ogfield]: true }, $set: { [nyfield]: nykurs } } :
-                { $set: { [nyfield]: nykurs } }
+            let update
+            if (ogfield !== nyfield && ogkurs.kurs)
+                update = { $unset: { [ogfield]: true }, $set: { [nyfield]: nykurs } }
+            else
+                update = { $set: { [nyfield]: nykurs } }
 
             users.updateOne(
                 {

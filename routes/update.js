@@ -34,7 +34,7 @@ const legitUtbildning = (req) => {
     return typeof req.program !== 'undefined' &&
         typeof req.inriktning !== 'undefined' &&
         programVal.includes(req.program) && 
-        inriktningVal[program].includes(req.inriktning)
+        inriktningVal[req.program].includes(req.inriktning)
 }
 
 router.post('/utbildning', authCheck, (req, res) => {
@@ -93,7 +93,7 @@ const legitKurs = (req) => {
 }
 
 router.post('/kurs', authCheck, (req, res) => {
-    if (legitKurs(req.body.nykurs) && legitKurs(req.body.ogkurs)) {
+    if (legitKurs(req.body.nykurs)) {
 
         changeKurs(req.user._id,
             req.body.ogkurs,
