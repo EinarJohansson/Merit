@@ -332,7 +332,6 @@
             axis: 'y',
             receive: (event, ui) => {
                 // Skicka post
-                const ogstatus = $(ui.sender).attr("class").split(' ')[0]
                 const nystatus = $(ui.item).parent().attr("class").split(' ')[0]
                 const kurs = $(ui.item).children(':first').text().trim()
 
@@ -340,8 +339,7 @@
                 $(ui.item).attr('data-status', nystatus.charAt(0).toUpperCase() + nystatus.slice(1))
 
                 const data = {
-                    og: ogstatus,
-                    ny: nystatus,
+                    status: nystatus,
                     kurs: kurs
                 }
 

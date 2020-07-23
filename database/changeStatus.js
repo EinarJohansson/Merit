@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const MongoClient = require('mongodb').MongoClient
 
-const changeStatus = (user, gammlaKurser, nyaKurser, og, ny) => {
+const changeStatus = (id, kurs, status) => {
     return new Promise((resolve, reject) => {
         const client = new MongoClient(process.env.DB_URL)
         client.connect(error => {
@@ -13,14 +13,31 @@ const changeStatus = (user, gammlaKurser, nyaKurser, og, ny) => {
             }
             const users = client.db('merit').collection('users')
 
-            const fields = [`kurser.${ny}`, `kurser.${og}`]
+            const field = `kurser.${kurs}.status`
+
+            users.updateOne(
+                {'_id': id},
+                {
+                    $set: {[field]: status}
+                },
+                (err, res) => {
+                    client.close()
+                    if (err) return reject(err)
+                    return resolve(res)
+                }
+            )
+
+
+
+
+/*             const fields = [`kurser.${ny}`, `kurser.${og}`]
             const data = {
                 $set: {
                     [fields[0]]: nyaKurser,
                     [fields[1]]: gammlaKurser
                 }
-            }
-
+            } */
+/* 
             users.updateOne(
                 {'_id': user._id},
                 data,
@@ -30,7 +47,7 @@ const changeStatus = (user, gammlaKurser, nyaKurser, og, ny) => {
                     if (err) return reject(err)
                     return resolve('Ändrade status!')
                 }
-            )
+            ) */
         })
     })
 }

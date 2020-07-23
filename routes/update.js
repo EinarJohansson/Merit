@@ -55,29 +55,14 @@ router.post('/utbildning', authCheck, (req, res) => {
 const legitStatus = (req) => {
     const statusar = ['pågående', 'kommande', 'avslutade'] 
     
-    return typeof req.og !== 'undefined' &&
-        typeof req.ny !== 'undefined' &&
+    return typeof req.status !== 'undefined' &&
         typeof req.kurs !== 'undefined' &&
-        statusar.includes(req.og) &&
-        statusar.includes(req.ny)
+        statusar.includes(req.status)
 }
 
 router.post('/status', authCheck, (req, res) => {
     if (legitStatus(req.body)) {
-        let gammal = req.user.kurser[req.body.og]
-        let ny = req.user.kurser[req.body.ny]
-
-        const pos = gammal.map((k) => { return k.kurs }).indexOf(req.body.kurs)
-        let gammal_uppdaterad = []
-
-        for (let i = 0; i < gammal.length; i++) {
-            if (i !== pos) gammal_uppdaterad.push(gammal[i])
-        }
-
-        let tmp = gammal[pos]
-        ny.push(tmp)    
-
-        changeStatus(req.user, gammal_uppdaterad, ny, req.body.og, req.body.ny)
+        changeStatus(req.user._id, req.body.kurs, req.body.status)
         .then(data => {
             console.log(data)
             res.sendStatus(200)
