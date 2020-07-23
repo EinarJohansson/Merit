@@ -104,12 +104,114 @@
 
     <br style="margin-top: 3rem;">
     <!-- table partial, passa kurser och status - pågående, avslutad, kommande -->
-    <% const pågående = kurser.filter(kurs => { return kurs.status === 'pågående' }) %>
-    <% const kommande = kurser.filter(kurs => { return kurs.status === 'kommande' }) %>
-    <% const avslutade = kurser.filter(kurs => { return kurs.status === 'avslutade' }) %>
-    <%- include('../partials/table', {status: 'Pågående', kurser: pågående }) %>
-    <%- include('../partials/table', {status: 'Kommande', kurser: kommande }) %>
-    <%- include('../partials/table', {status: 'Avslutade', kurser: avslutade }) %>
+    <div class="container">
+        <h4>Pågående</h4>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Kurs</th>
+                        <th scope="col">Kod</th>
+                        <th scope="col">Poäng</th>
+                        <th scope="col">Betyg</th>
+                    </tr>
+                </thead>
+                <tbody class="pågående">
+                    <tr class="placeholder">
+                        <td style="visibility: hidden;"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="empty">
+                        <td class="text-center" colspan="4"><button class="btn btn-outline-primary"><i
+                                    class="fas fa-plus-circle"></i></button></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <h4>Kommande</h4>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Kurs</th>
+                        <th scope="col">Kod</th>
+                        <th scope="col">Poäng</th>
+                        <th scope="col">Betyg</th>
+                    </tr>
+                </thead>
+                <tbody class="kommande">
+                    <tr class="placeholder">
+                        <td style="visibility: hidden;"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="empty">
+                        <td class="text-center" colspan="4"><button class="btn btn-outline-primary"><i
+                                    class="fas fa-plus-circle"></i></button></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <h4>Avslutade</h4>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Kurs</th>
+                        <th scope="col">Kod</th>
+                        <th scope="col">Poäng</th>
+                        <th scope="col">Betyg</th>
+                    </tr>
+                </thead>
+                <tbody class="avslutade">
+                    <tr class="placeholder">
+                        <td style="visibility: hidden;"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="empty">
+                        <td class="text-center" colspan="4"><button class="btn btn-outline-primary"><i
+                                    class="fas fa-plus-circle"></i></button></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(() => {
+            $.get('/data/kurser')
+                .then(res => {
+                    const kurser = res[0].kurser
+                    Object.keys(kurser).forEach(kurs => {
+                        $('.' + kurser[kurs].status)
+                            .append($('<tr>')
+                                .attr({
+                                    'data-toggle': "modal",
+                                    'data-target': "#exampleModal",
+                                    'data-kurs': kurs,
+                                    'data-kod': kurser[kurs].typ,
+                                    'data-poäng': kurser[kurs].poäng,
+                                    'data-betyg': kurser[kurs].betyg,
+                                    'data-merit': kurser[kurs].merit,
+                                    'data-status': kurser[kurs].status
+                                })
+                                .append($('<td>').text(kurs))
+                                .append($('<td>').text(kurser[kurs].typ))
+                                .append($('<td>').text(kurser[kurs].poäng))
+                                .append($('<td>').text(kurser[kurs].betyg))
+                            )
+                    })
+                })
+        })
+
+    </script>
+
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -167,9 +269,9 @@
                         <div class="form-group">
                             <label for="status">Status</label>
                             <select name="status" class="form-control" id="status" required>
-                                <option>Pågående</option>
-                                <option>Kommande</option>
-                                <option>Avslutade</option>
+                                <option>pågående</option>
+                                <option>kommande</option>
+                                <option>avslutade</option>
                             </select>
                         </div>
                     </form>
