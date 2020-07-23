@@ -13,17 +13,20 @@ const changeKurs = (user, ogkurs, nykurs) => {
             }
             const users = client.db('merit').collection('users')
 
+            const ogfield = `kurser.${ogkurs.kurs}`
+            const nyfield = `kurser.${nykurs.kurs}`
+
+            delete nykurs.kurs
+
+            let update = ogfield !== nyfield ?
+                { $unset: { [ogfield]: true }, $set: { [nyfield]: nykurs } } :
+                { $set: { [nyfield]: nykurs } }
+
             users.updateOne(
                 {
                     '_id': user,
-                    'kurser.kurs': ogkurs.kurs
                 },
-                {
-                    $set:
-                    {
-                        'kurser.$': nykurs
-                    }
-                },
+                update,
                 (err, res) => {
                     client.close()
                     if (err) return reject(err)
