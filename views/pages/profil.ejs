@@ -184,30 +184,38 @@
     </div>
 
     <script>
-        $(document).ready(() => {
+        function updateKurser() {
             $.get('/data/kurser')
                 .then(res => {
+                    $('.pågående tr').not('.placeholder').remove()
+                    $('.kommande tr').not('.placeholder').remove()
+                    $('.avslutade tr').not('.placeholder').remove()
+                    
                     const kurser = res[0].kurser
                     Object.keys(kurser).forEach(kurs => {
-                        $('.' + kurser[kurs].status)
-                            .append($('<tr>')
-                                .attr({
-                                    'data-toggle': "modal",
-                                    'data-target': "#exampleModal",
-                                    'data-kurs': kurs,
-                                    'data-kod': kurser[kurs].typ,
-                                    'data-poäng': kurser[kurs].poäng,
-                                    'data-betyg': kurser[kurs].betyg,
-                                    'data-merit': kurser[kurs].merit,
-                                    'data-status': kurser[kurs].status
-                                })
-                                .append($('<td>').text(kurs))
-                                .append($('<td>').text(kurser[kurs].typ))
-                                .append($('<td>').text(kurser[kurs].poäng))
-                                .append($('<td>').text(kurser[kurs].betyg))
-                            )
+                        $('.' + kurser[kurs].status).append($('<tr>')
+                            .attr({
+                                'data-toggle': "modal",
+                                'data-target': "#exampleModal",
+                                'data-kurs': kurs,
+                                'data-kod': kurser[kurs].typ,
+                                'data-poäng': kurser[kurs].poäng,
+                                'data-betyg': kurser[kurs].betyg,
+                                'data-merit': kurser[kurs].merit,
+                                'data-status': kurser[kurs].status
+                            })
+                            .append($('<td>').text(kurs))
+                            .append($('<td>').text(kurser[kurs].typ))
+                            .append($('<td>').text(kurser[kurs].poäng))
+                            .append($('<td>').text(kurser[kurs].betyg))
+                        )
                     })
                 })
+        }
+
+
+        $(document).ready(() => {
+            updateKurser()
         })
 
     </script>
@@ -404,7 +412,11 @@
                 ogkurs: ogkurs
             }
 
-            $.post('/update/kurs', data)
+            $.post('/update/kurs', data).then(() => {
+                // Göm modalen
+                $('#exampleModal').modal('toggle')
+                updateKurser()
+            })
 
         })
     </script>
