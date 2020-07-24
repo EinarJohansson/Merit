@@ -128,17 +128,10 @@
                         data-kod="Gymnasiegemensamma" data-poäng="100" data-betyg="B" 
                         data-merit="0" data-status="avslutade" -->
                         <td class="text-center" colspan="4">
-                            <button 
-                            class="btn btn-outline-primary"
-                            data-toggle="modal" 
-                            data-target="#redigeraKurs" 
-                            data-kurs=""
-                            data-kod="" 
-                            data-poäng=""
-                            data-betyg="" 
-                            data-merit="" 
-                            data-status="pågående">
-                            <i class="fas fa-plus-circle"></i>
+                            <button class="btn btn-outline-primary" data-toggle="modal" data-target="#redigeraKurs"
+                                data-kurs="" data-kod="" data-poäng="" data-betyg="" data-merit=""
+                                data-status="pågående">
+                                <i class="fas fa-plus-circle"></i>
                             </button>
                         </td>
                     </tr>
@@ -166,17 +159,10 @@
                 <tfoot>
                     <tr class="empty">
                         <td class="text-center" colspan="4">
-                            <button 
-                            class="btn btn-outline-primary"
-                            data-toggle="modal" 
-                            data-target="#redigeraKurs" 
-                            data-kurs=""
-                            data-kod="" 
-                            data-poäng=""
-                            data-betyg="" 
-                            data-merit="" 
-                            data-status="kommande">
-                            <i class="fas fa-plus-circle"></i>
+                            <button class="btn btn-outline-primary" data-toggle="modal" data-target="#redigeraKurs"
+                                data-kurs="" data-kod="" data-poäng="" data-betyg="" data-merit=""
+                                data-status="kommande">
+                                <i class="fas fa-plus-circle"></i>
                             </button>
                         </td>
                     </tr>
@@ -204,17 +190,10 @@
                 <tfoot>
                     <tr class="empty">
                         <td class="text-center" colspan="4">
-                            <button 
-                            class="btn btn-outline-primary"
-                            data-toggle="modal" 
-                            data-target="#redigeraKurs" 
-                            data-kurs=""
-                            data-kod="" 
-                            data-poäng=""
-                            data-betyg="" 
-                            data-merit="" 
-                            data-status="avslutade">
-                            <i class="fas fa-plus-circle"></i>
+                            <button class="btn btn-outline-primary" data-toggle="modal" data-target="#redigeraKurs"
+                                data-kurs="" data-kod="" data-poäng="" data-betyg="" data-merit=""
+                                data-status="avslutade">
+                                <i class="fas fa-plus-circle"></i>
                             </button>
                         </td>
                     </tr>
@@ -287,6 +266,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-danger mr-auto" id="remove"><i
+                            class="fas fa-trash"></i></button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Avbryt</button>
                     <button type="submit" form="updateKurs" class="btn btn-primary">Spara ändringar</button>
                 </div>
@@ -302,7 +283,7 @@
                     $('.pågående tr').not('.placeholder').remove()
                     $('.kommande tr').not('.placeholder').remove()
                     $('.avslutade tr').not('.placeholder').remove()
-                    
+
                     const kurser = res[0].kurser
                     Object.keys(kurser).forEach(kurs => {
                         $('.' + kurser[kurs].status).append($('<tr>')
@@ -432,7 +413,6 @@
         })
 
         // Lyssna efter form sumbit i modalen
-
         $('#updateKurs').submit(event => {
             event.preventDefault()
             const values = $(event.target).serializeArray()
@@ -459,6 +439,25 @@
                 updateKurser()
             })
 
+        })
+    </script>
+
+    <!-- Tar bort kursen när man klickar på soptunnan i modalen. -->
+    <script>
+        $('#remove').click(event => {
+            event.preventDefault()
+
+            const kurs = $('#exampleModalLabel').text().replace('Ändra kursen: ', '')
+            
+            const data = {
+                kurs: kurs
+            }
+
+            $.post('/update/remove', data)
+                .then(() => {
+                    $('#redigeraKurs').modal('toggle')
+                    updateKurser()
+                })
         })
     </script>
 

@@ -2,6 +2,7 @@ const router = require('express').Router()
 const insert = require('../database/insert')
 const changeStatus = require('../database/changeStatus')
 const changeKurs = require('../database/changeKurs')
+const removeKurs = require('../database/removeKurs')
 
 // Kolla om vi är authade eller inte
 const authCheck = (req, res, next) => {
@@ -106,6 +107,15 @@ router.post('/kurs', authCheck, (req, res) => {
             res.sendStatus(500)
         })
     } else res.sendStatus(400) 
+})
+
+router.post('/remove', authCheck, (req, res) => {
+    if (req.body.kurs) {
+        removeKurs(req.user._id, req.body.kurs.toString())
+        .then(data => res.send(data))
+        .catch(err => res.sendStatus(500))
+    }
+    else res.sendStatus(400)
 })
 
 module.exports = router
