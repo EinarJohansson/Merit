@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-import { Container, Card, CardDeck } from 'react-bootstrap'
 import Header from '../../components/Header/Header'
-// import Table from './components/Table/Table'
+import Start from '../../components/Start/Start'
+import Profil from '../../components/Profil/Profil'
 
 export default class Home extends Component {
   state = {
     user: {},
     error: null,
-    authenticated: false
+    authenticated: false,
+    authenticating: true
   }
 
   componentDidMount() {
+    // https://stackoverflow.com/questions/19043511/passport-js-fails-to-maintain-session-in-cross-domain
     fetch("/auth/login/success", {
       method: "GET",
       credentials: "include",
@@ -25,13 +27,16 @@ export default class Home extends Component {
         throw new Error("failed to authenticate user")
       })
       .then(responseJson => {
+        console.log(responseJson);
         this.setState({
+          authenticating: false,
           authenticated: true,
           user: responseJson.user
         })
       })
       .catch(error => {
         this.setState({
+          authenticating: false,
           authenticated: false,
           error: error
         })
@@ -39,56 +44,19 @@ export default class Home extends Component {
   }
 
   render() {
-    const { authenticated } = this.state
+    const { authenticated, authenticating } = this.state
+    if (authenticating) return null
     return (
       <div>
         <Header
           authenticated={authenticated}
-        />
-        <Container>
-          <CardDeck>
-            <Card>
-              <Card.Img variant="top" src="https://cdns-images.dzcdn.net/images/cover/b4b270703fb4baacadbcfec9f4c0f332/264x264.jpg" />
-              <Card.Body>
-                <Card.Title>Card title</Card.Title>
-                <Card.Text>
-                  This is a wider card with supporting text below as a natural lead-in to
-                  additional content. This content is a little bit longer.
-              </Card.Text>
-              </Card.Body>
-              <Card.Footer>
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </Card.Footer>
-            </Card>
-            <Card>
-              <Card.Img variant="top" src="https://www.sfbok.se/sites/default/files/styles/1000x/sfbok/sfbokbilder/123/123515.jpg?bust=1369989051&itok=aj8lcwq0" />
-              <Card.Body>
-                <Card.Title>Card title</Card.Title>
-                <Card.Text>
-                  This card has supporting text below as a natural lead-in to additional
-        content.{' '}
-                </Card.Text>
-              </Card.Body>
-              <Card.Footer>
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </Card.Footer>
-            </Card>
-            <Card>
-              <Card.Img variant="top" src="https://img.fruugo.com/product/8/28/14436288_max.jpg" />
-              <Card.Body>
-                <Card.Title>Card title</Card.Title>
-                <Card.Text>
-                  This is a wider card with supporting text below as a natural lead-in to
-                  additional content. This card has even longer content than the first to
-                  show that equal height action.
-              </Card.Text>
-              </Card.Body>
-              <Card.Footer>
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </Card.Footer>
-            </Card>
-          </CardDeck>
-        </Container>
+        /> 
+        {!authenticated && 
+          <Start/>
+        }
+        {authenticated && 
+          <Profil />
+        }
       </div>
     )
   }

@@ -35,7 +35,7 @@ passport.deserializeUser((id, done) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://dev.merit.com:3000/auth/callback"
+    callbackURL: "http://localhost:3000/auth/callback"
 }, (accessToken, refreshToken, profile, done) => {
     create(profile._json)
         .then(data => console.log(data))

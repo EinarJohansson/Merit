@@ -13,11 +13,11 @@ export default class Header extends Component {
                             authenticated ? (
                                 <Nav className="mr-auto">
                                 <Nav.Link href='/utbildningar'>Utbildningar</Nav.Link>
-                                <Nav.Link href='/logout'>Logga ut</Nav.Link>
+                                <Nav.Link href='http://localhost:3000/logout'>Logga ut</Nav.Link>
                                 </Nav>
                             ) : (
                                 <Nav className="mr-auto">
-                                    <Nav.Link href='http://dev.merit.com:3000/auth'>Logga in</Nav.Link>
+                                    <Nav.Link href="http://localhost:3000/auth">Logga in</Nav.Link>
                                 </Nav>                            
                             )
                         }

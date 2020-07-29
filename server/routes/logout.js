@@ -8,7 +8,7 @@ const authCheck = (req, res, next) => {
 
 router.get('/', authCheck, (req, res) => {
     req.logout()
-    res.redirect('/')
+    res.redirect('http://localhost:5000')
 })
 
 module.exports = router

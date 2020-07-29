@@ -13,36 +13,28 @@ const cors = require('cors')
 const app = express()
 const port = 3000
 
+
 app.use(
-    cookieSession({
-      name: "session",
-      keys: [process.env.COOKIE],
-      maxAge: 24 * 60 * 60 * 100
-    })
-  );
+  cors({
+    credentials: true // allow session cookie from browser to pass through
+  })
+);
 
-  app.use(
-    cors({
-      origin: "http://localhost:5000", // allow to server to accept request from different origin
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-      credentials: true // allow session cookie from browser to pass through
-    })
-  );
-
-// Passport config
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(
+  session(
+    {
+      secret: process.env.COOKIE,
+      resave: true,
+      saveUninitialized: false,
+      cookie: { secure: false }
+    }
+  )
+)
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(session(
-    { 
-        secret: process.env.COOKIE,
-        resave: true,
-        saveUninitialized: false,
-        cookie: { secure: false }
-    })
-)
 
 // Routes
 const auth = require('./routes/auth')
