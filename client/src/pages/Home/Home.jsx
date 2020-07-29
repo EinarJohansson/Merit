@@ -44,7 +44,7 @@ export default class Home extends Component {
   }
 
   render() {
-    const { authenticated, authenticating } = this.state
+    const { authenticated, authenticating, user } = this.state
     if (authenticating) return null
     return (
       <div>
@@ -55,7 +55,13 @@ export default class Home extends Component {
           <Start/>
         }
         {authenticated && 
-          <Profil />
+          <Profil 
+            kurser={user.kurser}
+            program={user.program || 'Inget program'}
+            inriktning={user.inriktning || 'Ingen inriktning'}
+            bild={user.picture}
+            namn={user.name}
+          />
         }
       </div>
     )
