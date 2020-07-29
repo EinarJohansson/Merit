@@ -2,7 +2,7 @@
     margin-top: 3rem;
 }
 
-.card {
+.d-flex > .card {
     width: 18rem;
     margin-bottom: 3rem;
 }
