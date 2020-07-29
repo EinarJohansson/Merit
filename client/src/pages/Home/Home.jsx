@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Header from '../../components/Header/Header'
 import Start from '../../components/Start/Start'
-import Profil from '../../components/Profil/Profil'
+import Profil from './Profil'
 
 export default class Home extends Component {
   state = {
