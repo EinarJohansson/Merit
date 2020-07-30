@@ -90,7 +90,7 @@ export default class Utbildning extends Component {
                 {/* Information om användarens utbildning */}
                 <div className="col d-flex">
                     <Card>
-                        <Card.Img variant="top" src={this.props.bild} />
+                        <Card.Img variant="top" referrerPolicy="no-referrer" src={this.props.bild } />
                         <Card.Body>
                             <Card.Title>{this.props.namn}</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted">{this.state.program}</Card.Subtitle>

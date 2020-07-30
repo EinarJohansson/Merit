@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
+import VisaKurs from '../VisaKurs/VisaKurs'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
 import './Table.css'
 
@@ -7,7 +8,9 @@ export default class Table extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            kurser: []
+            kurser: [],
+            visa: false,
+            kurs: {}
         }
 
         this.kolumner = [
@@ -38,6 +41,24 @@ export default class Table extends Component {
                 sort: true
             },
         ]
+
+        this.visaKurs = {
+            onClick: (e, row, rowIndex) => {
+                // Sätt modalens state till att visa.
+                this.setState({
+                    visa: true,
+                    kurs: row
+                })
+            }
+        }
+        this.stängKurs = this.stängKurs.bind(this);
+    }
+
+    stängKurs() {
+        this.setState({
+            visa: false,
+            kurs: {}
+        })
     }
 
     componentDidMount() {
@@ -57,19 +78,19 @@ export default class Table extends Component {
             .then(res => {
                 const kurser = res[0].kurser
                 // Formatera kurserna
-                const arrayOfObj = Object.entries(kurser).map((e) => {
+                const data = Object.entries(kurser).map((e) => {
                     e[1].kurs = e[0]
                     return e[1]
                 })
-                console.log(arrayOfObj);
                 this.setState({
-                    kurser: arrayOfObj
+                    kurser: data
                 })
             })
     }
 
     render() {
         return (
+            <>
                 <BootstrapTable
                     bootstrap4
                     bordered={false}
@@ -77,7 +98,15 @@ export default class Table extends Component {
                     data={this.state.kurser}
                     columns={this.kolumner}
                     wrapperClasses="table-responsive"
+                    rowEvents={this.visaKurs}
                 />
+                {this.state.visa &&
+                    <VisaKurs 
+                        stäng={this.stängKurs}
+                        kurs={this.state.kurs}
+                    />
+                }
+            </>
         )
     }
 }

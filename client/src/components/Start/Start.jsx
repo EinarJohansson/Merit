@@ -1,5 +1,5 @@
-import { Container, Card, CardDeck } from 'react-bootstrap'
 import React from 'react'
+import { Container, Card, CardDeck } from 'react-bootstrap'
 
 export default function Start() {
     return (
