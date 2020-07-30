@@ -13,34 +13,43 @@ export default function VisaKurs(props) {
         event.preventDefault()
 
         const nykurs = {
-            kurs: event.target.elements['kurs.kurs'].value,
             typ: event.target.elements['kurs.kod'].value,
             poäng: parseInt(event.target.elements['kurs.poäng'].value),
             betyg: event.target.elements['kurs.betyg'].value,
             merit: parseFloat(event.target.elements['kurs.merit'].value),
-            status: event.target.elements['kurs.status'].value
+            status: event.target.elements['kurs.status'].value,
+            kurs: event.target.elements['kurs.kurs'].value
         }
 
-        const data = {
-            nykurs: nykurs,
-            ogkurs: props.kurs
-        }
-
-        fetch('/update/kurs', {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": true
-            },
-            body: JSON.stringify(data)
-        }).then(res => {
+        if (JSON.stringify(nykurs) === JSON.stringify(props.kurs)) {
+            // Om det är samma kurs - spara inte ändringar
             setShow(false)
             props.stäng()
-        })
+        }
+        else {
+            const data = {
+                nykurs: nykurs,
+                ogkurs: props.kurs
+            }
+            fetch('/update/kurs', {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Credentials": true
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res => {
+                const index = props.kurser.findIndex(kurs => kurs.kurs === props.kurs.kurs)
+                if (index !== -1) props.kurser[index] = nykurs
+                props.uppdatera(props.kurser)
+                setShow(false)
+                props.stäng()
+            })
+        }
     }
-
 
     return (
         <Modal show={show} onHide={handleClose}>

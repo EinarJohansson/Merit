@@ -25,10 +25,10 @@ export default class Table extends Component {
                 sort: true,
                 sortFunc: (a, b, order) => {
                     if (order === 'asc') {
-                      return b - a;
+                        return b - a;
                     }
                     return a - b; // desc
-                }                
+                }
             },
             {
                 dataField: 'typ',
@@ -51,13 +51,20 @@ export default class Table extends Component {
                 })
             }
         }
-        this.stängKurs = this.stängKurs.bind(this);
+        this.stängKurs = this.stängKurs.bind(this)
+        this.uppdateraTable = this.uppdateraTable.bind(this);
     }
 
     stängKurs() {
         this.setState({
             visa: false,
             kurs: {}
+        })
+    }
+
+    uppdateraTable(kurser) {
+        this.setState({
+            kurser: kurser
         })
     }
 
@@ -99,11 +106,14 @@ export default class Table extends Component {
                     columns={this.kolumner}
                     wrapperClasses="table-responsive"
                     rowEvents={this.visaKurs}
+                    hover
                 />
                 {this.state.visa &&
-                    <VisaKurs 
+                    <VisaKurs
                         stäng={this.stängKurs}
                         kurs={this.state.kurs}
+                        uppdatera={this.uppdateraTable}
+                        kurser={this.state.kurser}
                     />
                 }
             </>
