@@ -57,8 +57,8 @@ export default class Home extends Component {
         {authenticated && 
           <Profil 
             kurser={user.kurser}
-            program={user.program || 'Inget program'}
-            inriktning={user.inriktning || 'Ingen inriktning'}
+            program={user.program}
+            inriktning={user.inriktning}
             bild={user.picture}
             namn={user.name}
           />

@@ -31,14 +31,14 @@ export default class Utbildning extends Component {
     componentDidMount() {
         this.setState({
             program: this.props.program,
-            valProgram: this.props.program,
+            valProgram: this.props.program || this.program[0], // Sätter standard ifall inte programmet är bestämt.
             inriktning: this.props.inriktning,
             valInriktning: this.props.inriktning
         })
     }
 
     sparaUtbildning(event) {
-        event.preventDefault()        
+        event.preventDefault()
         const program = event.target.elements['utbildning.program'].value
         const inriktning = event.target.elements['utbildning.inriktning'].value
 
@@ -93,8 +93,8 @@ export default class Utbildning extends Component {
                         <Card.Img variant="top" referrerPolicy="no-referrer" src={this.props.bild } />
                         <Card.Body>
                             <Card.Title>{this.props.namn}</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted">{this.state.program}</Card.Subtitle>
-                            <Card.Subtitle className="mb-2 text-muted">{this.state.inriktning}</Card.Subtitle>
+                            <Card.Subtitle className="mb-2 text-muted">{this.state.program || 'Inte bestämt'}</Card.Subtitle>
+                            <Card.Subtitle className="mb-2 text-muted">{this.state.inriktning || 'Inte bestämt'}</Card.Subtitle>
                         </Card.Body>
                     </Card>
                 </div>
@@ -114,15 +114,14 @@ export default class Utbildning extends Component {
                                         <Form.Group controlId="utbildning.program">
                                             <Form.Label>Program</Form.Label>
                                             <Form.Control as="select" onChange={this.setProgram}>
-                                                {this.program.map((program, index) => <this.Program key={index} program={program} />)
-                                            }
+                                                {this.program.map((program, index) => <this.Program key={index} program={program} />)}
                                             </Form.Control>
                                         </Form.Group>
                                         {/* Inriktning */}
                                         <Form.Group controlId="utbildning.inriktning">
                                             <Form.Label>Inriktning</Form.Label>
                                             <Form.Control as="select" onChange={this.setInriktning}>
-                                                {this.state.program && this.inriktningar[this.state.valProgram].map((inriktning, index) => <option key={index}>{inriktning}</option>)}
+                                                {this.state.valProgram && this.inriktningar[this.state.valProgram].map((inriktning, index) => <option key={index}>{inriktning}</option>)}
                                             </Form.Control>
                                         </Form.Group>
                                         <Button variant="primary" type="submit">Spara ändringar</Button>

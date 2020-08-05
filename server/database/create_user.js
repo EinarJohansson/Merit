@@ -26,63 +26,63 @@ const create = (user) => {
           'Svenska 1': {
             poäng: 100,
             typ: 'Gymnasiegemensamma',
-            betyg: '',
+            betyg: 'E',
             merit: Double(0.0),
             status: 'pågående'
           },
           'Svenska 2': {
             poäng: 100,
             typ: 'Gymnasiegemensamma',
-            betyg: '',
+            betyg: 'E',
             merit: Double(0.0),
             status: 'pågående'
           },
           'Svenska 3': {
             poäng: 100,
             typ: 'Gymnasiegemensamma',
-            betyg: '',
+            betyg: 'E',
             merit: Double(0.0),
             status: 'pågående'
           },
           'Engelska 5': {
             poäng: 100,
             typ: 'Gymnasiegemensamma',
-            betyg: '',
+            betyg: 'E',
             merit: Double(0.0),
             status: 'pågående'
           },
           'Engelska 6': {
             poäng: 100,
             typ: 'Gymnasiegemensamma',
-            betyg: '',
+            betyg: 'E',
             merit: Double(0.0),
             status: 'pågående'
           },
           'Matematik 1': {
             poäng: 100,
             typ: 'Gymnasiegemensamma',
-            betyg: '',
+            betyg: 'E',
             merit: Double(0.0),
             status: 'pågående'
           },
           'Historia 1': {
             poäng: 50,
             typ: 'Gymnasiegemensamma',
-            betyg: '',
+            betyg: 'E',
             merit: Double(0.0),
             status: 'pågående'
           },
           'Samhällskunskap 1': {
             poäng: 100,
             typ: 'Gymnasiegemensamma',
-            betyg: '',
+            betyg: 'E',
             merit: Double(0.0),
             status: 'pågående'
           },
           'Religionskunskap': {
             poäng: 50,
             typ: 'Gymnasiegemensamma',
-            betyg: '',
+            betyg: 'E',
             merit: Double(0.0),
             status: 'pågående'
           }

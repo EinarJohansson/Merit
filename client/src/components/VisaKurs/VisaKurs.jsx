@@ -43,6 +43,7 @@ export default function VisaKurs(props) {
             })
             .then(res => {
                 const index = props.kurser.findIndex(kurs => kurs.kurs === props.kurs.kurs)
+                // Ersätter den gamla kursen med nya data
                 if (index !== -1) props.kurser[index] = nykurs
                 props.uppdatera(props.kurser)
                 setShow(false)
@@ -104,10 +105,10 @@ export default function VisaKurs(props) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        Close
+                        Avbryt
                 </Button>
                     <Button type="submit" variant="primary">
-                        Save Changes
+                        Spara
                 </Button>
                 </Modal.Footer>
             </Form>
