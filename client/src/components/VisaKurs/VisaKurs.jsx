@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
+const isEqual = require('lodash/core').isEqual
 
 export default function VisaKurs(props) {
     const [show, setShow] = useState(true)
+    const [invalidKurs, setInvalidKurs] = useState(false)
 
     const handleClose = () => {
         setShow(false)
@@ -21,16 +23,17 @@ export default function VisaKurs(props) {
             kurs: event.target.elements['kurs.kurs'].value
         }
 
-        if (JSON.stringify(nykurs) === JSON.stringify(props.kurs)) {
-            // Om det är samma kurs - spara inte ändringar
-            setShow(false)
-            props.stäng()
+        // Om det är samma kurs - spara inte ändringar
+        if (isEqual(nykurs, props.kurs)) {
+            handleClose()
         }
-        else {
+        // Kolla så att inte en kurs med samma namn finns
+        else if (!props.kurser.find(kurs => kurs.kurs === nykurs.kurs) || nykurs.kurs === props.kurs.kurs) {
             const data = {
                 nykurs: nykurs,
                 ogkurs: props.kurs
             }
+
             fetch('/update/kurs', {
                 method: "POST",
                 credentials: "include",
@@ -50,7 +53,12 @@ export default function VisaKurs(props) {
                 props.stäng()
             })
         }
+        else {
+            // Visa feedbacken
+            setInvalidKurs(true)
+        }
     }
+
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -61,15 +69,21 @@ export default function VisaKurs(props) {
                 <Modal.Body>
                     <Form.Group controlId="kurs.kurs">
                         <Form.Label>Kurs</Form.Label>
-                        <Form.Control type="text" defaultValue={props.kurs.kurs} />
+                        <Form.Control 
+                            required 
+                            type="text" 
+                            defaultValue={props.kurs.kurs}
+                            isInvalid={invalidKurs}
+                        />
+                        <Form.Control.Feedback type="invalid">Kursen finns redan!</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="kurs.kod">
                         <Form.Label>Kod</Form.Label>
-                        <Form.Control type="text" defaultValue={props.kurs.typ} />
+                        <Form.Control required type="text" defaultValue={props.kurs.typ} />
                     </Form.Group>
                     <Form.Group controlId="kurs.poäng">
                         <Form.Label>Poäng</Form.Label>
-                        <Form.Control as="select" defaultValue={props.kurs.poäng} custom>
+                        <Form.Control required as="select" defaultValue={props.kurs.poäng} custom>
                             <option>50</option>
                             <option>100</option>
                             <option>150</option>
@@ -77,7 +91,7 @@ export default function VisaKurs(props) {
                     </Form.Group>
                     <Form.Group controlId="kurs.betyg">
                         <Form.Label>Betyg</Form.Label>
-                        <Form.Control as="select" defaultValue={props.kurs.betyg || 'E'} custom>
+                        <Form.Control required as="select" defaultValue={props.kurs.betyg || 'E'} custom>
                             <option>A</option>
                             <option>B</option>
                             <option>C</option>
@@ -88,7 +102,7 @@ export default function VisaKurs(props) {
                     </Form.Group>
                     <Form.Group controlId="kurs.merit">
                         <Form.Label>Meritpoäng</Form.Label>
-                        <Form.Control as="select" defaultValue={props.kurs.merit} custom>
+                        <Form.Control required as="select" defaultValue={props.kurs.merit} custom>
                             <option>0</option>
                             <option>0.5</option>
                             <option>1</option>
@@ -96,7 +110,7 @@ export default function VisaKurs(props) {
                     </Form.Group>
                     <Form.Group controlId="kurs.status">
                         <Form.Label>Status</Form.Label>
-                        <Form.Control as="select" defaultValue={props.kurs.status} custom>
+                        <Form.Control required as="select" defaultValue={props.kurs.status} custom>
                             <option>pågående</option>
                             <option>kommande</option>
                             <option>avslutade</option>
