@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { Modal, Button, Form } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
+
 const isEqual = require('lodash/core').isEqual
 
 export default function VisaKurs(props) {
@@ -9,6 +12,31 @@ export default function VisaKurs(props) {
     const handleClose = () => {
         setShow(false)
         props.stäng()
+    }
+    
+    const removeKurs = (event) => {
+        event.preventDefault()
+
+        const data = {
+            kurs: props.kurs.kurs
+        }
+
+        fetch('/update/remove', {
+            method: 'POST',
+            credentials: "include",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Credentials": true
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => {
+            // Ta bort kursen
+            const filtered = props.kurser.filter(kurs => kurs.kurs !== props.kurs.kurs)
+            props.uppdatera(filtered)
+            handleClose()
+        })
     }
 
     const sparaKurs = (event) => {
@@ -49,8 +77,7 @@ export default function VisaKurs(props) {
                 // Ersätter den gamla kursen med nya data
                 if (index !== -1) props.kurser[index] = nykurs
                 props.uppdatera(props.kurser)
-                setShow(false)
-                props.stäng()
+                handleClose()
             })
         }
         else {
@@ -58,7 +85,6 @@ export default function VisaKurs(props) {
             setInvalidKurs(true)
         }
     }
-
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -118,9 +144,12 @@ export default function VisaKurs(props) {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
+                    <Button variant="danger" className="mr-auto" onClick={removeKurs}>
+                    <FontAwesomeIcon icon={faTrashAlt} />
+                    </Button>
                     <Button variant="secondary" onClick={handleClose}>
                         Avbryt
-                </Button>
+                    </Button>
                     <Button type="submit" variant="primary">
                         Spara
                 </Button>
