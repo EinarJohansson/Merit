@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
 const isEqual = require('lodash/core').isEqual
+const isEmpty = require('lodash/core').isEmpty
 
 export default function VisaKurs(props) {
     const [show, setShow] = useState(true)
@@ -76,6 +77,8 @@ export default function VisaKurs(props) {
                 const index = props.kurser.findIndex(kurs => kurs.kurs === props.kurs.kurs)
                 // Ersätter den gamla kursen med nya data
                 if (index !== -1) props.kurser[index] = nykurs
+                else props.kurser.push(nykurs)
+
                 props.uppdatera(props.kurser)
                 handleClose()
             })
@@ -89,7 +92,7 @@ export default function VisaKurs(props) {
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Ändra kursen: {props.kurs.kurs}</Modal.Title>
+                <Modal.Title>{ isEmpty(props.kurs) ? 'Ny kurs!': 'Ändra: ' + props.kurs.kurs.toString()}</Modal.Title>
             </Modal.Header>
             <Form onSubmit={sparaKurs}>
                 <Modal.Body>
@@ -98,18 +101,18 @@ export default function VisaKurs(props) {
                         <Form.Control 
                             required 
                             type="text" 
-                            defaultValue={props.kurs.kurs}
+                            defaultValue={props.kurs.kurs.toString() || ''}
                             isInvalid={invalidKurs}
                         />
                         <Form.Control.Feedback type="invalid">Kursen finns redan!</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="kurs.kod">
                         <Form.Label>Kod</Form.Label>
-                        <Form.Control required type="text" defaultValue={props.kurs.typ} />
+                        <Form.Control required type="text" defaultValue={props.kurs.typ.toString() || ''} />
                     </Form.Group>
                     <Form.Group controlId="kurs.poäng">
                         <Form.Label>Poäng</Form.Label>
-                        <Form.Control required as="select" defaultValue={props.kurs.poäng} custom>
+                        <Form.Control required as="select" defaultValue={props.kurs.poäng.toString() || 100} custom>
                             <option>50</option>
                             <option>100</option>
                             <option>150</option>
@@ -117,7 +120,7 @@ export default function VisaKurs(props) {
                     </Form.Group>
                     <Form.Group controlId="kurs.betyg">
                         <Form.Label>Betyg</Form.Label>
-                        <Form.Control required as="select" defaultValue={props.kurs.betyg || 'E'} custom>
+                        <Form.Control required as="select" defaultValue={props.kurs.betyg.toString() || 'E'} custom>
                             <option>A</option>
                             <option>B</option>
                             <option>C</option>
@@ -128,7 +131,7 @@ export default function VisaKurs(props) {
                     </Form.Group>
                     <Form.Group controlId="kurs.merit">
                         <Form.Label>Meritpoäng</Form.Label>
-                        <Form.Control required as="select" defaultValue={props.kurs.merit} custom>
+                        <Form.Control required as="select" defaultValue={props.kurs.merit.toString() || 0} custom>
                             <option>0</option>
                             <option>0.5</option>
                             <option>1</option>
@@ -136,7 +139,7 @@ export default function VisaKurs(props) {
                     </Form.Group>
                     <Form.Group controlId="kurs.status">
                         <Form.Label>Status</Form.Label>
-                        <Form.Control required as="select" defaultValue={props.kurs.status} custom>
+                        <Form.Control required as="select" defaultValue={props.kurs.status.toString() || 'pågående'} custom>
                             <option>pågående</option>
                             <option>kommande</option>
                             <option>avslutade</option>
@@ -144,9 +147,11 @@ export default function VisaKurs(props) {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="danger" className="mr-auto" onClick={removeKurs}>
-                    <FontAwesomeIcon icon={faTrashAlt} />
-                    </Button>
+                    {!isEmpty(props.kurs) && 
+                        <Button variant="danger" className="mr-auto" onClick={removeKurs}>
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                        </Button>
+                    }
                     <Button variant="secondary" onClick={handleClose}>
                         Avbryt
                     </Button>

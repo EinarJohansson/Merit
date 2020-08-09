@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
 import VisaKurs from '../VisaKurs/VisaKurs'
 import { Carousel } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
 import './Table.css'
 
 export default class Table extends Component {
     constructor(props) {
         super(props)
+
         this.state = {
             kurser: [],
             visa: false,
@@ -18,7 +21,18 @@ export default class Table extends Component {
             {
                 dataField: 'kurs',
                 text: 'Kurs',
-                sort: true
+                sort: true,
+                footerAlign: 'center',
+                footer: () => <FontAwesomeIcon icon={faPlusCircle} size="2x" color="#0275d8"/>,
+                footerAttrs: {colSpan: 4},
+                footerEvents: {
+                    onClick: (e, column, columnIndex) => {
+                        this.setState({
+                            visa: true,
+                            kurs: {}
+                        })
+                    }
+                }
             },
             {
                 dataField: 'poäng',
@@ -52,6 +66,7 @@ export default class Table extends Component {
                 })
             }
         }
+
         this.VisaTable = this.VisaTable.bind(this)
         this.stängKurs = this.stängKurs.bind(this)
         this.uppdateraTable = this.uppdateraTable.bind(this);
@@ -120,7 +135,7 @@ export default class Table extends Component {
     render() {
         return (
             <>
-                <Carousel controls={true} interval={null}>
+                <Carousel controls={false} interval={null}>
                     <Carousel.Item>
                         <this.VisaTable
                             status="Pågående"
