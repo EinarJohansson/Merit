@@ -1,0 +1,8 @@
+.row {
+    margin-top: 3rem;
+}
+
+.d-flex > .card {
+    width: 18rem;
+    margin-bottom: 3rem;
+}

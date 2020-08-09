@@ -1,0 +1,9 @@
+.react-bootstrap-table table {
+    table-layout: auto;
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon,
+.carousel-indicators {
+    filter: invert(1);
+}

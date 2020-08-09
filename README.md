@@ -1,2 +1,0 @@
-# Merit
-Möjligheterna är oändliga ✨
