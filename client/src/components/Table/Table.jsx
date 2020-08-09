@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
 import VisaKurs from '../VisaKurs/VisaKurs'
+import { Carousel } from 'react-bootstrap'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
 import './Table.css'
 
@@ -33,7 +34,7 @@ export default class Table extends Component {
             {
                 dataField: 'typ',
                 text: 'Kod',
-                sort: true
+                sort: false
             },
             {
                 dataField: 'betyg',
@@ -51,8 +52,28 @@ export default class Table extends Component {
                 })
             }
         }
+        this.VisaTable = this.VisaTable.bind(this)
         this.stängKurs = this.stängKurs.bind(this)
         this.uppdateraTable = this.uppdateraTable.bind(this);
+    }
+
+    VisaTable(props) {
+        return (
+            <>
+                <h3>{props.status}</h3>
+                <BootstrapTable
+                    bootstrap4
+                    bordered={false}
+                    keyField='kurs'
+                    data={props.kurser}
+                    columns={this.kolumner}
+                    wrapperClasses="table-responsive"
+                    rowEvents={this.visaKurs}
+                    hover
+                    noDataIndication="Lägg till dina kurser!"
+                />
+            </>
+        )
     }
 
     stängKurs() {
@@ -78,36 +99,47 @@ export default class Table extends Component {
                 "Access-Control-Allow-Credentials": true
             }
         })
-            .then(response => {
-                if (response.status === 200) return response.json()
-                throw new Error("failed to authenticate user")
-            })
-            .then(res => {
-                const kurser = res[0].kurser
-                // Formatera kurserna
-                const data = Object.entries(kurser).map((e) => {
-                    e[1].kurs = e[0]
-                    return e[1]
-                })
-                this.setState({
-                    kurser: data
-                })
-            })
-    }
+        .then(response => {
+            if (response.status === 200) return response.json()
+            throw new Error("failed to authenticate user")
+        })
+        .then(res => {
+            const kurser = res[0].kurser
 
+            // Formatera kurserna
+            const data = Object.entries(kurser).map((e) => {
+                e[1].kurs = e[0]
+                return e[1]
+            })
+
+            this.setState({
+                kurser: data
+            })
+        })
+    }
     render() {
         return (
             <>
-                <BootstrapTable
-                    bootstrap4
-                    bordered={false}
-                    keyField='kurs'
-                    data={this.state.kurser}
-                    columns={this.kolumner}
-                    wrapperClasses="table-responsive"
-                    rowEvents={this.visaKurs}
-                    hover
-                />
+                <Carousel controls={true} interval={null}>
+                    <Carousel.Item>
+                        <this.VisaTable
+                            status="Pågående"
+                            kurser={this.state.kurser.filter(kurs => kurs.status === 'pågående')}
+                        />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <this.VisaTable
+                            status="Kommande"
+                            kurser={this.state.kurser.filter(kurs => kurs.status === 'kommande')}
+                        />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <this.VisaTable
+                            status="Avslutade"
+                            kurser={this.state.kurser.filter(kurs => kurs.status === 'avslutade')}
+                        />
+                    </Carousel.Item>
+                </Carousel>
                 {this.state.visa &&
                     <VisaKurs
                         stäng={this.stängKurs}
