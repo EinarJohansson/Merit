@@ -35,6 +35,9 @@ export default class Table extends Component {
                             kurs: {}
                         })
                     }
+                },
+                formatter: (cell, row) => {
+                    return parseFloat(row.merit) > 0 ? cell + '🌟': cell
                 }
             },
             {
@@ -152,7 +155,7 @@ export default class Table extends Component {
             const kurser = res[0].kurser
 
             // Formatera kurserna
-            const data = Object.entries(kurser).map((e) => {
+            const data = Object.entries(kurser).map((e) => {            
                 e[1].kurs = e[0]
                 return e[1]
             })
