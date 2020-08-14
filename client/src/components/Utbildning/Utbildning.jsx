@@ -124,14 +124,13 @@ export default class Utbildning extends Component {
                                                 {this.state.valProgram && this.inriktningar[this.state.valProgram].map((inriktning, index) => <option key={index}>{inriktning}</option>)}
                                             </Form.Control>
                                         </Form.Group>
-                                        <Button variant="primary" type="submit">Spara ändringar</Button>
+                                        <Button variant="primary" type="submit">Spara</Button>
                                     </Form>
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
                     </Accordion>
-            </div>
-
+                </div>
             </div >
         )
     }

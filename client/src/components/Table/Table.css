@@ -7,3 +7,21 @@
 .carousel-indicators {
     filter: invert(1);
 }
+
+.carousel-control-prev {
+    left: -150px;
+}
+.carousel-control-next {
+    right: -150px; 
+}
+
+.carousel-inner {
+    height: 100vh;
+}
+
+/* Mobil */
+@media only screen and (max-width: 500px) {
+    .carousel-inner {
+        height: 80vh;
+    }
+}

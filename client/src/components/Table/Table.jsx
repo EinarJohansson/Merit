@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
+import paginationFactory, { PaginationProvider, PaginationListStandalone } from 'react-bootstrap-table2-paginator'
 import VisaKurs from '../VisaKurs/VisaKurs'
 import { Carousel } from 'react-bootstrap'
+import {isMobile} from 'react-device-detect'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
+import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css'
 import './Table.css'
 
 export default class Table extends Component {
@@ -48,7 +51,7 @@ export default class Table extends Component {
             {
                 dataField: 'typ',
                 text: 'Kod',
-                sort: false
+                sort: true
             },
             {
                 dataField: 'betyg',
@@ -67,27 +70,54 @@ export default class Table extends Component {
             }
         }
 
+        this.defaultSorted = [{
+            dataField: 'kurs',
+            order: 'asc'
+        }];
+
+        this.options = {
+            custom: true,
+            totalSize: this.state.kurser.length
+        };
+
         this.VisaTable = this.VisaTable.bind(this)
         this.stängKurs = this.stängKurs.bind(this)
         this.uppdateraTable = this.uppdateraTable.bind(this);
     }
 
-    VisaTable(props) {
+    VisaTable(props) {
+        const Caption = () => <h3>{props.status}</h3>
+
+        const options = {
+            custom: true,
+            totalSize: this.state.kurser.filter(kurs => kurs.status === props.status.toLowerCase()).length,
+            sizePerPage: isMobile ? 5 : 7,
+            withFirstAndLast: false
+        }
+      
         return (
-            <>
-                <h3>{props.status}</h3>
-                <BootstrapTable
-                    bootstrap4
-                    bordered={false}
-                    keyField='kurs'
-                    data={props.kurser}
-                    columns={this.kolumner}
-                    wrapperClasses="table-responsive"
-                    rowEvents={this.visaKurs}
-                    hover
-                    noDataIndication="Lägg till dina kurser!"
-                />
-            </>
+            <PaginationProvider pagination={ paginationFactory(options) } >
+                {({ paginationProps, paginationTableProps}) => (
+                    <div>
+                        <PaginationListStandalone { ...paginationProps } />
+                        <Caption />
+                        <BootstrapTable
+                            bootstrap4
+                            bordered={false}
+                            keyField='kurs'
+                            data={props.kurser}
+                            columns={isMobile ? this.kolumner.filter(kolumn => kolumn.dataField !== 'typ' ) : this.kolumner}
+                            wrapperClasses="table-responsive"
+                            rowEvents={this.visaKurs}
+                            hover
+                            noDataIndication="Lägg till dina kurser!"
+                            defaultSorted={this.defaultSorted} 
+                            defaultSortDirection="asc"
+                            { ...paginationTableProps }
+                        />
+                    </div>
+                )}
+            </PaginationProvider>
         )
     }
 
@@ -135,7 +165,7 @@ export default class Table extends Component {
     render() {
         return (
             <>
-                <Carousel controls={false} interval={null}>
+                <Carousel controls={!isMobile} interval={null}>
                     <Carousel.Item>
                         <this.VisaTable
                             status="Pågående"
