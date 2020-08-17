@@ -1,6 +1,6 @@
 import React from 'react'
 import Table from '../../components/Table/Table'
-import Utbildning from '../../components/Utbildning/Utbildning.jsx'
+import Utbildning from '../../components/Inställningar/Inställningar.jsx'
 
 import { Container } from 'react-bootstrap'
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import './Utbildning.css';
-import { Card, Accordion, Button, Form } from 'react-bootstrap'
+import './Inställningar.css';
+import { Card, Accordion, Button, Form, Tabs, Tab } from 'react-bootstrap'
+import { BrowserView } from 'react-device-detect'
 
 export default class Utbildning extends Component {
     constructor(props) {
@@ -14,7 +15,7 @@ export default class Utbildning extends Component {
         }
 
         this.program = ['Teknik', 'Samhällsvetenskap', 'Naturvetenskap', 'Ekonomi']
-        
+
         this.inriktningar = {
             Teknik: ['Teknikvetenskap', 'IT-media', 'Design', 'Produktionskunskap'],
             Samhällsvetenskap: ['Samhällsvetenskap', 'Beteendevetenskap'],
@@ -31,13 +32,13 @@ export default class Utbildning extends Component {
     componentDidMount() {
         this.setState({
             program: this.props.program,
-            valProgram: this.props.program || this.program[0], // Sätter standard ifall inte programmet är bestämt.
+            valProgram: this.props.program || this.program[0], // Sätter standard ifall inte programmet är bestämt.
             inriktning: this.props.inriktning,
             valInriktning: this.props.inriktning
         })
     }
 
-    sparaUtbildning(event) {
+    sparaUtbildning(event) {
         event.preventDefault()
         const program = event.target.elements['utbildning.program'].value
         const inriktning = event.target.elements['utbildning.inriktning'].value
@@ -47,7 +48,7 @@ export default class Utbildning extends Component {
             inriktning: inriktning
         }
 
-        fetch('/update/utbildning',{
+        fetch('/update/utbildning', {
             method: "POST",
             credentials: "include",
             headers: {
@@ -71,7 +72,7 @@ export default class Utbildning extends Component {
         })
     }
 
-    setInriktning(event) {
+    setInriktning(event) {
         this.setState({
             valInriktning: event.target.value
         })
@@ -90,11 +91,11 @@ export default class Utbildning extends Component {
                 {/* Information om användarens utbildning */}
                 <div className="col d-flex">
                     <Card>
-                        <Card.Img variant="top" referrerPolicy="no-referrer" src={this.props.bild } />
+                        <Card.Img variant="top" referrerPolicy="no-referrer" src={this.props.bild} />
                         <Card.Body>
                             <Card.Title>{this.props.namn}</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted">{this.state.program || 'Inte bestämt'}</Card.Subtitle>
-                            <Card.Subtitle className="mb-2 text-muted">{this.state.inriktning || 'Inte bestämt'}</Card.Subtitle>
+                            <Card.Subtitle className="mb-2 text-muted">{this.state.program || 'Inte bestämt'}</Card.Subtitle>
+                            <Card.Subtitle className="mb-2 text-muted">{this.state.inriktning || 'Inte bestämt'}</Card.Subtitle>
                         </Card.Body>
                     </Card>
                 </div>
@@ -129,18 +130,30 @@ export default class Utbildning extends Component {
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
-                        <Card>
-                            <Card.Header>
-                                <Accordion.Toggle as={Button} variant="link" eventKey="1">
-                                    Statistik
+                        <BrowserView>
+                            <Card>
+                                <Card.Header>
+                                    <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                                        Statistik
                                 </Accordion.Toggle>
-                            </Card.Header>
-                            <Accordion.Collapse eventKey="1">
-                                <Card.Body>
-                                    Yoo
-                                </Card.Body>
-                            </Accordion.Collapse>
-                        </Card>
+                                </Card.Header>
+                                <Accordion.Collapse eventKey="1">
+                                    <Card.Body>
+                                        <Tabs defaultActiveKey="merit" variant="pills" id="uncontrolled-tab-example">
+                                            <Tab eventKey="merit" title="Merit">
+                                                <b>Jämförelsetal: </b>
+                                                <br/>
+                                                <b>Meritpoäng: </b>
+                                                <hr/>
+                                                <b>Meritvärde: </b>
+                                            </Tab>
+                                            <Tab eventKey="kurser" title="Kurser">
+                                            </Tab>
+                                        </Tabs>
+                                    </Card.Body>
+                                </Accordion.Collapse>
+                            </Card>
+                        </BrowserView>
                     </Accordion>
                 </div>
             </div >

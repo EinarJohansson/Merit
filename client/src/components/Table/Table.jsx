@@ -26,7 +26,7 @@ export default class Table extends Component {
                 text: 'Kurs',
                 sort: true,
                 footerAlign: 'center',
-                footer: () => <FontAwesomeIcon icon={faPlusCircle} size="2x" color="#0275d8"/>,
+                footer: () => <FontAwesomeIcon icon={faPlusCircle} size="2x" className="text-primary"/>,
                 footerAttrs: {colSpan: 4},
                 footerEvents: {
                     onClick: (e, column, columnIndex) => {

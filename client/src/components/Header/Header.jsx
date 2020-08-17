@@ -1,34 +1,32 @@
-import React, { Component } from 'react'
-import { Navbar, Nav, Form, FormControl } from 'react-bootstrap'
+import React from 'react'
+import { Navbar, Nav } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons'
 
-export default class Header extends Component {
-    render() {
-        const { authenticated } = this.props
-        return (
-            <Navbar bg="light" expand="lg">
-                <Navbar.Brand href="/">Merit</Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                {authenticated ?
-                    (
-                        <Navbar.Collapse id="basic-navbar-nav">
-                            <Nav className="mr-auto">
-                                <Nav.Link href='/utbildningar'>Utbildningar</Nav.Link>
-                                <Nav.Link href='http://localhost:3000/logout'>Logga ut</Nav.Link>
-                            </Nav>
-                            <Form inline>
-                                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                            </Form>
-                        </Navbar.Collapse> ) :
-                    (
-                        <Navbar.Collapse id="basic-navbar-nav">
-                            <Nav className="mr-auto">
-                                <Nav.Link href="http://localhost:3000/auth">Logga in</Nav.Link>
-                            </Nav>
-                        </Navbar.Collapse>
-                    )
-                }
-
-            </Navbar >
-        )
-    }
+export default function Header(props) {
+    return (
+        <Navbar bg="light" expand="lg">
+            <Navbar.Brand href="/">Merit</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            {props.authenticated ?
+                (
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="mr-auto">
+                            <Nav.Link href='/utbildningar'>Utbildningar</Nav.Link>
+                            <Nav.Link href='/statistik'>Statistik</Nav.Link>
+                        </Nav>
+                        <Nav className="ml-auto">
+                            <Nav.Link href='http://localhost:3000/logout'><FontAwesomeIcon icon={faDoorOpen} className="text-danger"/></Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>) :
+                (
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="mr-auto">
+                            <Nav.Link href="http://localhost:3000/auth">Logga in</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                )
+            }
+        </Navbar >
+    )
 }
