@@ -2,26 +2,15 @@
     table-layout: auto;
 }
 
-.carousel-control-next-icon,
-.carousel-control-prev-icon,
-.carousel-indicators {
-    filter: invert(1);
-}
 
-.carousel-control-prev {
-    left: -150px;
-}
-.carousel-control-next {
-    right: -150px; 
-}
-
-.carousel-inner {
-    height: 100vh;
-}
 
 /* Mobil */
 @media only screen and (max-width: 500px) {
-    .carousel-inner {
+    .carousel-indicators {
+        filter: invert(1);
+    }
+     
+     .carousel-inner {
         height: 80vh;
     }
 }

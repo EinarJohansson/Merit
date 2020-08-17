@@ -129,6 +129,18 @@ export default class Utbildning extends Component {
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
+                        <Card>
+                            <Card.Header>
+                                <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                                    Statistik
+                                </Accordion.Toggle>
+                            </Card.Header>
+                            <Accordion.Collapse eventKey="1">
+                                <Card.Body>
+                                    Yoo
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
                     </Accordion>
                 </div>
             </div >

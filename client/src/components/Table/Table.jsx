@@ -3,7 +3,7 @@ import BootstrapTable from 'react-bootstrap-table-next'
 import paginationFactory, { PaginationProvider, PaginationListStandalone } from 'react-bootstrap-table2-paginator'
 import VisaKurs from '../VisaKurs/VisaKurs'
 import { Carousel } from 'react-bootstrap'
-import {isMobile} from 'react-device-detect'
+import {isMobile, BrowserView, MobileView} from 'react-device-detect'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
@@ -60,7 +60,7 @@ export default class Table extends Component {
                 dataField: 'betyg',
                 text: 'Betyg',
                 sort: true
-            },
+            }
         ]
 
         this.visaKurs = {
@@ -85,7 +85,7 @@ export default class Table extends Component {
 
         this.VisaTable = this.VisaTable.bind(this)
         this.stängKurs = this.stängKurs.bind(this)
-        this.uppdateraTable = this.uppdateraTable.bind(this);
+        this.uppdateraTable = this.uppdateraTable.bind(this)
     }
 
     VisaTable(props) {
@@ -113,7 +113,7 @@ export default class Table extends Component {
                             wrapperClasses="table-responsive"
                             rowEvents={this.visaKurs}
                             hover
-                            noDataIndication="Lägg till dina kurser!"
+                            noDataIndication="Lägg till en kurs!"
                             defaultSorted={this.defaultSorted} 
                             defaultSortDirection="asc"
                             { ...paginationTableProps }
@@ -168,26 +168,42 @@ export default class Table extends Component {
     render() {
         return (
             <>
-                <Carousel controls={!isMobile} interval={null}>
-                    <Carousel.Item>
-                        <this.VisaTable
-                            status="Pågående"
-                            kurser={this.state.kurser.filter(kurs => kurs.status === 'pågående')}
-                        />
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <this.VisaTable
-                            status="Kommande"
-                            kurser={this.state.kurser.filter(kurs => kurs.status === 'kommande')}
-                        />
-                    </Carousel.Item>
-                    <Carousel.Item>
-                        <this.VisaTable
-                            status="Avslutade"
-                            kurser={this.state.kurser.filter(kurs => kurs.status === 'avslutade')}
-                        />
-                    </Carousel.Item>
-                </Carousel>
+                <MobileView>
+                    <Carousel interval={null}>
+                        <Carousel.Item>
+                            <this.VisaTable
+                                status="Pågående"
+                                kurser={this.state.kurser.filter(kurs => kurs.status === 'pågående')}
+                            />
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <this.VisaTable
+                                status="Kommande"
+                                kurser={this.state.kurser.filter(kurs => kurs.status === 'kommande')}
+                            />
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <this.VisaTable
+                                status="Avslutade"
+                                kurser={this.state.kurser.filter(kurs => kurs.status === 'avslutade')}
+                            />
+                        </Carousel.Item>
+                    </Carousel>
+                </MobileView>
+                <BrowserView>
+                    <this.VisaTable
+                        status="Pågående"
+                        kurser={this.state.kurser.filter(kurs => kurs.status === 'pågående')}
+                    />
+                    <this.VisaTable
+                        status="Kommande"
+                        kurser={this.state.kurser.filter(kurs => kurs.status === 'kommande')}
+                    />
+                    <this.VisaTable
+                        status="Avslutade"
+                        kurser={this.state.kurser.filter(kurs => kurs.status === 'avslutade')}
+                    />
+                </BrowserView>
                 {this.state.visa &&
                     <VisaKurs
                         stäng={this.stängKurs}
