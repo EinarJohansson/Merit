@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import './Inställningar.css';
-import { Card, Accordion, Button, Form, Tabs, Tab } from 'react-bootstrap'
-import { BrowserView } from 'react-device-detect'
+import { Card, Accordion, Button, Form } from 'react-bootstrap'
 
 export default class Utbildning extends Component {
     constructor(props) {
@@ -130,30 +129,6 @@ export default class Utbildning extends Component {
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
-                        <BrowserView>
-                            <Card>
-                                <Card.Header>
-                                    <Accordion.Toggle as={Button} variant="link" eventKey="1">
-                                        Statistik
-                                </Accordion.Toggle>
-                                </Card.Header>
-                                <Accordion.Collapse eventKey="1">
-                                    <Card.Body>
-                                        <Tabs defaultActiveKey="merit" variant="pills" id="uncontrolled-tab-example">
-                                            <Tab eventKey="merit" title="Merit">
-                                                <b>Jämförelsetal: </b>
-                                                <br/>
-                                                <b>Meritpoäng: </b>
-                                                <hr/>
-                                                <b>Meritvärde: </b>
-                                            </Tab>
-                                            <Tab eventKey="kurser" title="Kurser">
-                                            </Tab>
-                                        </Tabs>
-                                    </Card.Body>
-                                </Accordion.Collapse>
-                            </Card>
-                        </BrowserView>
                     </Accordion>
                 </div>
             </div >

@@ -2,6 +2,14 @@ import React, { Component } from 'react'
 import Header from '../../components/Header/Header'
 import Start from '../../components/Start/Start'
 import Profil from '../Profil/Profil'
+import Utbildningar from '../Utbildningar/Utbildningar'
+import Statistik from '../Statistik/Statistik'
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom"
 
 export default class Home extends Component {
   state = {
@@ -47,23 +55,39 @@ export default class Home extends Component {
     const { authenticated, authenticating, user } = this.state
     if (authenticating) return null
     return (
-      <div>
+      <Router>
         <Header
           authenticated={authenticated}
-        /> 
-        {!authenticated && 
-          <Start/>
-        }
-        {authenticated && 
-          <Profil 
-            kurser={user.kurser}
-            program={user.program}
-            inriktning={user.inriktning}
-            bild={user.picture}
-            namn={user.name}
-          />
-        }
-      </div>
+        />
+
+        <Switch>
+          <Route exact path="/">
+            {!authenticated &&
+              <Start />
+            }
+            {authenticated &&
+              <Profil
+                kurser={user.kurser}
+                program={user.program}
+                inriktning={user.inriktning}
+                bild={user.picture}
+                namn={user.name}
+              />
+            }
+          </Route>
+          
+          <Route path="/statistik">
+            <Statistik />
+          </Route>
+
+          <Route path="/utbildningar">
+            <Utbildningar />
+          </Route>
+          <Route path="*">
+            <h1>Du har nog kommit lite fel <span role="img" aria-label="404">👁👄👁</span></h1>
+          </Route>
+        </Switch>
+      </Router>
     )
   }
 }
