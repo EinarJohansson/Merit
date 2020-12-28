@@ -20,7 +20,6 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    // https://stackoverflow.com/questions/19043511/passport-js-fails-to-maintain-session-in-cross-domain
     fetch("/auth/login/success", {
       method: "GET",
       credentials: "include",

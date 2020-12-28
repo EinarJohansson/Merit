@@ -13,9 +13,7 @@ import './Table.css'
 export default class Table extends Component {
     constructor(props) {
         super(props)
-
         this.state = {
-            kurser: [],
             visa: false,
             kurs: {}
         }
@@ -80,7 +78,7 @@ export default class Table extends Component {
 
         this.options = {
             custom: true,
-            totalSize: this.state.kurser.length
+            totalSize: this.props.kurser.length
         };
 
         this.VisaTable = this.VisaTable.bind(this)
@@ -93,7 +91,7 @@ export default class Table extends Component {
 
         const options = {
             custom: true,
-            totalSize: this.state.kurser.filter(kurs => kurs.status === props.status.toLowerCase()).length,
+            totalSize: this.props.kurser.filter(kurs => kurs.status === props.status.toLowerCase()).length,
             sizePerPage: isMobile ? 5 : 7,
             withFirstAndLast: false
         }
@@ -132,39 +130,9 @@ export default class Table extends Component {
     }
 
     uppdateraTable(kurser) {
-        this.setState({
-            kurser: kurser
-        })
+        this.props.uppdatera(kurser)
     }
-
-    componentDidMount() {
-        fetch('/data/kurser', {
-            method: "GET",
-            credentials: "include",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": true
-            }
-        })
-        .then(response => {
-            if (response.status === 200) return response.json()
-            throw new Error("failed to authenticate user")
-        })
-        .then(res => {
-            const kurser = res[0].kurser
-
-            // Formatera kurserna
-            const data = Object.entries(kurser).map((e) => {            
-                e[1].kurs = e[0]
-                return e[1]
-            })
-
-            this.setState({
-                kurser: data
-            })
-        })
-    }
+    
     render() {
         return (
             <>
@@ -173,19 +141,19 @@ export default class Table extends Component {
                         <Carousel.Item>
                             <this.VisaTable
                                 status="Pågående"
-                                kurser={this.state.kurser.filter(kurs => kurs.status === 'pågående')}
+                                kurser={this.props.kurser.filter(kurs => kurs.status === 'pågående')}
                             />
                         </Carousel.Item>
                         <Carousel.Item>
                             <this.VisaTable
                                 status="Kommande"
-                                kurser={this.state.kurser.filter(kurs => kurs.status === 'kommande')}
+                                kurser={this.props.kurser.filter(kurs => kurs.status === 'kommande')}
                             />
                         </Carousel.Item>
                         <Carousel.Item>
                             <this.VisaTable
                                 status="Avslutade"
-                                kurser={this.state.kurser.filter(kurs => kurs.status === 'avslutade')}
+                                kurser={this.props.kurser.filter(kurs => kurs.status === 'avslutade')}
                             />
                         </Carousel.Item>
                     </Carousel>
@@ -193,15 +161,15 @@ export default class Table extends Component {
                 <BrowserView>
                     <this.VisaTable
                         status="Pågående"
-                        kurser={this.state.kurser.filter(kurs => kurs.status === 'pågående')}
+                        kurser={this.props.kurser.filter(kurs => kurs.status === 'pågående')}
                     />
                     <this.VisaTable
                         status="Kommande"
-                        kurser={this.state.kurser.filter(kurs => kurs.status === 'kommande')}
+                        kurser={this.props.kurser.filter(kurs => kurs.status === 'kommande')}
                     />
                     <this.VisaTable
                         status="Avslutade"
-                        kurser={this.state.kurser.filter(kurs => kurs.status === 'avslutade')}
+                        kurser={this.props.kurser.filter(kurs => kurs.status === 'avslutade')}
                     />
                 </BrowserView>
                 {this.state.visa &&
@@ -209,7 +177,7 @@ export default class Table extends Component {
                         stäng={this.stängKurs}
                         kurs={this.state.kurs}
                         uppdatera={this.uppdateraTable}
-                        kurser={this.state.kurser}
+                        kurser={this.props.kurser}
                     />
                 }
             </>

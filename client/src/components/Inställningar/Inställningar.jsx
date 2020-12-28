@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './Inställningar.css';
 import { Card, Accordion, Button, Form } from 'react-bootstrap'
+import Betyg from '../Charts/Betyg'
 
 export default class Utbildning extends Component {
     constructor(props) {
@@ -80,8 +81,7 @@ export default class Utbildning extends Component {
     Program(props) {
         if (props.program === this.state.program)
             return (<option selected>{props.program}</option>)
-        else
-            return (<option>{props.program}</option>)
+        return (<option>{props.program}</option>)
     }
 
     render() {
@@ -126,6 +126,31 @@ export default class Utbildning extends Component {
                                         </Form.Group>
                                         <Button variant="primary" type="submit">Spara</Button>
                                     </Form>
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
+                        
+                        <Card>
+                            <Card.Header>
+                                <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                                    Överblick
+                                </Accordion.Toggle>
+                            </Card.Header>
+                            <Accordion.Collapse eventKey="1">
+                                <Card.Body>
+                                    {/* Visa meritvärde: jämförelsevärde och meritpoäng */}
+                                    <h6>Meritvärde</h6>
+                                    <hr></hr>
+
+                                    {/* Totala poäng, avslutade poäng, pågående poäng, kommande poäng */}
+                                    <h6>Kurser</h6>
+                                    <hr></hr>
+
+                                    {/* Visa fördelning av betygen, stapeldiagram? */}
+                                    <h6>Betyg</h6>
+                                    <Betyg data={this.props.betyg}/>
+                                    <hr></hr>
+
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
