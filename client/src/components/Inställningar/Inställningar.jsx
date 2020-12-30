@@ -157,15 +157,16 @@ export default class Utbildning extends Component {
 
                                     {/* Totala poäng, avslutade poäng, pågående poäng, kommande poäng */}
                                     <h6>Kurser</h6>
-                                    <p>Totala poäng: {poängTot}</p>
-                                    <p>Pågående poäng: {poängPåg}</p>
-                                    <p>Kommande poäng: {poängKom}</p>
-                                    <p>Avslutade poäng: {poängAvs}</p>
-
+                                    <hr></hr>
+                                    <p>Totala poäng: {poängTot} <sub>({Object.keys(this.props.kurser).length} kurser)</sub></p>
+                                    <p>Pågående poäng: {poängPåg} <sub>({Object.keys(pågående).length} kurser)</sub></p>
+                                    <p>Kommande poäng: {poängKom} <sub>({Object.keys(kommande).length} kurser)</sub></p>
+                                    <p>Avslutade poäng: {poängAvs} <sub>({Object.keys(avslutade).length} kurser)</sub></p>
                                     <hr></hr>
 
                                     {/* Visa fördelning av betygen, stapeldiagram? */}
                                     <h6>Betyg</h6>
+                                    <hr></hr>
                                     <Betyg data={this.props.betyg}/>
                                     <br></br>
 

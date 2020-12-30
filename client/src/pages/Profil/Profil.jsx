@@ -38,8 +38,8 @@ export default class Profil extends React.Component {
     formateraBetyg(kurser) {
         Object.filter = (obj, predicate) => 
         Object.keys(obj)
-              .filter( key => predicate(obj[key]) )
-              .reduce( (res, key) => (res[key] = obj[key], res), {} )
+              .filter(key => predicate(obj[key]) )
+              .reduce((res, key) => (res[key] = obj[key], res), {} )
         
         let pågående = Object.filter(kurser, kurs => kurs.status === 'pågående')
         let kommande = Object.filter(kurser, kurs => kurs.status === 'kommande')
@@ -84,7 +84,7 @@ export default class Profil extends React.Component {
         .then(res => {
             const kurser = res[0].kurser
             // Formatera kurserna
-            const data = Object.entries(kurser).map((e) => {            
+            const data = Object.entries(kurser).map(e => {            
                 e[1].kurs = e[0]
                 return e[1]
             })

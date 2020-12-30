@@ -1,11 +1,29 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import '../../../node_modules/react-vis/dist/style.css'
 import {XYPlot, VerticalBarSeries, HorizontalGridLines, XAxis, YAxis} from 'react-vis'
 import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 
+function usePrevious(value) {
+    const ref = useRef()
+    useEffect(() => {
+        ref.current = value;
+    })
+    return ref.current
+  }
+
 export default function Betyg(props) {
-    const [value, setValue] = useState(3)
-    const [betyg, setBetyg] = useState(props.data[2])
+    const [value, setValue] = useState([3]) // Aktivera avslutade
+    const [betyg, setBetyg] = useState(props.data[2]) // Visa avslutade
+
+    const prevBetyg = usePrevious(props.data);
+
+    useEffect(() => {
+        if (prevBetyg !== props.data) {
+            let tmp = []
+            value.forEach(i => tmp.push(props.data[i-1]))
+            setBetyg(tmp.flat())  
+        }
+    }, [prevBetyg, props.data, value])
 
     const handleChange = (val) => {
         // Ändra betygen som visas!
