@@ -15,6 +15,7 @@ export default class Profil extends React.Component {
 
         this.uppdateraKurser = this.uppdateraKurser.bind(this)
         this.uppdateraUtbildning = this.uppdateraUtbildning.bind(this)
+        this.formateraBetyg = this.formateraBetyg.bind(this)
     }
 
     componentWillMount() {
@@ -22,22 +23,47 @@ export default class Profil extends React.Component {
             e[1].kurs = e[0]
             return e[1]
         })
-        
-        // Array med alla betyg
-        let betyg = Object.keys(this.props.kurser).map(kurs => this.props.kurser[kurs].betyg)
-        // Funktion för att hitta antal gånger ett element finns i arrayen
-        let occurances = (arr, val) => arr.filter(x => x === val).length
-        // Tom array för att lagra objekten
-        let formateradeBetyg = []
-        // Formatera datan så den kan passas till grafen
-        new Set(betyg).forEach(val => formateradeBetyg.push({x: val, y: occurances(betyg, val)}))
 
+        let formateradeBetyg = this.formateraBetyg(this.props.kurser)
+        
         this.setState({
             kurser: data,
             betyg: formateradeBetyg,
             program: this.props.program,
             inriktning: this.props.inriktning
         })
+    }
+
+    formateraBetyg(kurser) {
+        Object.filter = (obj, predicate) => 
+        Object.keys(obj)
+              .filter( key => predicate(obj[key]) )
+              .reduce( (res, key) => (res[key] = obj[key], res), {} )
+        
+        let pågående = Object.filter(kurser, kurs => kurs.status === 'pågående')
+        let kommande = Object.filter(kurser, kurs => kurs.status === 'kommande')
+        let avslutade = Object.filter(kurser, kurs => kurs.status === 'avslutade')
+        
+        // Array med alla betyg
+        let betygPågående = Object.keys(pågående).map(kurs => pågående[kurs].betyg)
+        let betygKommande = Object.keys(kommande).map(kurs => kommande[kurs].betyg)
+        let betygAvslutade = Object.keys(avslutade).map(kurs => avslutade[kurs].betyg)
+        
+        // Funktion för att hitta antal gånger ett element finns i arrayen
+        let occurances = (arr, val) => arr.filter(x => x === val).length
+        
+        // Arrays för att lagra formaterade betygen
+        let dataPågende = []
+        let dataKommande = []
+        let dataAvslutad = []
+
+        // Formatera datan så den kan passas till grafen
+        new Set(betygPågående).forEach(val => dataPågende.push({x: val, y: occurances(betygPågående, val)}))
+        new Set(betygKommande).forEach(val => dataKommande.push({x: val, y: occurances(betygKommande, val)}))
+        new Set(betygAvslutade).forEach(val => dataAvslutad.push({x: val, y: occurances(betygAvslutade, val)}))
+        
+        // Tom array för att lagra objekten
+        return ([dataPågende, dataKommande, dataAvslutad])
     }
 
     uppdateraKurser() {
@@ -56,21 +82,13 @@ export default class Profil extends React.Component {
         })
         .then(res => {
             const kurser = res[0].kurser
-            console.log(kurser);
             // Formatera kurserna
             const data = Object.entries(kurser).map((e) => {            
                 e[1].kurs = e[0]
                 return e[1]
             })
-            
-            // Array med alla betyg
-            let betyg = Object.keys(kurser).map(kurs => kurser[kurs].betyg)
-            // Funktion för att hitta antal gånger ett element finns i arrayen
-            let occurances = (arr, val) => arr.filter(x => x === val).length
-            // Tom array för att lagra objekten
-            let formateradeBetyg = []
-            // Formatera datan så den kan passas till grafen
-            new Set(betyg).forEach(val => formateradeBetyg.push({x: val, y: occurances(betyg, val)}))
+                 
+            let formateradeBetyg = this.formateraBetyg(kurser)
 
             this.setState({
                 kurser: data,
