@@ -24,6 +24,7 @@ export default class Profil extends React.Component {
             return e[1]
         })
 
+        // Hämta betyg
         let formateradeBetyg = this.formateraBetyg(this.props.kurser)
         
         this.setState({
@@ -114,6 +115,7 @@ export default class Profil extends React.Component {
                     bild={this.props.bild}
                     betyg={this.state.betyg}
                     uppdatera={this.uppdateraUtbildning}
+                    kurser={this.state.kurser}
                 />
                 <Table
                     kurser={this.state.kurser}

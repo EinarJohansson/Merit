@@ -3,6 +3,8 @@ import './Inställningar.css';
 import { Card, Accordion, Button, Form } from 'react-bootstrap'
 import Betyg from '../Charts/Betyg'
 
+var _ = require('lodash/fp/math')
+
 export default class Utbildning extends Component {
     constructor(props) {
         super(props)
@@ -20,7 +22,7 @@ export default class Utbildning extends Component {
             Naturvetenskap: ['Naturvetenskap', 'Tvärvetenskap'],
             Ekonomi: ['Ekonomi']
         }
-
+        
         this.setProgram = this.setProgram.bind(this)
         this.setInriktning = this.setInriktning.bind(this)
         this.sparaUtbildning = this.sparaUtbildning.bind(this)
@@ -80,6 +82,22 @@ export default class Utbildning extends Component {
     }
 
     render() {
+        Object.filter = (obj, predicate) => 
+        Object.keys(obj)
+              .filter( key => predicate(obj[key]) )
+              .reduce( (res, key) => (res[key] = obj[key], res), {} )
+
+        let poängTot = _.sum(this.props.kurser.map(kurs => kurs.poäng))
+        
+        let pågående = Object.filter(this.props.kurser, kurs => kurs.status === 'pågående')
+        let poängPåg = _.sum(Object.keys(pågående).map(kurs => pågående[kurs].poäng))
+        
+        let kommande = Object.filter(this.props.kurser, kurs => kurs.status === 'kommande')
+        let poängKom = _.sum(Object.keys(kommande).map(kurs => kommande[kurs].poäng))
+        
+        let avslutade = Object.filter(this.props.kurser, kurs => kurs.status === 'avslutade')
+        let poängAvs = _.sum(Object.keys(avslutade).map(kurs => avslutade[kurs].poäng))
+        
         return (
             <div className="row">
                 {/* Information om användarens utbildning */}
@@ -139,12 +157,17 @@ export default class Utbildning extends Component {
 
                                     {/* Totala poäng, avslutade poäng, pågående poäng, kommande poäng */}
                                     <h6>Kurser</h6>
+                                    <p>Totala poäng: {poängTot}</p>
+                                    <p>Pågående poäng: {poängPåg}</p>
+                                    <p>Kommande poäng: {poängKom}</p>
+                                    <p>Avslutade poäng: {poängAvs}</p>
+
                                     <hr></hr>
 
                                     {/* Visa fördelning av betygen, stapeldiagram? */}
                                     <h6>Betyg</h6>
                                     <Betyg data={this.props.betyg}/>
-                                    <hr></hr>
+                                    <br></br>
 
                                 </Card.Body>
                             </Accordion.Collapse>
