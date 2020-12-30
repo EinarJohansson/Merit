@@ -8,9 +8,7 @@ export default class Utbildning extends Component {
         super(props)
 
         this.state = {
-            program: '',
             valProgram: '',
-            inriktning: '',
             valInriktning: ''
         }
 
@@ -59,10 +57,7 @@ export default class Utbildning extends Component {
             body: JSON.stringify(data)
         }).then(res => {
             // Uppdatera profilens text
-            this.setState({
-                program: program,
-                inriktning: inriktning
-            })
+            this.props.uppdatera(program, inriktning)
         })
     }
 
@@ -79,7 +74,7 @@ export default class Utbildning extends Component {
     }
 
     Program(props) {
-        if (props.program === this.state.program)
+        if (props.program === this.props.program)
             return (<option selected>{props.program}</option>)
         return (<option>{props.program}</option>)
     }
@@ -93,8 +88,8 @@ export default class Utbildning extends Component {
                         <Card.Img variant="top" referrerPolicy="no-referrer" src={this.props.bild} />
                         <Card.Body>
                             <Card.Title>{this.props.namn}</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted">{this.state.program || 'Inte bestämt'}</Card.Subtitle>
-                            <Card.Subtitle className="mb-2 text-muted">{this.state.inriktning || 'Inte bestämt'}</Card.Subtitle>
+                            <Card.Subtitle className="mb-2 text-muted">{this.props.program || 'Inte bestämt'}</Card.Subtitle>
+                            <Card.Subtitle className="mb-2 text-muted">{this.props.inriktning || 'Inte bestämt'}</Card.Subtitle>
                         </Card.Body>
                     </Card>
                 </div>

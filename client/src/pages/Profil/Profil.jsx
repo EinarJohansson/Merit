@@ -14,6 +14,7 @@ export default class Profil extends React.Component {
         }
 
         this.uppdateraKurser = this.uppdateraKurser.bind(this)
+        this.uppdateraUtbildning = this.uppdateraUtbildning.bind(this)
     }
 
     componentWillMount() {
@@ -33,7 +34,9 @@ export default class Profil extends React.Component {
 
         this.setState({
             kurser: data,
-            betyg: formateradeBetyg
+            betyg: formateradeBetyg,
+            program: this.props.program,
+            inriktning: this.props.inriktning
         })
     }
 
@@ -76,6 +79,13 @@ export default class Profil extends React.Component {
         })
     }
 
+    uppdateraUtbildning(program, inriktning) {
+        this.setState({
+            program: program,
+            inriktning: inriktning
+        })
+    }
+
     render() {
         return (
             <Container>
@@ -85,6 +95,7 @@ export default class Profil extends React.Component {
                     inriktning={this.state.inriktning}
                     bild={this.props.bild}
                     betyg={this.state.betyg}
+                    uppdatera={this.uppdateraUtbildning}
                 />
                 <Table
                     kurser={this.state.kurser}
