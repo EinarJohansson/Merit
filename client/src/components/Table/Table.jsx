@@ -137,7 +137,7 @@ export default class Table extends Component {
         return (
             <>
                 <MobileView>
-                    <Carousel interval={null}>
+                    <Carousel interval={null} controls={false}>
                         <Carousel.Item>
                             <this.VisaTable
                                 status="Pågående"
