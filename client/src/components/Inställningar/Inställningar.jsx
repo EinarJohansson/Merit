@@ -3,7 +3,7 @@ import './Inställningar.css';
 import { Card, Accordion, Button, Form } from 'react-bootstrap'
 import Betyg from '../Charts/Betyg'
 
-var _ = require('lodash/fp/math')
+var math_ = require('lodash/fp/math')
 
 export default class Utbildning extends Component {
     constructor(props) {
@@ -81,23 +81,65 @@ export default class Utbildning extends Component {
         return (<option>{props.program}</option>)
     }
 
+    räknaPoäng() {
+        let poängTot = math_.sum(this.props.kurser.map(kurs => kurs.poäng))
+        
+        let pågående = Object.filter(this.props.kurser, kurs => kurs.status === 'pågående')
+        let poängPåg = math_.sum(Object.keys(pågående).map(kurs => pågående[kurs].poäng))
+        
+        let kommande = Object.filter(this.props.kurser, kurs => kurs.status === 'kommande')
+        let poängKom = math_.sum(Object.keys(kommande).map(kurs => kommande[kurs].poäng))
+        
+        let avslutade = Object.filter(this.props.kurser, kurs => kurs.status === 'avslutade')
+        let poängAvs = math_.sum(Object.keys(avslutade).map(kurs => avslutade[kurs].poäng))
+
+        return [poängTot, poängPåg, poängKom, poängAvs]
+    }
+
+    räknaKurser() {
+        let pågående = Object.filter(this.props.kurser, kurs => kurs.status === 'pågående')
+        let kommande = Object.filter(this.props.kurser, kurs => kurs.status === 'kommande')
+        let avslutade = Object.filter(this.props.kurser, kurs => kurs.status === 'avslutade')
+
+        return [Object.keys(this.props.kurser).length,
+                Object.keys(pågående).length,
+                Object.keys(kommande).length,
+                Object.keys(avslutade).length
+            ]
+    }
+
+    jämföreseltal (totalPoäng) {
+        const siffervärden = {
+            'A': 20,
+            'B': 17.5,
+            'C': 15,
+            'D': 12.5,
+            'E': 10,
+            'F': 0
+        }
+        const betygsvärde = math_.sum(this.props.kurser.map(kurs => kurs.poäng * siffervärden[kurs.betyg]))
+        
+        return betygsvärde / totalPoäng
+    }
+
+    meritPoäng() {
+        const meritKurser = this.props.kurser.filter(kurs => kurs.merit !== 0)
+        let meritPoäng = math_.sum(meritKurser.map(kurs => kurs.merit))
+        if (meritPoäng > 2.5) meritPoäng = 2.5
+        return [meritKurser.map(kurs => kurs.kurs), meritPoäng]
+    }
+
     render() {
         Object.filter = (obj, predicate) => 
         Object.keys(obj)
               .filter( key => predicate(obj[key]) )
               .reduce( (res, key) => (res[key] = obj[key], res), {} )
 
-        let poängTot = _.sum(this.props.kurser.map(kurs => kurs.poäng))
-        
-        let pågående = Object.filter(this.props.kurser, kurs => kurs.status === 'pågående')
-        let poängPåg = _.sum(Object.keys(pågående).map(kurs => pågående[kurs].poäng))
-        
-        let kommande = Object.filter(this.props.kurser, kurs => kurs.status === 'kommande')
-        let poängKom = _.sum(Object.keys(kommande).map(kurs => kommande[kurs].poäng))
-        
-        let avslutade = Object.filter(this.props.kurser, kurs => kurs.status === 'avslutade')
-        let poängAvs = _.sum(Object.keys(avslutade).map(kurs => avslutade[kurs].poäng))
-        
+        const [poängTot, poängPåg, poängKom, poängAvs] = this.räknaPoäng()
+        const [totalaKurser, pågåendeKurser, kommandeKurser, avslutadeKurser] = this.räknaKurser()
+        const jämföreseltal = this.jämföreseltal(poängTot)
+        const [meritKurser, meritPoäng] = this.meritPoäng()
+
         return (
             <div className="row">
                 {/* Information om användarens utbildning */}
@@ -151,24 +193,31 @@ export default class Utbildning extends Component {
                             </Card.Header>
                             <Accordion.Collapse eventKey="1">
                                 <Card.Body>
-                                    {/* Visa meritvärde: jämförelsevärde och meritpoäng */}
+                                    {/* Visa meritvärde: jämförelsevärde, meritpoäng och vilka kurser som ger meritpoäng */}
                                     <h6>Meritvärde</h6>
-                                    <hr></hr>
+                                    <hr/>
+                                    <p>Jämförelsetal: {jämföreseltal}</p>
+                                    <p>Meritpoäng: {meritPoäng} <sub>({meritKurser.map((tag, i) => [
+                                        i > 0 && ", ",
+                                        tag
+                                    ])})</sub></p>
+                                    <p>Meritvärde: {jämföreseltal + meritPoäng} </p>
+                                    <hr/>
 
                                     {/* Totala poäng, avslutade poäng, pågående poäng, kommande poäng */}
                                     <h6>Kurser</h6>
-                                    <hr></hr>
-                                    <p>Totala poäng: {poängTot} <sub>({Object.keys(this.props.kurser).length} kurser)</sub></p>
-                                    <p>Pågående poäng: {poängPåg} <sub>({Object.keys(pågående).length} kurser)</sub></p>
-                                    <p>Kommande poäng: {poängKom} <sub>({Object.keys(kommande).length} kurser)</sub></p>
-                                    <p>Avslutade poäng: {poängAvs} <sub>({Object.keys(avslutade).length} kurser)</sub></p>
-                                    <hr></hr>
+                                    <hr/>
+                                    <p>Totala poäng: {poängTot} <sub>({totalaKurser} kurser)</sub></p>
+                                    <p>Pågående poäng: {poängPåg} <sub>({pågåendeKurser} kurser)</sub></p>
+                                    <p>Kommande poäng: {poängKom} <sub>({kommandeKurser} kurser)</sub></p>
+                                    <p>Avslutade poäng: {poängAvs} <sub>({avslutadeKurser} kurser)</sub></p>
+                                    <hr/>
 
                                     {/* Visa fördelning av betygen, stapeldiagram? */}
                                     <h6>Betyg</h6>
-                                    <hr></hr>
+                                    <hr/>
                                     <Betyg data={this.props.betyg}/>
-                                    <br></br>
+                                    <br/>
 
                                 </Card.Body>
                             </Accordion.Collapse>

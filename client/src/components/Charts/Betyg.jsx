@@ -20,8 +20,12 @@ export default function Betyg(props) {
     useEffect(() => {
         if (prevBetyg !== props.data) {
             let tmp = []
-            value.forEach(i => tmp.push(props.data[i-1]))
-            setBetyg(tmp.flat())  
+            if (value.length > 0) {
+                value.forEach(i => tmp.push(props.data[i-1]))
+                setBetyg(tmp.flat())
+            } 
+            else
+                setBetyg([{x: 'Tomt :(', y: 0}])
         }
     }, [prevBetyg, props.data, value])
 
