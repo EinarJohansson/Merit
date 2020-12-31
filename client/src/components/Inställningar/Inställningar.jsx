@@ -142,9 +142,9 @@ export default class Utbildning extends Component {
         const [meritKurser, meritPoäng] = this.meritPoäng()
 
         return (
-            <div className="row">
+            <div className="row" style={{'margin-bottom': '100px'}}>
                 {/* Information om användarens utbildning */}
-                <div className="col d-flex">
+                <div className="col-lg-4 align-items-stretch">
                     <Card>
                         <Card.Img variant="top" referrerPolicy="no-referrer" src={this.props.bild} />
                         <Card.Body>
@@ -238,7 +238,7 @@ export default class Utbildning extends Component {
                         </Card>
                     </Accordion>
                 </div>
-            </div >
+            </div>
         )
     }
 }
