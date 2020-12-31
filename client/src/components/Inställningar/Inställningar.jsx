@@ -119,14 +119,15 @@ export default class Utbildning extends Component {
         }
         const betygsvärde = math_.sum(this.props.kurser.map(kurs => kurs.poäng * siffervärden[kurs.betyg]))
         
-        return betygsvärde / totalPoäng
+        return Math.round( (betygsvärde / totalPoäng) * 1e2 ) / 1e2
     }
 
     meritPoäng() {
         const meritKurser = this.props.kurser.filter(kurs => kurs.merit !== 0)
         let meritPoäng = math_.sum(meritKurser.map(kurs => kurs.merit))
         if (meritPoäng > 2.5) meritPoäng = 2.5
-        return [meritKurser.map(kurs => kurs.kurs), meritPoäng]
+        
+        return [meritKurser.map(kurs => kurs.kurs), Math.round( meritPoäng * 1e2 ) / 1e2]
     }
 
     render() {
@@ -188,37 +189,50 @@ export default class Utbildning extends Component {
                         <Card>
                             <Card.Header>
                                 <Accordion.Toggle as={Button} variant="link" eventKey="1">
-                                    Överblick
+                                    Meritvärde
                                 </Accordion.Toggle>
                             </Card.Header>
                             <Accordion.Collapse eventKey="1">
                                 <Card.Body>
                                     {/* Visa meritvärde: jämförelsevärde, meritpoäng och vilka kurser som ger meritpoäng */}
-                                    <h6>Meritvärde</h6>
-                                    <hr/>
                                     <p>Jämförelsetal: {jämföreseltal}</p>
-                                    <p>Meritpoäng: {meritPoäng} <sub>({meritKurser.map((tag, i) => [
+                                    <p>Meritpoäng: {meritPoäng} {meritKurser.length > 0 && <sub>({meritKurser.map((tag, i) => [
                                         i > 0 && ", ",
                                         tag
-                                    ])})</sub></p>
+                                    ])})</sub>}</p>
+                                    <hr/>
                                     <p>Meritvärde: {jämföreseltal + meritPoäng} </p>
-                                    <hr/>
-
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
+                        <Card>
+                            <Card.Header>
+                                <Accordion.Toggle as={Button} variant="link" eventKey="2">
+                                    Kurser
+                                </Accordion.Toggle>
+                            </Card.Header>
+                            <Accordion.Collapse eventKey="2">
+                                <Card.Body>
                                     {/* Totala poäng, avslutade poäng, pågående poäng, kommande poäng */}
-                                    <h6>Kurser</h6>
-                                    <hr/>
-                                    <p>Totala poäng: {poängTot} <sub>({totalaKurser} kurser)</sub></p>
                                     <p>Pågående poäng: {poängPåg} <sub>({pågåendeKurser} kurser)</sub></p>
                                     <p>Kommande poäng: {poängKom} <sub>({kommandeKurser} kurser)</sub></p>
                                     <p>Avslutade poäng: {poängAvs} <sub>({avslutadeKurser} kurser)</sub></p>
                                     <hr/>
-
-                                    {/* Visa fördelning av betygen, stapeldiagram? */}
-                                    <h6>Betyg</h6>
-                                    <hr/>
+                                    <p>Totala poäng: {poängTot} <sub>({totalaKurser} kurser)</sub></p>
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
+                        <Card>
+                            <Card.Header>
+                                <Accordion.Toggle as={Button} variant="link" eventKey="3">
+                                    Betyg
+                                </Accordion.Toggle>
+                            </Card.Header>
+                            <Accordion.Collapse eventKey="3">
+                                <Card.Body>
+                                    {/* Visa fördelning av betygen */}
                                     <Betyg data={this.props.betyg}/>
                                     <br/>
-
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
