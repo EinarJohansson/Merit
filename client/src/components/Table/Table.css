@@ -2,8 +2,6 @@
     table-layout: auto;
 }
 
-
-
 /* Mobil */
 @media only screen and (max-width: 500px) {
     .carousel-indicators {

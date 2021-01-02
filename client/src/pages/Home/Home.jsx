@@ -8,7 +8,8 @@ import Statistik from '../Statistik/Statistik'
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom"
 
 export default class Home extends Component {
@@ -76,15 +77,27 @@ export default class Home extends Component {
           </Route>
           
           <Route path="/statistik">
-            <Statistik />
+            {!authenticated &&
+              <Redirect to="/" />
+            }
+            {authenticated &&
+              <Statistik />
+            }
           </Route>
 
           <Route path="/utbildningar">
-            <Utbildningar />
+            {!authenticated &&
+              <Redirect to="/" />
+            }
+            {authenticated &&
+              <Utbildningar />
+            }
           </Route>
+
           <Route path="*">
             <h1>Du har nog kommit lite fel <span role="img" aria-label="404">👁👄👁</span></h1>
           </Route>
+          
         </Switch>
       </Router>
     )

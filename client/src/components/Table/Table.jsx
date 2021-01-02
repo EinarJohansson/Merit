@@ -76,11 +76,6 @@ export default class Table extends Component {
             order: 'asc'
         }];
 
-        this.options = {
-            custom: true,
-            totalSize: this.props.kurser.length
-        };
-
         this.VisaTable = this.VisaTable.bind(this)
         this.stängKurs = this.stängKurs.bind(this)
         this.uppdateraTable = this.uppdateraTable.bind(this)

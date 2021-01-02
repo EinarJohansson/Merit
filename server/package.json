@@ -21,6 +21,7 @@
     "mongodb": "^3.5.9",
     "nodemon": "^2.0.4",
     "passport": "^0.4.1",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "request": "^2.88.2"
   }
 }
