@@ -8,27 +8,34 @@ import { Container } from 'react-bootstrap'
 export default class Utbildningar extends Component {
     constructor(props) {
         super(props)
+
         this.state = {
             omgång: 'HT2020',
             tillfälle: 'Urval1',
             urvalsGrupp: 'BI',
             utbildningar: [],
-            sökord: 'samhäll',
+            sökord: 'data',
             totUtbildningar: 0
         }
 
         this.kolumner = [{
             dataField: 'program',
             text: 'Program',
-            sort: true,
-
+            sort: true
         }, {
             dataField: 'poäng',
             text: 'Poäng',
             sort: true,
-            formatter: (cell, row) => {
-                // Kolla om användarens merit är nära eller inte
-                console.log(row.poäng);
+            type: 'number',
+            formatter: (cell, row, rowIndex) => {
+                // Är float?
+                if(!cell.match(/^\d+\.\d+$/)) {
+                    return cell
+                }
+                let diff = this.props.meritvärde - cell
+                if (diff >= 0) return <p style={{color: 'green'}}>{cell}</p>
+                else if (diff < 0 && diff > -1) return <p style={{color: 'orange'}}>{cell}</p>
+                else return <p style={{color: 'red'}}>{cell}</p> 
             }
         },
         {
@@ -120,7 +127,8 @@ export default class Utbildningar extends Component {
         return(
             <Container>
                 <h1>Utbildningar</h1>
-                <this.Bord/>
+                <h6>Ditt meritvärde: {this.props.meritvärde}</h6>
+                <this.Bord />
             </Container>
         )
     }

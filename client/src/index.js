@@ -9,9 +9,8 @@ import Home from './pages/Home/Home'
 import * as serviceWorker from './config/serviceWorker'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Home />
-  </React.StrictMode>,
+  <Home />
+  ,
   document.getElementById('root')
 )
 

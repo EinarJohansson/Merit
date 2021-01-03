@@ -10,6 +10,8 @@ export default class Utbildning extends Component {
         super(props)
 
         this.state = {
+            program: '',
+            inriktning: '',
             valProgram: '',
             valInriktning: ''
         }
@@ -32,8 +34,8 @@ export default class Utbildning extends Component {
     componentDidMount() {
         this.setState({
             program: this.props.program,
-            valProgram: this.props.program || this.program[0], // Sätter standard ifall inte programmet är bestämt.
             inriktning: this.props.inriktning,
+            valProgram: this.props.program || this.program[0], // Sätter standard ifall inte programmet är bestämt.
             valInriktning: this.props.inriktning
         })
     }
