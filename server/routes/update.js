@@ -118,4 +118,17 @@ router.post('/remove', authCheck, (req, res) => {
     else res.sendStatus(400)
 })
 
+ router.post('/merit', authCheck, (req, res) => {
+    if (req.body.merit && req.body.jämföreseltal && req.body.meritvärde) {
+        // Lägg till eller ändra befintlig
+        insert(req.user, {  'merit': req.body.merit,
+                            'jämföreseltal': req.body.jämföreseltal,
+                            'meritvärde': req.body.meritvärde
+        })
+        .then(data => console.log(data))
+        .catch(err => console.error(err))    
+    }
+    res.redirect('/')
+})
+
 module.exports = router

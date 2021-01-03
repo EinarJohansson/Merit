@@ -19,7 +19,7 @@ export default class Profil extends React.Component {
     }
 
     componentWillMount() {
-        const data = Object.entries(this.props.kurser).map((e) => {            
+        const data = Object.entries(this.props.kurser).map(e => {            
             e[1].kurs = e[0]
             return e[1]
         })

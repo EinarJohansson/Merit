@@ -25,7 +25,11 @@ export default class Utbildningar extends Component {
         }, {
             dataField: 'poäng',
             text: 'Poäng',
-            sort: true   
+            sort: true,
+            formatter: (cell, row) => {
+                // Kolla om användarens merit är nära eller inte
+                console.log(row.poäng);
+            }
         },
         {
             dataField: 'lärosäte',
@@ -70,7 +74,6 @@ export default class Utbildningar extends Component {
             throw new Error("failed to authenticate user")
         })
         .then(res => {
-            console.log(res.aaData)
             // Formatera datat
             let formaterad = res.aaData.map(program => (
                     {

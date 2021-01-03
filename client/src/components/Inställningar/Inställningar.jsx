@@ -132,7 +132,7 @@ export default class Utbildning extends Component {
 
     render() {
         Object.filter = (obj, predicate) => 
-        Object.keys(obj)
+            Object.keys(obj)
               .filter( key => predicate(obj[key]) )
               .reduce( (res, key) => (res[key] = obj[key], res), {} )
 
@@ -140,6 +140,26 @@ export default class Utbildning extends Component {
         const [totalaKurser, pågåendeKurser, kommandeKurser, avslutadeKurser] = this.räknaKurser()
         const jämföreseltal = this.jämföreseltal(poängTot)
         const [meritKurser, meritPoäng] = this.meritPoäng()
+
+        const data = {
+            merit: {
+                poäng: meritPoäng,
+                kurser: meritKurser
+            },
+            jämföreseltal: jämföreseltal,
+            meritvärde: jämföreseltal + meritPoäng
+        }
+        // Lagra i databasen
+        fetch('/update/merit', {
+            method: 'POST',
+            credentials: "include",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Credentials": true
+            },
+            body: JSON.stringify(data)
+        })
 
         return (
             <div className="row" style={{'margin-bottom': '100px'}}>

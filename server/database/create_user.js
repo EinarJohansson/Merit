@@ -2,7 +2,7 @@ const { Double } = require('mongodb')
 
 // Load environment variables
 require('dotenv').config()
-
+const _ = require('lodash')
 const MongoClient = require('mongodb').MongoClient
 
 const create = (user) => {
@@ -12,8 +12,11 @@ const create = (user) => {
     client.connect(error => {
       if (error) return reject(error)
       const users = client.db('merit').collection('users')
+      
+      // Ta bort picture eftersom den urlen kan ändras
+      const noPic = _.omit(user, 'picture')
 
-      users.find(user).toArray((err, response) => {
+      users.find(noPic).toArray((err, response) => {
         if (err) return reject(err)
 
         if (response.length > 0) {
