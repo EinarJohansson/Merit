@@ -4,6 +4,7 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css'
 import paginationFactory, { PaginationProvider, PaginationListStandalone } from 'react-bootstrap-table2-paginator'
 import { Container } from 'react-bootstrap'
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 
 export default class Utbildningar extends Component {
     constructor(props) {
@@ -19,6 +20,11 @@ export default class Utbildningar extends Component {
         }
 
         this.kolumner = [{
+            dataField: 'key',
+            text: 'Key',
+            sort: true,
+            hidden: true
+        }, {
             dataField: 'program',
             text: 'Program',
             sort: true
@@ -53,6 +59,7 @@ export default class Utbildningar extends Component {
             custom: false,
             totalSize: this.state.totUtbildningar,
             sizePerPage: 10,
+            showTotal: true,
             hideSizePerPage: true
         }
 
@@ -82,11 +89,12 @@ export default class Utbildningar extends Component {
         })
         .then(res => {
             // Formatera datat
-            let formaterad = res.aaData.map(program => (
+            let formaterad = res.aaData.map((program, index) => (
                     {
                         program: program[2],
                         lärosäte: program[4],
-                        poäng: program[6]
+                        poäng: program[6],
+                        key: index
                     }))
             
             this.setState({
@@ -100,28 +108,33 @@ export default class Utbildningar extends Component {
     }
     
     Bord() {
+        const { SearchBar } = Search
+        const pagination = paginationFactory(this.options)
         return (
-            <PaginationProvider pagination={ paginationFactory(this.options) } >
-                {({ paginationProps, paginationTableProps}) => (
-                    <div>
-                        <PaginationListStandalone { ...paginationProps } />
-                        <BootstrapTable
-                            bootstrap4
-                            bordered={false}
-                            keyField='kurs'
-                            data={this.state.utbildningar}
-                            columns={this.kolumner}
-                            wrapperClasses="table-responsive"
-                            hover
-                            noDataIndication="Inga program hittades!"
-                            defaultSorted={this.defaultSorted} 
-                            defaultSortDirection="asc"
-                            { ...paginationTableProps }
-                        />
-                    </div>
-                )}
-            </PaginationProvider>        
-        )}
+            <div>
+                <ToolkitProvider
+                    bootstrap4
+                    keyField='key'
+                    data={this.state.utbildningar}
+                    columns={this.kolumner}
+                    search
+                >
+                    {
+                        props => (
+                            <div>
+                                <SearchBar {...props.searchProps} />
+                                <BootstrapTable
+                                    defaultSorted={this.defaultSorted}
+                                    pagination={pagination}
+                                    {...props.baseProps}
+                                />
+                            </div>
+                        )
+                    }
+                </ToolkitProvider>
+            </div>
+        )
+    }
 
     render() {
         return(
