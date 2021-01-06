@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css'
-import paginationFactory, { PaginationProvider, PaginationListStandalone } from 'react-bootstrap-table2-paginator'
+import paginationFactory from 'react-bootstrap-table2-paginator'
 import { Container } from 'react-bootstrap'
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 
@@ -11,12 +11,9 @@ export default class Utbildningar extends Component {
         super(props)
 
         this.state = {
-            omgång: 'HT2020',
-            tillfälle: 'Urval1',
-            urvalsGrupp: 'BI',
-            utbildningar: [],
-            sökord: 'data',
-            totUtbildningar: 0
+            termin: 'HT2020',
+            urval: '1',
+            utbildningar: []
         }
 
         this.kolumner = [{
@@ -69,10 +66,8 @@ export default class Utbildningar extends Component {
     componentDidMount() {
         // Hämta utbildningar från server
         let url = '/data/utbildningar'
-                + '?omgång='    + this.state.omgång 
-                + '&tillfälle=' + this.state.tillfälle
-                + '&urval='     + this.state.urvalsGrupp
-                + '&sökord='    + this.state.sökord
+                + '?urval='     + this.state.urval 
+                + '&termin='    + this.state.termin
 
         fetch(url, {
             method: 'GET',
@@ -89,7 +84,7 @@ export default class Utbildningar extends Component {
         })
         .then(res => {
             // Formatera datat
-            let formaterad = res.aaData.map((program, index) => (
+            let formaterad = res[0].program.map((program, index) => (
                     {
                         program: program[2],
                         lärosäte: program[4],
@@ -98,12 +93,9 @@ export default class Utbildningar extends Component {
                     }))
             
             this.setState({
-                utbildningar: formaterad,
-                totUtbildningar: res.iTotalRecords
+                utbildningar: formaterad
             })
-
-            console.log(this.state.utbildningar)
-            console.log(res.iTotalRecords)
+            
         })
     }
     

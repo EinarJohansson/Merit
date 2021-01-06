@@ -40,53 +40,56 @@ router.get('/kurser', authCheck, (req, res) => {
 })
 
 router.get('/utbildningar', authCheck, (req, res) => {
-    const base = 'http://statistik.uhr.se/rest/stats/tableData?request='
-
-    const params = {
-        "tillfalle":req.query.tillfälle,
-        "vy":"Antagningspoang",
-        "antagningsomgang":req.query.omgång,
-        "utbildningstyp":"p",
-        "fritextFilter": req.query.sökord,
-        "urvalsGrupp": req.query.urval,
-        "firstResult":0,
-        // "maxResults":25,
-        "sorteringsKolumn":1,
-        "sorteringsOrdningDesc":false,
-        "requestNumber":1,
-        "paginate":true
-    }
-
-    let url = base + JSON.stringify(params)
+    // Kontrollera mottagandet av termin och urval
+    if (!req.query.urval || !req.query.termin)
+        return res.sendStatus(404)
     
-    var options = {
-        'method': 'GET',
-        'url': url
-    } 
-
-    request(options, (error, response) => {
-        if (error) throw new Error(error)
-        res.send(response.body)
-    })
-
-    /* 
-    https://statistik.uhr.se/rest/stats/tableData?request=
-        {
-            "tillfalle":"Sokande",
-            "vy":"Total",
-            "antagningsomgang":"HT2020",
-            "larosateId":"",
-            "utbildningstyp":"",
-            "fritextFilter":"datateknik",
-            "urvalsGrupp":"",
-            "firstResult":0,
-            "maxResults":25,
-            "sorteringsKolumn":1,
-            "sorteringsOrdningDesc":false,
-            "requestNumber":1,
-            "paginate":true
+    // hämta från databasen
+    const client = new MongoClient(process.env.DB_URL)
+    client.connect(error => {
+        if (error) {
+            client.close()
+            return reject(error)
         }
-    */
+
+        const urval = req.query.urval
+        const termin = req.query.termin
+
+        const agg = [
+            {
+              '$project': {
+                'aaData': 1, 
+                'urval': parseInt(urval)
+              }
+            }, {
+              '$match': {
+                'urval': 2
+              }
+            }, {
+              '$project': {
+                'program': {
+                  '$filter': {
+                    'input': '$aaData', 
+                    'as': 'data', 
+                    'cond': {
+                      '$in': [
+                        termin, '$$data'
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+        ]
+        
+        const utbildningar = client.db('merit').collection('Utbildningar')
+
+        utbildningar.aggregate(agg).toArray((err, result) => {
+            client.close()
+            if (err) res.sendStatus(500)
+            else res.send(result)
+        })
+    })
 })
 
 
