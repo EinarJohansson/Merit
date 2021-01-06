@@ -11,7 +11,7 @@ export default class Utbildningar extends Component {
         super(props)
 
         this.state = {
-            termin: 'HT2020',
+            termin: 'VT2019',
             urval: '1',
             utbildningar: []
         }
@@ -83,6 +83,28 @@ export default class Utbildningar extends Component {
             throw new Error("failed to authenticate user")
         })
         .then(res => {
+
+            /*
+            TEST
+            */
+
+           fetch('/data/program?kod=LU-80101', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Credentials": true
+                }
+            })
+            .then(p => {
+                if (p.status === 200) return p.json()
+            })
+            .then(q => {
+                console.log('OMG KLARA');
+                console.log(q)
+            })
+
             // Formatera datat
             let formaterad = res[0].program.map((program, index) => (
                     {
@@ -95,7 +117,6 @@ export default class Utbildningar extends Component {
             this.setState({
                 utbildningar: formaterad
             })
-            
         })
     }
     

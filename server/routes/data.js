@@ -92,5 +92,55 @@ router.get('/utbildningar', authCheck, (req, res) => {
     })
 })
 
+router.get('/program', authCheck, (req, res) => {
+  if (!req.query.kod) return res.sendStatus(404)
+
+  const client = new MongoClient(process.env.DB_URL)
+  client.connect(error => {
+    if (error) {
+      client.close()
+      return reject(error)
+    }
+
+    const agg = [
+        {
+          '$project': {
+            'program': {
+              '$filter': {
+                'input': '$aaData', 
+                'as': 'data', 
+                'cond': {
+                  '$eq': [
+                    {
+                      '$arrayElemAt': [
+                        '$$data', 3
+                      ]
+                    }, req.query.kod
+                  ]
+                }
+              }
+            }, 
+            'urval': true
+          }
+        }, {
+          '$group': {
+            '_id': 'historik', 
+            'urval': {
+              '$push': '$program'
+            }
+          }
+        }
+    ]
+      
+    const utbildningar = client.db('merit').collection('Utbildningar')
+    
+    utbildningar.aggregate(agg).toArray((err, result) => {
+      client.close()
+      if (err) res.sendStatus(500)
+      else res.send(result)
+    })
+  })
+})
+
 
 module.exports = router
