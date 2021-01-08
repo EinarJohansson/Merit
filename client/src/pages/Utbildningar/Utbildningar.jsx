@@ -31,13 +31,19 @@ export default class Utbildningar extends Component {
             text: 'Program',
             sort: true,
             type: 'string',
-            formatter: (cell, row, rowIndex) => <Link to={
-                {
+            formatter: (cell, row, rowIndex) => (
+                <Link to={{
                     pathname: '/utbildningar/'+row.kod,
                     state: { program: cell}
-                }
-            }
-            >{cell}</Link>
+                }}
+                style={{
+                    'color': '#542d69',
+                    'font-weight': 'bold'
+                }}
+                >
+                    {cell}
+                </Link>
+            )
         }, {
             dataField: 'poäng',
             text: 'Poäng',

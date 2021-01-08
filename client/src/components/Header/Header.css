@@ -1,7 +1,3 @@
-a {
-    font-weight: bold;
-}
-
 .navbar {
     background-color: #dee2e6;
     padding-top: 0rem !important;
@@ -10,16 +6,17 @@ a {
     padding-right: 32px !important;
 }
 
-#profil, #utbildningar, #statistik, #loggaut {
+div.navbar-nav > a {
     padding-left: 40px !important;
     padding-right: 40px !important;
     padding-top: 32px !important;
     padding-bottom: 32px !important;
     color: #212529;
     text-decoration: none;
+    font-weight: bold;
 }
 
-.active:hover {
+div.navbar-nav > a.active:hover {
     background-color: #3d214d !important;
     color: white;
 }
@@ -28,8 +25,4 @@ div.navbar-nav > a:hover:not(.active) {
   background-color: #ced4da;
   color: #212529 !important;
   box-shadow: inset 0 -8px 0 0 #542d69; 
-}
-
-.container-fluid {
-    padding: 0px
 }

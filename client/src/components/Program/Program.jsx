@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { Container, Breadcrumb } from 'react-bootstrap'
+import Rubrik from '../../components/Rubrik/Rubrik'
 import './Program.css';
  
 function historik(kod) {
@@ -29,7 +30,6 @@ export default function Program(props) {
     const [program, setProgram] = useState('');
 
     const getProgram = async (kod) => {
-        console.log('tjaa!');
         const res = await historik(kod)
         const programNamn = res[0].urval[0][0][2]
         setProgram(programNamn)
@@ -51,7 +51,10 @@ export default function Program(props) {
                 <Breadcrumb.Item href="/utbildningar">Utbildningar</Breadcrumb.Item>
                 <Breadcrumb.Item active>{program}</Breadcrumb.Item>
             </Breadcrumb>
-            <h1>{program}</h1>
+            <Rubrik
+                page={program}
+                program
+            />
         </Container>
     )
 }

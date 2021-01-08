@@ -12,7 +12,7 @@ function getWindowDimensions() {
       width,
       height
     };
-  }
+}
   
 function useWindowDimensions() {
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
@@ -27,7 +27,7 @@ function useWindowDimensions() {
     }, []);
   
     return windowDimensions;
-  }
+}
   
 export default function Header(props) {
     const { height, width } = useWindowDimensions();
