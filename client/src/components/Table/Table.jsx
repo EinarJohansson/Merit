@@ -103,14 +103,13 @@ export default class Table extends Component {
     }
 
     VisaTable(props) {
-        const Caption = () => <h3>{props.status}</h3>
-
         const options = {
             custom: true,
             totalSize: this.props.kurser.filter(kurs => kurs.status === props.status.toLowerCase()).length,
-            sizePerPage: isMobile ? 5 : 7,
-            withFirstAndLast: false
+            sizePerPage: isMobile ? 5 : 7
         }
+
+        const Caption = () => <h3>{props.status} kurser ({options.totalSize})</h3>
       
         return (
             <PaginationProvider pagination={ paginationFactory(options) } >
@@ -127,7 +126,7 @@ export default class Table extends Component {
                             wrapperClasses="table-responsive"
                             hover
                             rowEvents={this.rowEvents}
-                            noDataIndication="Lägg till en kurs!"
+                            noDataIndication={`Inga ${props.status.toLowerCase()} kurser`}
                             defaultSorted={this.defaultSorted} 
                             defaultSortDirection="asc"
                             { ...paginationTableProps }
