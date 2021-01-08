@@ -56,10 +56,10 @@ export default function Header(props) {
                             <NavLink id="statistik" exact to='/statistik' activeStyle={active}>Statistik</NavLink>
                             {width < 1000 ||  isMobile ? 
                                 (
-                                    <NavLink id="loggaut" to='http://localhost:3000/logout' >Logga ut <FontAwesomeIcon icon={faSignOutAlt}/></NavLink>
+                                    <a href="http://localhost:3000/logout">Logga ut <FontAwesomeIcon icon={faSignOutAlt}/></a>
                                 ) : 
                                 (
-                                    <NavLink id="loggaut" to='http://localhost:3000/logout' style={{'position': 'absolute', 'right': '0px'}}>Logga ut <FontAwesomeIcon icon={faSignOutAlt}/></NavLink>
+                                    <a href="http://localhost:3000/logout" style={{'position': 'absolute', 'right': '0px'}}>Logga ut <FontAwesomeIcon icon={faSignOutAlt}/></a>
                                 )
                             }
                         </Nav>

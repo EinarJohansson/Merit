@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react'
 import { Container, Breadcrumb } from 'react-bootstrap'
 import Rubrik from '../../components/Rubrik/Rubrik'
 import './Program.css';
- 
+import {NavLink} from "react-router-dom"
+
 function historik(kod) {
     return new Promise((resolve, reject) => {                
         const url = '/data/program?kod=' + kod
@@ -47,10 +48,14 @@ export default function Program(props) {
     
     return(
         <Container>
-            <Breadcrumb>
-                <Breadcrumb.Item href="/utbildningar">Utbildningar</Breadcrumb.Item>
-                <Breadcrumb.Item active>{program}</Breadcrumb.Item>
-            </Breadcrumb>
+            <ol className="breadcrumb">
+                <li className="breadcrumb-item">
+                    <NavLink to="/utbildningar">
+                        Utbildningar
+                    </NavLink>
+                    <Breadcrumb.Item active> / {program}</Breadcrumb.Item>
+                </li>
+            </ol>
             <Rubrik
                 page={program}
                 program

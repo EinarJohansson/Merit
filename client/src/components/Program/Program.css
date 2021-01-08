@@ -3,7 +3,7 @@
     background-color: transparent;
 }
 
-.breadcrumb .breadcrumb-item > a {
+.breadcrumb .breadcrumb-item a.active {
     font-weight: bold;
     color: #542d69;
 }
