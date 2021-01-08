@@ -4,12 +4,13 @@ import Start from '../../components/Start/Start'
 import Profil from '../Profil/Profil'
 import Utbildningar from '../Utbildningar/Utbildningar'
 import Statistik from '../Statistik/Statistik'
-
+import Program from '../../components/Program/Program'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
+  withRouter
 } from "react-router-dom"
 
 export default class Home extends Component {
@@ -54,9 +55,12 @@ export default class Home extends Component {
   render() {
     const { authenticated, authenticating, user } = this.state
     if (authenticating) return null
+
+    const AktivHeader = withRouter(Header);
+
     return (
       <Router>
-        <Header
+        <AktivHeader
           authenticated={authenticated}
         />
 
@@ -85,7 +89,7 @@ export default class Home extends Component {
             }
           </Route>
 
-          <Route path="/utbildningar">
+          <Route exact path="/utbildningar">
             {!authenticated &&
               <Redirect to="/" />
             }
@@ -95,6 +99,8 @@ export default class Home extends Component {
               />
             }
           </Route>
+
+          <Route path="/utbildningar/:kod" component={Program} />
 
           <Route path="*">
             <h1>Du har nog kommit lite fel <span role="img" aria-label="404">👁👄👁</span></h1>

@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import './Inställningar.css';
-import { Card, Accordion, Button, Form } from 'react-bootstrap'
+import { Card, Accordion, Button, Form, useAccordionToggle } from 'react-bootstrap'
 import Betyg from '../Charts/Betyg'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import AccordionContext from "react-bootstrap/AccordionContext"
 
-var math_ = require('lodash/fp/math')
+const math_ = require('lodash/fp/math')
 
 export default class Utbildning extends Component {
     constructor(props) {
@@ -29,6 +32,7 @@ export default class Utbildning extends Component {
         this.setInriktning = this.setInriktning.bind(this)
         this.sparaUtbildning = this.sparaUtbildning.bind(this)
         this.Program = this.Program.bind(this)
+        this.CustomToggle = this.CustomToggle.bind(this)
     }
 
     componentDidMount() {
@@ -39,6 +43,33 @@ export default class Utbildning extends Component {
             valInriktning: this.props.inriktning
         })
     }
+
+    CustomToggle({ children, eventKey, callback }) {
+        const currentEventKey = React.useContext(AccordionContext);
+
+        const isCurrentEventKey = currentEventKey === eventKey;
+
+        const decoratedOnClick = useAccordionToggle(
+            eventKey,
+            () => callback && callback(eventKey)
+        )
+        let icon = isCurrentEventKey ? faAngleDown : faAngleRight
+
+        return (
+            <Card.Header onClick={decoratedOnClick}>
+                    <div className="d-flex">    
+                        <p
+                            style={{ 'color': '#212529', 'margin-bottom': '0px', 'font-weight': 'bold'}}
+                            className="mr-auto"
+                        >
+                            {children}
+                        </p>
+                        <FontAwesomeIcon icon={icon} className="ml-auto"/>
+                    </div>
+            </Card.Header>
+        )
+    }
+      
 
     sparaUtbildning(event) {
         event.preventDefault()
@@ -180,11 +211,7 @@ export default class Utbildning extends Component {
                 <div className="col">
                     <Accordion>
                         <Card>
-                            <Card.Header>
-                                <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                    Din utbildning
-                                </Accordion.Toggle>
-                            </Card.Header>
+                            <this.CustomToggle eventKey="0">Din utbildning</this.CustomToggle>
                             <Accordion.Collapse eventKey="0">
                                 <Card.Body>
                                     <Form onSubmit={this.sparaUtbildning}>
@@ -209,11 +236,7 @@ export default class Utbildning extends Component {
                         </Card>
                         
                         <Card>
-                            <Card.Header>
-                                <Accordion.Toggle as={Button} variant="link" eventKey="1">
-                                    Meritvärde
-                                </Accordion.Toggle>
-                            </Card.Header>
+                            <this.CustomToggle eventKey="1">Meritvärde</this.CustomToggle>
                             <Accordion.Collapse eventKey="1">
                                 <Card.Body>
                                     {/* Visa meritvärde: jämförelsevärde, meritpoäng och vilka kurser som ger meritpoäng */}
@@ -228,11 +251,7 @@ export default class Utbildning extends Component {
                             </Accordion.Collapse>
                         </Card>
                         <Card>
-                            <Card.Header>
-                                <Accordion.Toggle as={Button} variant="link" eventKey="2">
-                                    Kurser
-                                </Accordion.Toggle>
-                            </Card.Header>
+                            <this.CustomToggle eventKey="2">Kurser</this.CustomToggle>
                             <Accordion.Collapse eventKey="2">
                                 <Card.Body>
                                     {/* Totala poäng, avslutade poäng, pågående poäng, kommande poäng */}
@@ -245,11 +264,7 @@ export default class Utbildning extends Component {
                             </Accordion.Collapse>
                         </Card>
                         <Card>
-                            <Card.Header>
-                                <Accordion.Toggle as={Button} variant="link" eventKey="3">
-                                    Betyg
-                                </Accordion.Toggle>
-                            </Card.Header>
+                            <this.CustomToggle eventKey="3">Betyg</this.CustomToggle>
                             <Accordion.Collapse eventKey="3">
                                 <Card.Body>
                                     {/* Visa fördelning av betygen */}

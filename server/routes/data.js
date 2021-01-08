@@ -94,7 +94,7 @@ router.get('/utbildningar', authCheck, (req, res) => {
 
 router.get('/program', authCheck, (req, res) => {
   if (!req.query.kod) return res.sendStatus(404)
-
+  
   const client = new MongoClient(process.env.DB_URL)
   client.connect(error => {
     if (error) {

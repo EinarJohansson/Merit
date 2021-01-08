@@ -5,6 +5,8 @@ import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.m
 import paginationFactory from 'react-bootstrap-table2-paginator'
 import { Container } from 'react-bootstrap'
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import { Link } from "react-router-dom"
+import Rubrik from '../../components/Rubrik/Rubrik'
 
 export default class Utbildningar extends Component {
     constructor(props) {
@@ -19,12 +21,23 @@ export default class Utbildningar extends Component {
         this.kolumner = [{
             dataField: 'key',
             text: 'Key',
-            sort: true,
+            hidden: true
+        }, {
+            dataField: 'kod',
+            text: 'kod',
             hidden: true
         }, {
             dataField: 'program',
             text: 'Program',
-            sort: true
+            sort: true,
+            type: 'string',
+            formatter: (cell, row, rowIndex) => <Link to={
+                {
+                    pathname: '/utbildningar/'+row.kod,
+                    state: { program: cell}
+                }
+            }
+            >{cell}</Link>
         }, {
             dataField: 'poäng',
             text: 'Poäng',
@@ -63,7 +76,7 @@ export default class Utbildningar extends Component {
         this.Bord = this.Bord.bind(this)
     }
     
-    componentDidMount() {
+    componentDidMount() {      
         // Hämta utbildningar från server
         let url = '/data/utbildningar'
                 + '?urval='     + this.state.urval 
@@ -83,36 +96,16 @@ export default class Utbildningar extends Component {
             throw new Error("failed to authenticate user")
         })
         .then(res => {
-
-            /*
-            TEST
-            */
-
-           fetch('/data/program?kod=LU-80101', {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": true
-                }
-            })
-            .then(p => {
-                if (p.status === 200) return p.json()
-            })
-            .then(q => {
-                console.log('OMG KLARA');
-                console.log(q)
-            })
-
             // Formatera datat
             let formaterad = res[0].program.map((program, index) => (
-                    {
-                        program: program[2],
-                        lärosäte: program[4],
-                        poäng: program[6],
-                        key: index
-                    }))
+                {
+                    program: program[2],
+                    kod: program[3],
+                    lärosäte: program[4],
+                    poäng: program[6],
+                    key: index
+                }
+            ))
             
             this.setState({
                 utbildningar: formaterad
@@ -132,18 +125,16 @@ export default class Utbildningar extends Component {
                     columns={this.kolumner}
                     search
                 >
-                    {
-                        props => (
-                            <div>
-                                <SearchBar {...props.searchProps} />
-                                <BootstrapTable
-                                    defaultSorted={this.defaultSorted}
-                                    pagination={pagination}
-                                    {...props.baseProps}
-                                />
-                            </div>
-                        )
-                    }
+                    {props => (
+                        <div>
+                            <SearchBar {...props.searchProps} />
+                            <BootstrapTable
+                                defaultSorted={this.defaultSorted}
+                                pagination={pagination}
+                                {...props.baseProps}
+                            />
+                        </div>
+                    )}
                 </ToolkitProvider>
             </div>
         )
@@ -152,7 +143,9 @@ export default class Utbildningar extends Component {
     render() {
         return(
             <Container>
-                <h1>Utbildningar</h1>
+                <Rubrik
+                    page={"Utbildningar"}
+                />
                 <h6>Ditt meritvärde: {this.props.meritvärde}</h6>
                 <this.Bord />
             </Container>

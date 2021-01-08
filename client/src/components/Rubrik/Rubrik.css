@@ -1,0 +1,12 @@
+#rubrik-div {
+    margin-top: 64px;
+    margin-bottom: 24px;
+}
+
+#rubrik {
+    margin: 0px;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #dee2e6;
+    padding-bottom: 8px;
+} 

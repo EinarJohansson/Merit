@@ -2,6 +2,7 @@ import React from 'react'
 import Table from '../../components/Table/Table'
 import Inställningar from '../../components/Inställningar/Inställningar'
 import { Container } from 'react-bootstrap'
+import Rubrik from '../../components/Rubrik/Rubrik'
 
 export default class Profil extends React.Component {
     constructor(props) {
@@ -108,6 +109,9 @@ export default class Profil extends React.Component {
     render() {
         return (
             <Container>
+                <Rubrik 
+                    page={'Profil'}
+                />
                 <Inställningar
                     namn={this.props.namn}
                     program={this.state.program}
