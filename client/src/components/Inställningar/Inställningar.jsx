@@ -31,7 +31,6 @@ export default class Utbildning extends Component {
         this.setProgram = this.setProgram.bind(this)
         this.setInriktning = this.setInriktning.bind(this)
         this.sparaUtbildning = this.sparaUtbildning.bind(this)
-        this.Program = this.Program.bind(this)
         this.CustomToggle = this.CustomToggle.bind(this)
     }
 
@@ -59,7 +58,7 @@ export default class Utbildning extends Component {
             <Card.Header onClick={decoratedOnClick}>
                     <div className="d-flex">    
                         <p
-                            style={{ 'color': '#212529', 'margin-bottom': '0px', 'font-weight': 'bold'}}
+                            style={{ 'color': '#212529', 'marginBottom': '0px', 'fontWeight': 'bold'}}
                             className="mr-auto"
                         >
                             {children}
@@ -106,12 +105,6 @@ export default class Utbildning extends Component {
         this.setState({
             valInriktning: event.target.value
         })
-    }
-
-    Program(props) {
-        if (props.program === this.props.program)
-            return (<option selected>{props.program}</option>)
-        return (<option>{props.program}</option>)
     }
 
     räknaPoäng() {
@@ -195,12 +188,12 @@ export default class Utbildning extends Component {
         })
 
         return (
-            <div className="row" style={{'margin-bottom': '100px'}}>
+            <div className="row" style={{'marginBottom': '100px'}}>
                 {/* Information om användarens utbildning */}
                 <div className="col-lg-4 align-items-stretch">
                     <Card>
                         <Card.Img variant="top" referrerPolicy="no-referrer" src={this.props.bild} />
-                        <Card.Body style={{'border-bottom': '8px solid #542d69'}}>
+                        <Card.Body style={{'borderBottom': '8px solid #542d69'}}>
                             <Card.Title>{this.props.namn}</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted">{this.props.program || 'Inte bestämt'}</Card.Subtitle>
                             <Card.Subtitle className="mb-2 text-muted">{this.props.inriktning || 'Inte bestämt'}</Card.Subtitle>
@@ -218,8 +211,8 @@ export default class Utbildning extends Component {
                                         {/* Program */}
                                         <Form.Group controlId="utbildning.program">
                                             <Form.Label>Program</Form.Label>
-                                            <Form.Control as="select" onChange={this.setProgram}>
-                                                {this.program.map((program, index) => <this.Program key={index} program={program} />)}
+                                            <Form.Control as="select" defaultValue={this.props.program} onChange={this.setProgram}>
+                                                {this.program.map((program, index) => <option key={index}>{program}</option>)}
                                             </Form.Control>
                                         </Form.Group>
                                         {/* Inriktning */}

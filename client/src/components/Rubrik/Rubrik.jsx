@@ -7,11 +7,11 @@ export default function Rubrik(props) {
         <>
         {props.program ? 
             (
-            <div style={{'margin-top': '24px'}} id="rubrik-div">
+            <div style={{'marginTop': '24px'}} id="rubrik-div">
                 <h1 id="rubrik">{page}</h1>
             </div>
         ): (
-            <div style={{'margin-top': '64px'}} id="rubrik-div">
+            <div style={{'marginTop': '64px'}} id="rubrik-div">
                 <h1 id="rubrik">{page}</h1>
             </div>
         )

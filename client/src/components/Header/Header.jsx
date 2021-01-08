@@ -32,7 +32,7 @@ function useWindowDimensions() {
 export default function Header(props) {
     const { height, width } = useWindowDimensions();
     const active = {
-        "background-color": "#542d69",
+        "backgroundColor": "#542d69",
         "color": "white"
     }
     return (
@@ -49,7 +49,7 @@ export default function Header(props) {
             {props.authenticated ?
                 (
                     <Navbar.Collapse id="responsive-navbar-nav" >
-                        <Nav activeKey={props.location.pathname} style={{"justify-content": "unsafe center"}} className="container-fluid">
+                        <Nav activeKey={props.location.pathname} style={{"justifyContent": "unsafe center"}} className="container-fluid">
                             {/* <Nav.Link href='/'>Profil</Nav.Link> */}
                             <NavLink id="profil" exact to="/" activeStyle={active}>Profil</NavLink>                        
                             <NavLink id="utbildningar"strict to="/utbildningar" activeStyle={active}>Utbildningar</NavLink>

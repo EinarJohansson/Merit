@@ -32,7 +32,7 @@ export default class Table extends Component {
                 headerStyle: { 'backgroundColor': 'white' },
                 sort: true,
                 footerAlign: 'left',
-                footer: () => <Button onClick={this.nykurs} style={{'background-color': '#542d69','border-radius': '0px', 'border': 'none'}}>Lägg till kurs!</Button>,
+                footer: () => <Button onClick={this.nykurs} style={{'backgroundColor': '#542d69','borderRadius': '0px', 'border': 'none'}}>Lägg till kurs!</Button>,
                 footerAttrs: {colSpan: 5},
                 formatter: (cell, row) => {
                     return parseFloat(row.merit) > 0 ? cell + '🌟': cell
