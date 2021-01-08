@@ -200,7 +200,7 @@ export default class Utbildning extends Component {
                 <div className="col-lg-4 align-items-stretch">
                     <Card>
                         <Card.Img variant="top" referrerPolicy="no-referrer" src={this.props.bild} />
-                        <Card.Body>
+                        <Card.Body style={{'border-bottom': '8px solid #542d69'}}>
                             <Card.Title>{this.props.namn}</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted">{this.props.program || 'Inte bestämt'}</Card.Subtitle>
                             <Card.Subtitle className="mb-2 text-muted">{this.props.inriktning || 'Inte bestämt'}</Card.Subtitle>

@@ -1,4 +1,4 @@
-.accordion .card {
+.accordion .card:not(:last-of-type) {
     margin-bottom: 8px;
     border-radius: 0px;
 }
@@ -6,7 +6,7 @@
 .card-header {
     background-color: #dee2e6;
     padding: 16px 0px 16px 24px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .tab-content {

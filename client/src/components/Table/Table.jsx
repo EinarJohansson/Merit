@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
 import paginationFactory, { PaginationProvider, PaginationListStandalone } from 'react-bootstrap-table2-paginator'
 import VisaKurs from '../VisaKurs/VisaKurs'
-import { Carousel } from 'react-bootstrap'
+import { Button, Carousel } from 'react-bootstrap'
 import {isMobile, BrowserView, MobileView} from 'react-device-detect'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css'
 import './Table.css'
@@ -18,22 +18,22 @@ export default class Table extends Component {
             kurs: {}
         }
 
+        this.nykurs = () => {
+            this.setState({
+                visa: true,
+                kurs: {}
+            })
+        }
+
         this.kolumner = [
             {
                 dataField: 'kurs',
                 text: 'Kurs',
+                headerStyle: { 'backgroundColor': 'white' },
                 sort: true,
-                footerAlign: 'center',
-                footer: () => <FontAwesomeIcon icon={faPlusCircle} size="2x" className="text-primary"/>,
-                footerAttrs: {colSpan: 4},
-                footerEvents: {
-                    onClick: (e, column, columnIndex) => {
-                        this.setState({
-                            visa: true,
-                            kurs: {}
-                        })
-                    }
-                },
+                footerAlign: 'left',
+                footer: () => <Button onClick={this.nykurs} style={{'background-color': '#542d69','border-radius': '0px', 'border': 'none'}}>Lägg till kurs!</Button>,
+                footerAttrs: {colSpan: 5},
                 formatter: (cell, row) => {
                     return parseFloat(row.merit) > 0 ? cell + '🌟': cell
                 }
@@ -41,6 +41,7 @@ export default class Table extends Component {
             {
                 dataField: 'poäng',
                 text: 'Poäng',
+                headerStyle: { 'backgroundColor': 'white' },
                 sort: true,
                 sortFunc: (a, b, order) => {
                     if (order === 'asc') {
@@ -52,24 +53,44 @@ export default class Table extends Component {
             {
                 dataField: 'typ',
                 text: 'Kod',
+                headerStyle: { 'backgroundColor': 'white' },
                 sort: true
             },
             {
                 dataField: 'betyg',
                 text: 'Betyg',
+                headerStyle: { 'backgroundColor': 'white' },
                 sort: true
+            },
+            {
+                dataField: 'redigera',
+                text: 'Redigera',
+                headerStyle: { 'backgroundColor': 'white' },
+                isDummyField: true,
+                formatter: (cell, row, rowIndex) => <FontAwesomeIcon icon={faEdit}/>,
+                events: {
+                    onClick: (e, column, columnIndex, row, rowIndex) => {
+                        this.setState({
+                            visa: true,
+                            kurs: row
+                        })  
+                    },
+                },                 
+                style: {'cursor': 'pointer'},
+                align: 'center',
+                headerAlign: 'center'
             }
         ]
-
-        this.visaKurs = {
-            onClick: (e, row, rowIndex) => {
-                // Sätt modalens state till att visa.
-                this.setState({
-                    visa: true,
-                    kurs: row
-                })
+        
+        if (isMobile)
+            this.rowEvents = {
+                onClick: (e, row, rowIndex) => {
+                    this.setState({
+                        visa: true,
+                        kurs: row
+                    })
+                }                  
             }
-        }
 
         this.defaultSorted = [{
             dataField: 'kurs',
@@ -102,10 +123,10 @@ export default class Table extends Component {
                             bordered={false}
                             keyField='kurs'
                             data={props.kurser}
-                            columns={isMobile ? this.kolumner.filter(kolumn => kolumn.dataField !== 'typ' ) : this.kolumner}
+                            columns={isMobile ? this.kolumner.filter(kolumn => kolumn.dataField !== 'typ' && kolumn.dataField !== 'redigera' ) : this.kolumner}
                             wrapperClasses="table-responsive"
-                            rowEvents={this.visaKurs}
                             hover
+                            rowEvents={this.rowEvents}
                             noDataIndication="Lägg till en kurs!"
                             defaultSorted={this.defaultSorted} 
                             defaultSortDirection="asc"
