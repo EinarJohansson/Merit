@@ -12,3 +12,13 @@
         height: auto;
     }
 }
+
+li.page-item.active > a.page-link {
+    background-color: #542d69;
+    border: none;
+}
+
+li.page-item > a.page-link {
+    color: #542d69;
+    border: none;
+}
