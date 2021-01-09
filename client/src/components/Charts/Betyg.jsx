@@ -9,7 +9,7 @@ function usePrevious(value) {
         ref.current = value;
     })
     return ref.current
-  }
+}
 
 export default function Betyg(props) {
     const avslutadeIndex = 3
@@ -18,9 +18,9 @@ export default function Betyg(props) {
     const [betyg, setBetyg] = useState(props.data)
 
     const statusar = [
-        {status :'Pågående', färg: "#F5E1FD"},
-        {status :'Kommande', färg: "#B399D4"},
-        {status :'Avslutade', färg: "#AF76C3"}
+        {title :'Pågående', color: "#F5E1FD", strokeWidth: 6,},
+        {title :'Kommande', color: "#B399D4", strokeWidth: 6},
+        {title :'Avslutade', color: "#AF76C3", strokeWidth: 6}
     ]
 
     const prevBetyg = usePrevious(props.data);
@@ -30,6 +30,7 @@ export default function Betyg(props) {
     }, [prevBetyg, props.data])
 
     const handleChange = (val) => {
+        val.sort((a, b) => a - b)
         setValue(val)
     }
 
@@ -51,21 +52,22 @@ export default function Betyg(props) {
                             (value.map(i => <VerticalBarSeries
                                 cluster="stack 1"
                                 data={betyg[i-1]}
-                                opacity={0.8}
-                                color={statusar[i-1].färg}
-                            />)
+                                opacity={1}
+                                color={statusar[i-1].color}
+                                animation={'noWobble'}
+                                />)
                             ): 
                             (<VerticalBarSeries
                                 data={[{x: 'Tomt 🤔', y: 0}]}
                             />)
                         }
                     <ToggleButtonGroup type="checkbox" value={value} onChange={handleChange}>
-                        {statusar.map((status, i) => <ToggleButton value={i+1}>{status.status}</ToggleButton>)}
+                        {statusar.map((status, i) => <ToggleButton value={i+1}>{status.title}</ToggleButton>)}
                     </ToggleButtonGroup>
                     </XYPlot>
                 </Col>
                 <Col>
-                    <DiscreteColorLegend colors={statusar.map(status => status.färg)} items={statusar.map(status => status.status)} />
+                    <DiscreteColorLegend items={statusar} />
                 </Col>
             </Row>
         </Container>
