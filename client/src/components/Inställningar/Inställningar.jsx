@@ -191,7 +191,7 @@ export default class Utbildning extends Component {
             <div className="row" style={{'marginBottom': '100px'}}>
                 {/* Information om användarens utbildning */}
                 <div className="col-lg-4 align-items-stretch">
-                    <Card>
+                    <Card style={{borderBottomLeftRadius: '0px', borderBottomRightRadius: '0px'}}>
                         <Card.Img variant="top" referrerPolicy="no-referrer" src={this.props.bild} />
                         <Card.Body style={{'borderBottom': '8px solid #542d69'}}>
                             <Card.Title>{this.props.namn}</Card.Title>

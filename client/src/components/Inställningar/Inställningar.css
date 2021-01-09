@@ -1,6 +1,5 @@
 .accordion .card:not(:last-of-type) {
     margin-bottom: 8px;
-    border-radius: 0px;
 }
 
 .card-header {
@@ -22,4 +21,17 @@
     position: absolute;
     right: 24px;
     height: 100%;
+}
+
+.btn-primary {
+    border: none;
+    background-color: #542d69;
+}
+
+.btn-primary:hover {
+    background-color: #3d214d;
+}
+
+.btn.btn-primary.active {
+    background-color: #3d214d !important;
 }
