@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
-import paginationFactory, { PaginationProvider, PaginationListStandalone } from 'react-bootstrap-table2-paginator'
+import paginationFactory, { PaginationProvider, PaginationListStandalone, PaginationTotalStandalone } from 'react-bootstrap-table2-paginator'
 import VisaKurs from '../VisaKurs/VisaKurs'
-import { Button, Carousel } from 'react-bootstrap'
+import { Alert, Button, Carousel } from 'react-bootstrap'
 import {isMobile, BrowserView, MobileView} from 'react-device-detect'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css'
 import './Table.css'
@@ -113,26 +113,35 @@ export default class Table extends Component {
       
         return (
             <PaginationProvider pagination={ paginationFactory(options) } >
-                {({ paginationProps, paginationTableProps}) => (
-                    <div>
-                        <PaginationListStandalone { ...paginationProps } />
-                        <Caption />
-                        <BootstrapTable
-                            bootstrap4
-                            bordered={false}
-                            keyField='kurs'
-                            data={props.kurser}
-                            columns={isMobile ? this.kolumner.filter(kolumn => kolumn.dataField !== 'typ' && kolumn.dataField !== 'redigera' ) : this.kolumner}
-                            wrapperClasses="table-responsive"
-                            hover
-                            rowEvents={this.rowEvents}
-                            noDataIndication={`Inga ${props.status.toLowerCase()} kurser`}
-                            defaultSorted={this.defaultSorted} 
-                            defaultSortDirection="asc"
-                            { ...paginationTableProps }
-                        />
-                    </div>
-                )}
+                {({ paginationProps, paginationTableProps}) => {
+                    const pageVisade = paginationProps.page * paginationProps.sizePerPage                    
+                    const visar = pageVisade > paginationProps.totalSize ? paginationProps.totalSize : pageVisade
+
+                    return (
+                        <div>
+                            <Caption />
+                            <Alert variant="light" style={{backgroundColor: '#EDDDF6', border: 'none'}}>
+                                <p style={{margin: '0px'}}>🌟 = Kursen ger meritpoäng!</p>
+                            </Alert>                            
+                            <span>Visar {visar} av {paginationProps.dataSize}</span>
+                            <PaginationListStandalone { ...paginationProps } />
+                            <BootstrapTable
+                                bootstrap4
+                                bordered={false}
+                                keyField='kurs'
+                                data={props.kurser}
+                                columns={isMobile ? this.kolumner.filter(kolumn => kolumn.dataField !== 'typ' && kolumn.dataField !== 'redigera' ) : this.kolumner}
+                                wrapperClasses="table-responsive"
+                                hover
+                                rowEvents={this.rowEvents}
+                                noDataIndication={`Inga ${props.status.toLowerCase()} kurser`}
+                                defaultSorted={this.defaultSorted} 
+                                defaultSortDirection="asc"
+                                { ...paginationTableProps }
+                            />
+                        </div>
+                    )
+                }}
             </PaginationProvider>
         )
     }
@@ -146,7 +155,7 @@ export default class Table extends Component {
 
     uppdateraTable(kurser) {
         this.props.uppdatera(kurser)
-    }
+    } 
     
     render() {
         return (

@@ -233,13 +233,16 @@ export default class Utbildning extends Component {
                             <Accordion.Collapse eventKey="1">
                                 <Card.Body>
                                     {/* Visa meritvärde: jämförelsevärde, meritpoäng och vilka kurser som ger meritpoäng */}
-                                    <p>Jämförelsetal: {jämföreseltal}</p>
-                                    <p>Meritpoäng: {meritPoäng} {meritKurser.length > 0 && <sub>({meritKurser.map((tag, i) => [
+                                    <b>Jämförelsetal</b>
+                                    <p>{jämföreseltal}</p>
+                                    <b>Meritpoäng</b>
+                                    <p>{meritPoäng} {meritKurser.length > 0 && <sub>({meritKurser.map((tag, i) => [
                                         i > 0 && ", ",
                                         tag
                                     ])})</sub>}</p>
                                     <hr/>
-                                    <p>Meritvärde: {jämföreseltal + meritPoäng} </p>
+                                    <b>Meritvärde</b>
+                                    <p>{jämföreseltal + meritPoäng}</p>
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
@@ -248,11 +251,15 @@ export default class Utbildning extends Component {
                             <Accordion.Collapse eventKey="2">
                                 <Card.Body>
                                     {/* Totala poäng, avslutade poäng, pågående poäng, kommande poäng */}
-                                    <p>Pågående poäng: {poängPåg} <sub>({pågåendeKurser} kurser)</sub></p>
-                                    <p>Kommande poäng: {poängKom} <sub>({kommandeKurser} kurser)</sub></p>
-                                    <p>Avslutade poäng: {poängAvs} <sub>({avslutadeKurser} kurser)</sub></p>
+                                    <b>Pågående poäng</b>
+                                    <p>{poängPåg} <sub>({pågåendeKurser} kurser)</sub></p>
+                                    <b>Kommande poäng</b>
+                                    <p>{poängKom} <sub>({kommandeKurser} kurser)</sub></p>
+                                    <b>Avslutade poäng</b>
+                                    <p>{poängAvs} <sub>({avslutadeKurser} kurser)</sub></p>
                                     <hr/>
-                                    <p>Totala poäng: {poängTot} <sub>({totalaKurser} kurser)</sub></p>
+                                    <b>Totala poäng</b>
+                                    <p>{poängTot} <sub>({totalaKurser} kurser)</sub></p>
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
