@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import '../../../node_modules/react-vis/dist/style.css'
-import {XYPlot, VerticalBarSeries, HorizontalGridLines, XAxis, YAxis, DiscreteColorLegend} from 'react-vis'
+import {XYPlot, VerticalBarSeries, HorizontalGridLines, XAxis, YAxis, DiscreteColorLegend, Hint} from 'react-vis'
 import { ToggleButtonGroup, ToggleButton, Container, Row, Col } from 'react-bootstrap';
 
 function usePrevious(value) {
@@ -16,6 +16,7 @@ export default function Betyg(props) {
 
     const [value, setValue] = useState([avslutadeIndex])
     const [betyg, setBetyg] = useState(props.data)
+    const [tooltip, setTooltip] = useState(false)
 
     const statusar = [
         {title :'Pågående', color: "#F5E1FD", strokeWidth: 6,},
@@ -46,7 +47,9 @@ export default function Betyg(props) {
         return max;
     }
     
-    const yDomain = getDomain(nodes, 'y');
+    const yDomain = getDomain(nodes, 'y')
+
+    const formatTooltip = node => [{title: node.x, value: `${node.y}`}]
 
     return (
         <Container fluid>
@@ -59,24 +62,28 @@ export default function Betyg(props) {
                         height={300}
                         yDomain={[0, yDomain]}
                         xDomain={['A', 'B', 'C', 'D', 'E', 'F']}
+                        onMouseLeave={() => setTooltip(false)}
                     >
                         <HorizontalGridLines tickTotal={yDomain} />
                         <XAxis />
                         <YAxis  />
 
                         {value.length ? 
-                            (value.map(i => <VerticalBarSeries
+                            value.map(i => <VerticalBarSeries
                                 cluster="stack 1"
                                 data={betyg[i-1]}
                                 opacity={1}
                                 color={statusar[i-1].color}
                                 animation={'noWobble'}
-                                />)
-                            ): 
-                            (<VerticalBarSeries
-                                data={[{x: '', y: 0}]}
-                            />)
+                                onNearestX={value => setTooltip(value)}
+                                />
+                            ) : 
+                            <VerticalBarSeries
+                                data={[{x: '', y: 0}]} // Dummy data
+                            />
                         }
+                    {tooltip && <Hint value={tooltip} format={formatTooltip}/>}
+
                     <ToggleButtonGroup type="checkbox" value={value} onChange={handleChange}>
                         {statusar.map((status, i) => <ToggleButton value={i+1}>{status.title}</ToggleButton>)}
                     </ToggleButtonGroup>
