@@ -34,21 +34,37 @@ export default function Betyg(props) {
         setValue(val)
     }
 
+    const nodes = betyg.reduce((acc, d) => [...acc, ...d], [])
+
+    const getDomain = (data, key) => {
+        const {max} = data.reduce(
+            (acc, row) => ({
+                max: Math.max(acc.max, row[key])
+                }),
+            {max: -Infinity}
+        )
+        return max;
+    }
+    
+    const yDomain = getDomain(nodes, 'y');
+
     return (
         <Container fluid>
             <Row>
                 <Col>
-                    <XYPlot 
+                    <XYPlot
                         xType="ordinal" 
                         stackBy="y" 
                         width={300} 
                         height={300}
+                        yDomain={[0, yDomain]}
+                        xDomain={['A', 'B', 'C', 'D', 'E', 'F']}
                     >
-                        <HorizontalGridLines />
+                        <HorizontalGridLines tickTotal={yDomain} />
                         <XAxis />
-                        <YAxis />
+                        <YAxis  />
 
-                        {value.length !== 0 ? 
+                        {value.length ? 
                             (value.map(i => <VerticalBarSeries
                                 cluster="stack 1"
                                 data={betyg[i-1]}
@@ -58,7 +74,7 @@ export default function Betyg(props) {
                                 />)
                             ): 
                             (<VerticalBarSeries
-                                data={[{x: 'Tomt 🤔', y: 0}]}
+                                data={[{x: '', y: 0}]}
                             />)
                         }
                     <ToggleButtonGroup type="checkbox" value={value} onChange={handleChange}>
