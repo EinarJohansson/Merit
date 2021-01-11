@@ -47,7 +47,13 @@ export default function Betyg(props) {
         return max;
     }
     
-    const yDomain = getDomain(nodes, 'y')
+    // Summerar betygen för att få en korrekt domain
+    const sumBetyg = Array.from(
+        nodes.reduce((m, { x, y }) => m.set(x, (m.get(x) || 0) + y), new Map),
+            ([x, y]) => ({ x, y })
+    )
+
+    const yDomain = getDomain(sumBetyg, 'y')
 
     const formatTooltip = node => [{title: node.x, value: `${node.y}`}]
 
@@ -56,6 +62,7 @@ export default function Betyg(props) {
             <Row>
                 <Col>
                     <XYPlot
+                        dontCheckIfEmpty
                         xType="ordinal" 
                         stackBy="y" 
                         width={300} 
@@ -67,9 +74,7 @@ export default function Betyg(props) {
                         <HorizontalGridLines tickTotal={yDomain} />
                         <XAxis />
                         <YAxis  />
-
-                        {value.length ? 
-                            value.map(i => <VerticalBarSeries
+                        {value.map(i => <VerticalBarSeries
                                 cluster="stack 1"
                                 data={betyg[i-1]}
                                 opacity={1}
@@ -77,16 +82,12 @@ export default function Betyg(props) {
                                 animation={'noWobble'}
                                 onNearestX={value => setTooltip(value)}
                                 />
-                            ) : 
-                            <VerticalBarSeries
-                                data={[{x: '', y: 0}]} // Dummy data
-                            />
-                        }
-                    {tooltip && <Hint value={tooltip} format={formatTooltip}/>}
+                        )}
+                        {tooltip && <Hint value={tooltip} format={formatTooltip}/>}
 
-                    <ToggleButtonGroup type="checkbox" value={value} onChange={handleChange}>
-                        {statusar.map((status, i) => <ToggleButton value={i+1}>{status.title}</ToggleButton>)}
-                    </ToggleButtonGroup>
+                        <ToggleButtonGroup type="checkbox" value={value} onChange={handleChange}>
+                            {statusar.map((status, i) => <ToggleButton value={i+1}>{status.title}</ToggleButton>)}
+                        </ToggleButtonGroup>
                     </XYPlot>
                 </Col>
                 <Col>
