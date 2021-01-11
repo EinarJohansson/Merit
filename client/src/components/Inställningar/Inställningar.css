@@ -24,12 +24,12 @@
 }
 
 .btn-primary {
-    border: none;
-    background-color: #542d69;
+    border: none !important;
+    background-color: #542d69 !important;
 }
 
 .btn-primary:hover {
-    background-color: #3d214d;
+    background-color: #3d214d !important;
 }
 
 .btn.btn-primary.active {
