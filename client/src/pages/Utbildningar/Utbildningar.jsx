@@ -81,13 +81,25 @@ export default class Utbildningar extends Component {
         }
 
         this.Bord = this.Bord.bind(this)
+        this.setTermin = this.setTermin.bind(this)
+        this.hämtaUtbildningar = this.hämtaUtbildningar.bind(this)
+        this.hämtaTerminer = this.hämtaTerminer.bind(this)
     }
     
-    componentDidMount() {      
+    setTermin(event) {
+        this.setState({
+            termin: event.target.value
+        })
+
+        this.hämtaUtbildningar(event.target.value, this.state.urval)
+    }
+
+    hämtaUtbildningar(termin, urval) {
+        console.log(termin);
         // Hämta utbildningar från server
         let url = '/data/utbildningar'
-                + '?urval='     + this.state.urval 
-                + '&termin='    + this.state.termin
+                + '?urval='     + urval 
+                + '&termin='    + termin
 
         fetch(url, {
             method: 'GET',
@@ -114,33 +126,38 @@ export default class Utbildningar extends Component {
                 }
             ))
 
-            // testa terminer
-            fetch('/data/terminer', {
-                method: 'GET',
-                credentials: 'include',
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Credentials": true
-                }
-            })
-            .then(haha => {
-                if (haha.status === 200) return haha.json()
-                throw new Error("failed to authenticate user")
-            })
-            .then(lol => {
-                this.setState({
-                    terminer: lol[0].terminer
-                })
-                console.log(lol[0].terminer);
-            })
-            
             this.setState({
                 utbildningar: formaterad
             })
         })
     }
     
+    hämtaTerminer() {
+        fetch('/data/terminer', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Credentials": true
+            }
+        })
+        .then(haha => {
+            if (haha.status === 200) return haha.json()
+            throw new Error("failed to authenticate user")
+        })
+        .then(lol => {
+            this.setState({
+                terminer: lol[0].terminer
+            })
+        })
+    }
+
+    componentDidMount() {
+        this.hämtaUtbildningar(this.state.termin, this.state.urval)
+        this.hämtaTerminer()        
+    }
+
     Bord() {
         const { SearchBar } = Search
         const pagination = paginationFactory(this.options)
@@ -162,9 +179,9 @@ export default class Utbildningar extends Component {
                                 </Col>
                                 <Col>
                                     <Form.Group controlId="exampleForm.ControlSelect1">
-                                        <Form.Control as="select">
-                                            {this.state.terminer.sort().map(termin => (
-                                                <option>{termin}</option>
+                                        <Form.Control as="select" defaultValue={this.state.termin} onChange={this.setTermin}>
+                                            {this.state.terminer.sort().map((termin, index) => (
+                                                <option key={index}>{termin}</option>
                                             ))}
                                         </Form.Control>
                                     </Form.Group>                               
