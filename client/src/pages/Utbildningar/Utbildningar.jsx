@@ -3,7 +3,7 @@ import BootstrapTable from 'react-bootstrap-table-next'
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css'
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css'
 import paginationFactory from 'react-bootstrap-table2-paginator'
-import { Container } from 'react-bootstrap'
+import { Container, Form, Row, Col } from 'react-bootstrap'
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import { Link } from "react-router-dom"
 import Rubrik from '../../components/Rubrik/Rubrik'
@@ -13,9 +13,10 @@ export default class Utbildningar extends Component {
         super(props)
 
         this.state = {
-            termin: 'VT2019',
+            termin: 'HT2020',
             urval: '1',
-            utbildningar: []
+            utbildningar: [],
+            terminer: []
         }
 
         this.kolumner = [{
@@ -112,6 +113,27 @@ export default class Utbildningar extends Component {
                     key: index
                 }
             ))
+
+            // testa terminer
+            fetch('/data/terminer', {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Credentials": true
+                }
+            })
+            .then(haha => {
+                if (haha.status === 200) return haha.json()
+                throw new Error("failed to authenticate user")
+            })
+            .then(lol => {
+                this.setState({
+                    terminer: lol[0].terminer
+                })
+                console.log(lol[0].terminer);
+            })
             
             this.setState({
                 utbildningar: formaterad
@@ -122,6 +144,7 @@ export default class Utbildningar extends Component {
     Bord() {
         const { SearchBar } = Search
         const pagination = paginationFactory(this.options)
+
         return (
             <div>
                 <ToolkitProvider
@@ -133,7 +156,20 @@ export default class Utbildningar extends Component {
                 >
                     {props => (
                         <div>
-                            <SearchBar {...props.searchProps} />
+                            <Row>
+                                <Col>
+                                    <SearchBar {...props.searchProps} />
+                                </Col>
+                                <Col>
+                                    <Form.Group controlId="exampleForm.ControlSelect1">
+                                        <Form.Control as="select">
+                                            {this.state.terminer.sort().map(termin => (
+                                                <option>{termin}</option>
+                                            ))}
+                                        </Form.Control>
+                                    </Form.Group>                               
+                                </Col>
+                            </Row>
                             <BootstrapTable
                                 defaultSorted={this.defaultSorted}
                                 pagination={pagination}

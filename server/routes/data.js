@@ -142,5 +142,77 @@ router.get('/program', authCheck, (req, res) => {
   })
 })
 
+router.get('/terminer', authCheck, (req, res) => {
+  /*
+  [
+  {
+    '$unwind': {
+      'path': '$aaData', 
+      'preserveNullAndEmptyArrays': true
+    }
+  }, {
+    '$unwind': {
+      'path': '$aaData', 
+      'includeArrayIndex': 'string', 
+      'preserveNullAndEmptyArrays': true
+    }
+  }, {
+    '$match': {
+      'string': 0
+    }
+  }, {
+    '$group': {
+      '_id': null, 
+      'terminer': {
+        '$addToSet': '$aaData'
+      }
+    }
+  }
+]
+*/
+
+
+  const client = new MongoClient(process.env.DB_URL)
+  client.connect(error => {
+    if (error) {
+      client.close()
+      return reject(error)
+    }
+
+    const agg = [
+      {
+        '$unwind': {
+          'path': '$aaData', 
+          'preserveNullAndEmptyArrays': true
+        }
+      }, {
+      '$unwind': {
+        'path': '$aaData', 
+        'includeArrayIndex': 'string', 
+        'preserveNullAndEmptyArrays': true
+      }
+      }, {
+      '$match': {
+        'string': 0
+      }
+      }, {
+      '$group': {
+        '_id': null, 
+        'terminer': {
+          '$addToSet': '$aaData'
+        }
+      }
+    }]
+
+    const utbildningar = client.db('merit').collection('Utbildningar')
+    
+    utbildningar.aggregate(agg).toArray((err, result) => {
+      client.close()
+      if (err) res.sendStatus(500)
+      else res.send(result)
+    })
+  })
+})
+
 
 module.exports = router
