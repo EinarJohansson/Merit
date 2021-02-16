@@ -49,7 +49,7 @@ export default function Betyg(props) {
     
     // Summerar betygen för att få en korrekt domain
     const sumBetyg = Array.from(
-        nodes.reduce((m, { x, y }) => m.set(x, (m.get(x) || 0) + y), new Map),
+        nodes.reduce((m, { x, y }) => m.set(x, (m.get(x) || 0) + y), new Map()),
             ([x, y]) => ({ x, y })
     )
 

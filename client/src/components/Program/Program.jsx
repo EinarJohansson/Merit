@@ -44,7 +44,7 @@ export default function Program(props) {
             setProgram(props.location.state.program)
         }
         else if (!program) getProgram(kod)
-    })
+    },[program, props.location.state, kod])
     
     return(
         <Container>

@@ -1,6 +1,6 @@
-import React, { Component, useState } from 'react'
+import React, { Component } from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
-import paginationFactory, { PaginationProvider, PaginationListStandalone, PaginationTotalStandalone } from 'react-bootstrap-table2-paginator'
+import paginationFactory, { PaginationProvider, PaginationListStandalone } from 'react-bootstrap-table2-paginator'
 import VisaKurs from '../VisaKurs/VisaKurs'
 import { Alert, Button, Carousel } from 'react-bootstrap'
 import {isMobile, BrowserView, MobileView} from 'react-device-detect'
@@ -120,8 +120,9 @@ export default class Table extends Component {
                     return (
                         <div>
                             <Caption />
+                            <hr/>
                             <Alert variant="light" style={{backgroundColor: '#EDDDF6', border: 'none'}}>
-                                <p style={{margin: '0px'}}>🌟 = Kursen ger meritpoäng!</p>
+                                <p style={{margin: '0px'}}><span role="img" aria-label="Kurs som ger meritpoäng">🌟</span> = Kursen ger meritpoäng!</p>
                             </Alert>                            
                             <span>Visar {visar} av {paginationProps.dataSize}</span>
                             <PaginationListStandalone { ...paginationProps } />
@@ -154,6 +155,7 @@ export default class Table extends Component {
     }
 
     uppdateraTable(kurser) {
+        console.log('Yo uppdaterar den nu i table');
         this.props.uppdatera(kurser)
     } 
     

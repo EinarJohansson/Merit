@@ -20,20 +20,27 @@ export default class Profil extends React.Component {
     }
 
     componentWillMount() {
-        const data = Object.entries(this.props.kurser).map(e => {            
-            e[1].kurs = e[0]
-            return e[1]
-        })
-
-        // Hämta betyg
-        let formateradeBetyg = this.formateraBetyg(this.props.kurser)
+        // Hämta kurserna från db
+        this.uppdateraKurser()
         
-        this.setState({
-            kurser: data,
-            betyg: formateradeBetyg,
-            program: this.props.program,
-            inriktning: this.props.inriktning
-        })
+        // Uppdatera utbildning
+        fetch("/auth/login/success", {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Credentials": true
+            }
+          })
+            .then(response => {
+              if (response.status === 200) return response.json()
+              throw new Error("failed to authenticate user")
+            })
+            .then(responseJson => {
+                console.log(responseJson.user);
+                this.uppdateraUtbildning(responseJson.user.program, responseJson.user.inriktning)
+            })
     }
 
     formateraBetyg(kurser) {
@@ -69,6 +76,7 @@ export default class Profil extends React.Component {
     }
 
     uppdateraKurser() {
+        console.log('Yo uppdaterar den nu i Profil');
         fetch('/data/kurser', {
             method: "GET",
             credentials: "include",
@@ -89,8 +97,9 @@ export default class Profil extends React.Component {
                 e[1].kurs = e[0]
                 return e[1]
             })
-                 
+
             let formateradeBetyg = this.formateraBetyg(kurser)
+            console.log(formateradeBetyg);
 
             this.setState({
                 kurser: data,
@@ -107,25 +116,32 @@ export default class Profil extends React.Component {
     }
 
     render() {
-        return (
-            <Container>
-                <Rubrik 
-                    page={'Profil'}
-                />
-                <Inställningar
-                    namn={this.props.namn}
-                    program={this.state.program}
-                    inriktning={this.state.inriktning}
-                    bild={this.props.bild}
-                    betyg={this.state.betyg}
-                    uppdatera={this.uppdateraUtbildning}
-                    kurser={this.state.kurser}
-                />
-                <Table
-                    kurser={this.state.kurser}
-                    uppdatera={this.uppdateraKurser}
-                />
-            </Container>
-        )
+        console.log('Tja ska rendera Profilsidan');
+        if (Object.keys(this.state.kurser).length !== 0 &&
+            this.state.program.length !== 0 &&
+            this.state.inriktning.length !== 0
+        ) {
+            return (
+                <Container>
+                    <Rubrik 
+                        page={'Profil'}
+                    />
+                    <Inställningar
+                        namn={this.props.namn}
+                        program={this.state.program}
+                        inriktning={this.state.inriktning}
+                        bild={this.props.bild}
+                        betyg={this.state.betyg}
+                        uppdatera={this.uppdateraUtbildning}
+                        kurser={this.state.kurser}
+                    />
+                    <Table
+                        kurser={this.state.kurser}
+                        uppdatera={this.uppdateraKurser}
+                    />
+                </Container>
+            )
+        }
+        return null
     }
 }

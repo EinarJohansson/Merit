@@ -79,6 +79,8 @@ export default function VisaKurs(props) {
                 if (index !== -1) props.kurser[index] = nykurs
                 else props.kurser.push(nykurs)
 
+                console.log('Uppdaterar kursen med ->!');
+                console.log(props.kurser);
                 props.uppdatera(props.kurser)
                 handleClose()
             })

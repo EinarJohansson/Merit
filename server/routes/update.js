@@ -46,7 +46,7 @@ router.post('/utbildning', authCheck, (req, res) => {
         const inriktning = req.body.inriktning
 
         insert(req.user, { 'program': program, 'inriktning': inriktning })
-            .then(data => console.log(data))
+            .then(data => console.log('Uppdaterade utbildning'))
             .catch(err => console.error(err))
     }
 
@@ -65,7 +65,6 @@ router.post('/status', authCheck, (req, res) => {
     if (legitStatus(req.body)) {
         changeStatus(req.user._id, req.body.kurs, req.body.status)
         .then(data => {
-            console.log(data)
             res.sendStatus(200)
         })
         .catch(err => {
@@ -125,7 +124,7 @@ router.post('/remove', authCheck, (req, res) => {
                             'jämföreseltal': req.body.jämföreseltal,
                             'meritvärde': req.body.meritvärde
         })
-        .then(data => console.log(data))
+        .then(data => console.log('Uppdaterade meritvärde'))
         .catch(err => console.error(err))    
     }
     res.redirect('/')

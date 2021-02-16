@@ -80,6 +80,8 @@ export default class Utbildning extends Component {
             inriktning: inriktning
         }
 
+        console.log(data);
+
         fetch('/update/utbildning', {
             method: "POST",
             credentials: "include",
@@ -90,6 +92,7 @@ export default class Utbildning extends Component {
             },
             body: JSON.stringify(data)
         }).then(res => {
+            console.log(res);
             // Uppdatera profilens text
             this.props.uppdatera(program, inriktning)
         })

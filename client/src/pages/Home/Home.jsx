@@ -36,7 +36,6 @@ export default class Home extends Component {
         throw new Error("failed to authenticate user")
       })
       .then(responseJson => {
-        console.log(responseJson);
         this.setState({
           authenticating: false,
           authenticated: true,
@@ -57,7 +56,6 @@ export default class Home extends Component {
     if (authenticating) return null
 
     const AktivHeader = withRouter(Header);
-
     return (
       <Router>
         <AktivHeader
