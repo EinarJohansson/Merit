@@ -14,9 +14,32 @@ export default class Utbildningar extends Component {
 
         this.state = {
             termin: 'HT2020',
-            urval: '1',
+            urval: 'BI',
             utbildningar: [],
-            terminer: []
+            terminer: [
+                "HT2020",
+                "HT2019",
+                "HT2018",
+                "HT2017",
+                "HT2016",
+                "HT2015",
+                "HT2014",
+                "HT2013",
+                "HT2012",
+                "HT2011",
+                "HT2010",
+                "VT2021",
+                "VT2020",
+                "VT2019",
+                "VT2018",
+                "VT2017",
+                "VT2016",
+                "VT2015",
+                "VT2014",
+                "VT2013",
+                "VT2012",
+                "VT2011",
+            ]
         }
 
         this.kolumner = [{
@@ -39,7 +62,7 @@ export default class Utbildningar extends Component {
                 }}
                 style={{
                     'color': '#542d69',
-                    'font-weight': 'bold'
+                    'fontWeight': 'bold'
                 }}
                 >
                     {cell}
@@ -82,8 +105,8 @@ export default class Utbildningar extends Component {
 
         this.Bord = this.Bord.bind(this)
         this.setTermin = this.setTermin.bind(this)
+        this.setUrval = this.setUrval.bind(this)
         this.hämtaUtbildningar = this.hämtaUtbildningar.bind(this)
-        this.hämtaTerminer = this.hämtaTerminer.bind(this)
     }
     
     setTermin(event) {
@@ -94,8 +117,17 @@ export default class Utbildningar extends Component {
         this.hämtaUtbildningar(event.target.value, this.state.urval)
     }
 
+    setUrval(event) {
+        this.setState({
+            urval: event.target.value
+        })
+
+        this.hämtaUtbildningar(this.state.termin, event.target.value)
+    }
+
     hämtaUtbildningar(termin, urval) {
-        console.log(termin);
+        urval = urval == "BI" ? "1": "2"
+
         // Hämta utbildningar från server
         let url = '/data/utbildningar'
                 + '?urval='     + urval 
@@ -131,31 +163,9 @@ export default class Utbildningar extends Component {
             })
         })
     }
-    
-    hämtaTerminer() {
-        fetch('/data/terminer', {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": true
-            }
-        })
-        .then(haha => {
-            if (haha.status === 200) return haha.json()
-            throw new Error("failed to authenticate user")
-        })
-        .then(lol => {
-            this.setState({
-                terminer: lol[0].terminer
-            })
-        })
-    }
 
     componentDidMount() {
         this.hämtaUtbildningar(this.state.termin, this.state.urval)
-        this.hämtaTerminer()        
     }
 
     Bord() {
@@ -178,13 +188,17 @@ export default class Utbildningar extends Component {
                                     <SearchBar {...props.searchProps} />
                                 </Col>
                                 <Col>
-                                    <Form.Group controlId="exampleForm.ControlSelect1">
-                                        <Form.Control as="select" defaultValue={this.state.termin} onChange={this.setTermin}>
-                                            {this.state.terminer.sort().map((termin, index) => (
-                                                <option key={index}>{termin}</option>
-                                            ))}
-                                        </Form.Control>
-                                    </Form.Group>                               
+                                    <Form.Control as="select" defaultValue={this.state.termin} onChange={this.setTermin}>
+                                        {this.state.terminer.map((termin, index) => (
+                                            <option key={index}>{termin}</option>
+                                        ))}
+                                    </Form.Control>
+                                </Col>
+                                <Col>
+                                    <Form.Control as="select" defaultValue={this.state.urval} onChange={this.setUrval}>
+                                            <option key="0">BI</option>
+                                            <option key="1">BII</option>
+                                    </Form.Control>
                                 </Col>
                             </Row>
                             <BootstrapTable

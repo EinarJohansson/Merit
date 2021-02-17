@@ -59,11 +59,11 @@ router.get('/utbildningar', authCheck, (req, res) => {
             {
               '$project': {
                 'aaData': 1, 
-                'urval': parseInt(urval)
+                'urval': 1
               }
             }, {
               '$match': {
-                'urval': 2
+                'urval': parseInt(urval)
               }
             }, {
               '$project': {
@@ -143,35 +143,6 @@ router.get('/program', authCheck, (req, res) => {
 })
 
 router.get('/terminer', authCheck, (req, res) => {
-  /*
-  [
-  {
-    '$unwind': {
-      'path': '$aaData', 
-      'preserveNullAndEmptyArrays': true
-    }
-  }, {
-    '$unwind': {
-      'path': '$aaData', 
-      'includeArrayIndex': 'string', 
-      'preserveNullAndEmptyArrays': true
-    }
-  }, {
-    '$match': {
-      'string': 0
-    }
-  }, {
-    '$group': {
-      '_id': null, 
-      'terminer': {
-        '$addToSet': '$aaData'
-      }
-    }
-  }
-]
-*/
-
-
   const client = new MongoClient(process.env.DB_URL)
   client.connect(error => {
     if (error) {
