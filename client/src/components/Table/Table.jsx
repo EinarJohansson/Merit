@@ -36,7 +36,8 @@ export default class Table extends Component {
                 footerAttrs: {colSpan: 5},
                 formatter: (cell, row) => {
                     return parseFloat(row.merit) > 0 ? cell + '🌟': cell
-                }
+                },
+                style: { width: "40%" }
             },
             {
                 dataField: 'poäng',
@@ -48,19 +49,22 @@ export default class Table extends Component {
                         return b - a;
                     }
                     return a - b; // desc
-                }
+                },
+                style: { width: "20%" } 
             },
             {
                 dataField: 'typ',
                 text: 'Kod',
                 headerStyle: { 'backgroundColor': 'white' },
-                sort: true
+                sort: true,
+                style: { width: "20%" }
             },
             {
                 dataField: 'betyg',
                 text: 'Betyg',
                 headerStyle: { 'backgroundColor': 'white' },
-                sort: true
+                sort: true,
+                style: { width: "10%" }
             },
             {
                 dataField: 'redigera',
@@ -76,7 +80,7 @@ export default class Table extends Component {
                         })  
                     },
                 },                 
-                style: {'cursor': 'pointer'},
+                style: {'cursor': 'pointer', width: "10%"},
                 align: 'center',
                 headerAlign: 'center'
             }
