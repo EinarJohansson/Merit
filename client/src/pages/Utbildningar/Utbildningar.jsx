@@ -42,10 +42,11 @@ export default class Utbildningar extends Component {
             ]
         }
 
-        this.kolumner = [{
+        this.kolumner = [
+        {
             dataField: 'key',
             text: 'Key',
-            hidden: true
+            hidden: true,
         }, {
             dataField: 'kod',
             text: 'kod',
@@ -67,7 +68,8 @@ export default class Utbildningar extends Component {
                 >
                     {cell}
                 </Link>
-            )
+            ),
+            style: { width: "50%" }
         }, {
             dataField: 'poäng',
             text: 'Poäng',
@@ -82,12 +84,14 @@ export default class Utbildningar extends Component {
                 if (diff >= 0) return <p style={{color: 'green'}}>{cell}</p>
                 else if (diff < 0 && diff > -1) return <p style={{color: 'orange'}}>{cell}</p>
                 else return <p style={{color: 'red'}}>{cell}</p> 
-            }
+            },
+            style: { width: "10%" } 
         },
         {
             dataField: 'lärosäte',
             text: 'Lärosäte',
-            sort: true   
+            sort: true,
+            style: { width: "40%" } 
         }]
 
         this.defaultSorted = [{
