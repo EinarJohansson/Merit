@@ -30,7 +30,7 @@ export default function Historik(props) {
             <VerticalGridLines />
             <HorizontalGridLines />
             <XAxis title="Termin" tickLabelAngle={-45} />
-            <YAxis title="Poäng"/>
+            <YAxis title="Poäng" tickFormat={v => v === 0 ? `*/-` : `${v}`} />
             <LineMarkSeries data={BI} />
             <LineMarkSeries data={BII} strokeStyle="dashed" />
             <LineSeries data={ticks.map(tick => ({'x': tick, 'y': medel}))}/>
