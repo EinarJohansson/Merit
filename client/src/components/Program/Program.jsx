@@ -27,6 +27,7 @@ function historik(kod) {
 }
 
 export default function Program(props) {
+    console.log(props);
     const kod = props.match.params.kod
     
     const [program, setProgram] = useState('')
@@ -55,7 +56,7 @@ export default function Program(props) {
     useEffect(() => {
         if (program === '') // Om inte satt program
             getProgram(kod)
-    },[program, props.location.state, kod])
+    },[program, kod])
     
 
     return(
@@ -81,6 +82,7 @@ export default function Program(props) {
             {data.length !== 0 && 
                 <Historik
                     data={data}
+                    meritvärde={props.user.meritvärde}
                 />
             }
         </Container>

@@ -91,14 +91,24 @@ export default class Home extends Component {
             {!authenticated &&
               <Redirect to="/" />
             }
-            {authenticated && user.meritvärde &&
+            {authenticated &&
               <Utbildningar
-                meritvärde={user.meritvärde}
+                meritvärde={user.meritvärde || 0}
               />
             }
           </Route>
 
-          <Route path="/utbildningar/:kod" component={Program} />
+          <Route path="/utbildningar/:kod" component={(props) => (
+            <>
+              {authenticated ?
+                <Program {...props} user={user}/>
+              : 
+                <Redirect to="/" />
+              }
+
+            </>
+          )}/>
+
 
           <Route path="*">
             <h1>Du har nog kommit lite fel <span role="img" aria-label="404">👁👄👁</span></h1>

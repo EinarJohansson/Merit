@@ -25,6 +25,8 @@ export default function Historik(props) {
 
     const medel = (medelBI + medelBII) / 2
 
+    console.log(props.meritvärde);
+
     return (
         <XYPlot height={500} width= {500} xType="ordinal" yDomain={[0.0, 22.5]}>
             <VerticalGridLines />
@@ -34,6 +36,7 @@ export default function Historik(props) {
             <LineMarkSeries data={BI} />
             <LineMarkSeries data={BII} strokeStyle="dashed" />
             <LineSeries data={ticks.map(tick => ({'x': tick, 'y': medel}))}/>
+            <LineSeries data={ticks.map(tick => ({'x': tick, 'y': props.meritvärde}))}/>
         </XYPlot>
     )
 }
