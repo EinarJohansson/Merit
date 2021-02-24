@@ -1,42 +1,51 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import '../../../node_modules/react-vis/dist/style.css'
-import {XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineMarkSeries, LineSeries} from 'react-vis'
-import  {Container} from 'react-bootstrap';
+import {XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineMarkSeries, LineSeries, Hint} from 'react-vis'
 
 export default function Historik(props) {
+    const [tooltip, setTooltip] = useState(false)
+    const [ticks, setTicks] = useState([])
+    const [BI, setBI] = useState([])
+    const [BII, setBII] = useState([])
+    const [medel, setMedel] = useState(0)
 
-    const BI = props.data[0]
-    .map(termin => ({'x': termin[0], 'y': isNaN(parseFloat(termin[6])) ? 0 : parseFloat(termin[6])}))
-    const BII = props.data[1]
-    .map(termin => ({'x': termin[0], 'y': isNaN(parseFloat(termin[6])) || termin[6] === '*' || termin[6] === '-' ? 0 : parseFloat(termin[6])}))
+    const formatTooltip = node => {
+        // Visa BI och BII
+        const BII_merit = BII.find(termin => termin.x === node.x).y
+    return [{title: 'BI', value: `${node.y}`}, {title: 'BII', value: `${BII_merit || '*/-'}`}]
+    }
 
-    const ticks = props.data[0].map(termin => termin[0])
+    useEffect(() => {
+        const B1_ = props.data[0].map(termin => ({'x': termin[0], 'y': isNaN(parseFloat(termin[6])) ? 0 : parseFloat(termin[6])}))
+        setBI(B1_)
 
-    console.log(BI);
-    console.log(BII);
+        const BII_ = props.data[1].map(termin => ({'x': termin[0], 'y': isNaN(parseFloat(termin[6])) || termin[6] === '*' || termin[6] === '-' ? 0 : parseFloat(termin[6])}))
+        setBII(BII_)
 
-    const medelBI = props.data[0]
-    .map(termin => isNaN(parseFloat(termin[6])) || termin[6] === '*' || termin[6] === '-' ? 0 : parseFloat(termin[6]))
-    .reduce((poäng, next) => poäng + next, 0) / BI.length
+        setTicks(props.data[0].map(termin => termin[0]))
 
-    const medelBII = props.data[1]
-    .map(termin => isNaN(parseFloat(termin[6])) || termin[6] === '*' || termin[6] === '-' ? 0 : parseFloat(termin[6]))
-    .reduce((poäng, next) => poäng + next, 0) / BII.length
+        const medelBI = props.data[0]
+        .map(termin => isNaN(parseFloat(termin[6])) || termin[6] === '*' || termin[6] === '-' ? 0 : parseFloat(termin[6]))
+        .reduce((poäng, next) => poäng + next, 0) / B1_.length
 
-    const medel = (medelBI + medelBII) / 2
+        const medelBII = props.data[1]
+        .map(termin => isNaN(parseFloat(termin[6])) || termin[6] === '*' || termin[6] === '-' ? 0 : parseFloat(termin[6]))
+        .reduce((poäng, next) => poäng + next, 0) / BII_.length
 
-    console.log(props.meritvärde);
+        setMedel((medelBI + medelBII) / 2)
+    }, [])
 
     return (
-        <XYPlot height={500} width= {500} xType="ordinal" yDomain={[0.0, 22.5]}>
+        <XYPlot height={500} width= {500} xType="ordinal" yDomain={[0.0, 22.5]} onMouseLeave={() => setTooltip(false)}>
             <VerticalGridLines />
             <HorizontalGridLines />
             <XAxis title="Termin" tickLabelAngle={-45} />
             <YAxis title="Poäng" tickFormat={v => v === 0 ? `*/-` : `${v}`} />
-            <LineMarkSeries data={BI} />
+            <LineMarkSeries data={BI} onNearestX={value => setTooltip(value)}/>
             <LineMarkSeries data={BII} strokeStyle="dashed" />
             <LineSeries data={ticks.map(tick => ({'x': tick, 'y': medel}))}/>
             <LineSeries data={ticks.map(tick => ({'x': tick, 'y': props.meritvärde}))}/>
+            {tooltip && <Hint value={tooltip} format={formatTooltip}/>}
         </XYPlot>
     )
 }

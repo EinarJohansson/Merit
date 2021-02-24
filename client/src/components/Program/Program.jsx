@@ -27,7 +27,6 @@ function historik(kod) {
 }
 
 export default function Program(props) {
-    console.log(props);
     const kod = props.match.params.kod
     
     const [program, setProgram] = useState('')
