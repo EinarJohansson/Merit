@@ -17,7 +17,7 @@ export default function Historik(props) {
     const formatTooltip = node => {
         // Visa BI och BII
         const BII_merit = BII.find(termin => termin.x === node.x).y
-    return [{title: titles[0], value: `${node.y}`}, {title: titles[1], value: `${BII_merit || '*/-'}`}]
+        return [{title: titles[0], value: `${node.y || '*/-'}`}, {title: titles[1], value: `${BII_merit || '*/-'}`}]
     }
 
     useEffect(() => {
