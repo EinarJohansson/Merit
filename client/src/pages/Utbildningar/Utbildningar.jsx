@@ -75,16 +75,6 @@ export default class Utbildningar extends Component {
             text: 'Poäng',
             sort: true,
             type: 'number',
-            formatter: (cell, row, rowIndex) => {
-                // Är float?
-                if(!cell.match(/^\d+\.\d+$/)) {
-                    return cell
-                }
-                let diff = this.props.meritvärde - cell
-                if (diff >= 0) return <p style={{color: 'green'}}>{cell}</p>
-                else if (diff < 0 && diff > -1) return <p style={{color: 'orange'}}>{cell}</p>
-                else return <p style={{color: 'red'}}>{cell}</p> 
-            },
             style: { width: "10%" } 
         },
         {
@@ -223,7 +213,6 @@ export default class Utbildningar extends Component {
                 <Rubrik
                     page={"Utbildningar"}
                 />
-                <h6>Ditt meritvärde: {this.props.meritvärde}</h6>
                 <this.Bord />
             </Container>
         )

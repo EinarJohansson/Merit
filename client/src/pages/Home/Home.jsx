@@ -92,9 +92,7 @@ export default class Home extends Component {
               <Redirect to="/" />
             }
             {authenticated &&
-              <Utbildningar
-                meritvärde={user.meritvärde || 0}
-              />
+              <Utbildningar/>
             }
           </Route>
 

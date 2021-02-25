@@ -25,6 +25,7 @@ export default function Betyg(props) {
     ]
 
     const prevBetyg = usePrevious(props.data);
+    
     useEffect(() => {
         if (prevBetyg !== props.data)
             setBetyg(props.data)
