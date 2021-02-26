@@ -4,7 +4,8 @@ const request = require('request');
 const  cors = require('cors')
 
 const router = require('express').Router()
-const MongoClient = require('mongodb').MongoClient
+const MongoClient = require('mongodb').MongoClient;
+const { response } = require('express');
 
 const corsOptions = {
     origin: 'http://localhost:5000',
@@ -185,5 +186,63 @@ router.get('/terminer', authCheck, (req, res) => {
   })
 })
 
+router.post('/bevaka', authCheck, (req, res) => {
+  // Kolla om koden finns med
+  console.log(req.body);
+  if (req.body.hasOwnProperty('kod') && req.body.hasOwnProperty('state')) {
+    const client = new MongoClient(process.env.DB_URL)
+    client.connect(error => {
+      if (error) {
+        client.close()
+        return res.sendStatus(404)
+      }
+      const users = client.db('merit').collection('users')
+
+      client.connect(error => {
+        if (error) {
+          client.close()
+          return reject(error)
+        }
+
+        if (req.body.state === true) {
+          // Om state == true - lägg till
+          users.updateOne(
+            {
+              '_id': req.user._id
+            },
+            {
+              '$addToSet': {
+                'bevakningar': req.body.kod
+              }
+            },
+            (err, resp) => {
+              client.close()
+              if (err) res.sendStatus(500)
+              else res.send(resp)
+            }
+          )
+        }
+        else if (req.body.state === false) {
+          // Om state == false - ta bort
+          users.updateOne(
+            {
+              '_id': req.user._id
+            },
+            {
+              '$pull': {
+                'bevakningar': req.body.kod
+              }
+            },
+            (err, resp) => {
+              client.close()
+              if (err) res.sendStatus(500)
+              else res.send(resp)
+            }
+          )
+        }
+      })
+    })
+  }
+})
 
 module.exports = router

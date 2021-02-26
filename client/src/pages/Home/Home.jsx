@@ -36,6 +36,7 @@ export default class Home extends Component {
         throw new Error("failed to authenticate user")
       })
       .then(responseJson => {
+        console.log(responseJson.user);
         this.setState({
           authenticating: false,
           authenticated: true,

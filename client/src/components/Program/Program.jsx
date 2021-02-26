@@ -27,6 +27,7 @@ function historik(kod) {
 }
 
 export default function Program(props) {
+    console.log(props);
     const kod = props.match.params.kod
     
     const [program, setProgram] = useState('')
@@ -82,6 +83,7 @@ export default function Program(props) {
                 <Historik
                     data={data}
                     meritvärde={props.user.meritvärde}
+                    bevakat={props.user.bevakningar.includes(kod)}
                 />
             }
         </Container>

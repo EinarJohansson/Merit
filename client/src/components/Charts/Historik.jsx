@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import '../../../node_modules/react-vis/dist/style.css'
 import {XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineMarkSeries, LineSeries, Hint, DiscreteColorLegend} from 'react-vis'
-import {Col, Row } from 'react-bootstrap'
+import {Col, Row, ToggleButton} from 'react-bootstrap'
 
 export default function Historik(props) {
     const [tooltip, setTooltip] = useState(false)
@@ -10,9 +10,11 @@ export default function Historik(props) {
     const [BII, setBII] = useState([])
     const [medel, setMedel] = useState(0)
     const [disabled, setDisabled] = useState([false, false, false, false])
-    
+    const [checked, setChecked] = useState(props.bevakat);
+
     const colors = ['#69646E', '#D7928B', '#668A78', '#F0DCC2']
     const titles = ['BI', 'BII', `Medelvärde - ${medel.toFixed(2)}`, `Ditt meritvärde - ${props.meritvärde.toFixed(2)}`]
+    const kod = props.data[0][0][3]
 
     const formatTooltip = node => {
         // Visa BI och BII
@@ -72,6 +74,41 @@ export default function Historik(props) {
                             setDisabled(disabled.map((linje, i) => i === num ? !linje : linje ))
                     }}
                 />
+                <ToggleButton 
+                    type="checkbox" 
+                    variant="primary"
+                    checked={checked}
+                    onChange={e => {
+                        // Bevaka programmet hära eller ta bort det från bevakat
+                        setChecked(e.currentTarget.checked)
+                        const body = {
+                            kod: kod,
+                            state: e.currentTarget.checked
+                        }
+                        const url = '/data/bevaka'
+
+                        fetch(url, {
+                            method: 'POST',
+                            credentials: 'include',
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": "application/json",
+                                "Access-Control-Allow-Credentials": true
+                            },
+                            body: JSON.stringify(body)
+                        })
+                        .then(response => {
+                            if (response.status === 200) return response.json()
+                        })
+                        .then(res => console.log('Uppdatera bevakning'))
+                        .catch(err => console.log('Gick inte att uppdatera bevakning'))
+                        }
+                    }
+                    value="1"
+                >
+                    Bekvaka program
+                
+                </ToggleButton>
             </Col>
     </Row>
     )

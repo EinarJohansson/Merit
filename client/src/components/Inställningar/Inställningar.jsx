@@ -35,6 +35,7 @@ export default class Utbildning extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
         this.setState({
             program: this.props.program,
             inriktning: this.props.inriktning,
@@ -273,6 +274,21 @@ export default class Utbildning extends Component {
                                     {/* Visa fördelning av betygen */}
                                     <Betyg data={this.props.betyg}/>
                                     <br/>
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        </Card>
+                        <Card>
+                            <this.CustomToggle eventKey="4">Mina bevakningar</this.CustomToggle>
+                            <Accordion.Collapse eventKey="4">
+                                <Card.Body>
+                                    {/* Visa fördelning av betygen */}
+                                    {this.props.bevakningar.length ?
+                                        <ul>
+                                            {this.props.bevakningar.map(bev => <li><a href={`utbildningar/${bev}`}>{bev}</a></li>)}
+                                        </ul>
+                                    : 
+                                        <p>Inga bevakade utbildningar🙀</p>
+                                    }
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>

@@ -11,7 +11,8 @@ export default class Profil extends React.Component {
             program: '',
             inriktning: '',
             betyg: [],
-            kurser: {}
+            kurser: {},
+            bevakningar: []
         }
 
         this.uppdateraKurser = this.uppdateraKurser.bind(this)
@@ -39,6 +40,7 @@ export default class Profil extends React.Component {
             })
             .then(responseJson => {
                 console.log(responseJson.user);
+                this.setState({bevakningar: responseJson.user.bevakningar})
                 this.uppdateraUtbildning(responseJson.user.program, responseJson.user.inriktning)
             })
     }
@@ -91,6 +93,8 @@ export default class Profil extends React.Component {
             throw new Error("failed to authenticate user")
         })
         .then(res => {
+            console.log('YOOOOO');
+            console.log(res);
             const kurser = res[0].kurser
             // Formatera kurserna
             const data = Object.entries(kurser).map(e => {            
@@ -134,6 +138,7 @@ export default class Profil extends React.Component {
                         betyg={this.state.betyg}
                         uppdatera={this.uppdateraUtbildning}
                         kurser={this.state.kurser}
+                        bevakningar={this.state.bevakningar}
                     />
                     <Table
                         kurser={this.state.kurser}
